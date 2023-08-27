@@ -4,37 +4,43 @@ import com.example.databaseapi.entities.Users;
 import com.example.databaseapi.restcontrollers.IRestController;
 import com.example.databaseapi.services.DBAService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("api/v1/data/users")
 public class UserRestController implements IRestController<Users> {
     private final DBAService<Users> usersService;
 
     @Override
+    @GetMapping("")
     public List<Users> getAll() {
         return usersService.getAll();
     }
 
     @Override
-    public Users getById(Long id) {
+    @GetMapping("/{id}")
+    public Users getById(@PathVariable("id") Long id) {
         return usersService.getById(id);
     }
 
     @Override
-    public Users create(Users users) {
+    @PostMapping("")
+    public Users create(@RequestBody Users users) {
         return usersService.create(users);
     }
 
     @Override
-    public void delete(Long id) {
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id) {
         usersService.delete(id);
     }
 
     @Override
-    public void update(Users users, Long id) {
+    @PutMapping("/{id}")
+    public void update(@RequestBody Users users, @PathVariable("id") Long id) {
         usersService.update(users, id);
     }
 }

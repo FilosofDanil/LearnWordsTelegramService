@@ -5,37 +5,43 @@ import com.example.databaseapi.restcontrollers.IRestController;
 import com.example.databaseapi.services.DBAService;
 import com.example.databaseapi.services.impl.SettingsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("api/v1/data/settings")
 public class SettingsRestController implements IRestController<Settings> {
     private final DBAService<Settings> settingsService;
 
     @Override
+    @GetMapping("")
     public List<Settings> getAll() {
         return settingsService.getAll();
     }
 
     @Override
-    public Settings getById(Long id) {
+    @GetMapping("/{id}")
+    public Settings getById(@PathVariable("id") Long id) {
         return settingsService.getById(id);
     }
 
     @Override
-    public Settings create(Settings settings) {
+    @PostMapping("")
+    public Settings create(@RequestBody Settings settings) {
         return settingsService.create(settings);
     }
 
     @Override
-    public void delete(Long id) {
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id) {
         settingsService.delete(id);
     }
 
     @Override
-    public void update(Settings settings, Long id) {
+    @PutMapping("/{id}")
+    public void update(@RequestBody Settings settings, @PathVariable("id") Long id) {
         settingsService.update(settings, id);
     }
 }
