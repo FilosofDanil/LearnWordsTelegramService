@@ -2,7 +2,7 @@ package com.example.databaseapi.restcontrollers;
 
 import java.util.List;
 
-public interface RestController<T> {
+public interface IRestController<T> {
     List<T> getAll();
 
     T getById(Long id);
