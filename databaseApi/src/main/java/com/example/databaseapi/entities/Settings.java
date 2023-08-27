@@ -16,7 +16,7 @@ public class Settings {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "interfacelang")
-    private String ticker;
+    private String interfaceLang;
     @Column(name = "native")
     private String nativeLang;
     @Column(name = "notifications")
