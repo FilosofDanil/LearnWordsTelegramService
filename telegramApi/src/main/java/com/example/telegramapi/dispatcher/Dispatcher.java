@@ -1,5 +1,7 @@
 package com.example.telegramapi.dispatcher;
 
-public interface Dispatcher {
+import com.example.telegramapi.entities.UserRequest;
 
+public interface Dispatcher {
+    void dispatch(UserRequest request);
 }
