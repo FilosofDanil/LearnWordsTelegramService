@@ -7,19 +7,19 @@ import com.example.telegramapi.enums.States;
 import com.example.telegramapi.services.SessionService;
 import com.example.telegramapi.services.TelegramBotService;
 import com.example.telegramapi.services.ObtainTextService;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
-public class StartCommandHandler extends RequestHandler {
+@AllArgsConstructor
+public class SettingsCommandHandler extends RequestHandler {
     private final SessionService sessionService;
 
     private final TelegramBotService telegramService;
 
     private final ObtainTextService obtainTextService;
 
-    private static final String command = "/start";
+    private static final String command = "/settings";
 
     @Override
     public boolean isApplicable(UserRequest request) {
@@ -29,10 +29,10 @@ public class StartCommandHandler extends RequestHandler {
     @Override
     public void handle(UserRequest request) {
         UserSession session = request.getUserSession();
-        session.setState(States.CONVERSATION_STARTED);
+        session.setState(States.SETTINGS);
         sessionService.saveSession(request.getChatId(), session);
         telegramService.sendMessage(request.getChatId(),
-                obtainTextService.read("Start","uk"));
+                obtainTextService.read("Settings", "uk"));
     }
 
     @Override
