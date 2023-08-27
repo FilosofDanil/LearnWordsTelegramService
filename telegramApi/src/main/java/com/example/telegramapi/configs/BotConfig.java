@@ -1,4 +1,4 @@
-package configs;
+package com.example.telegramapi.configs;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
