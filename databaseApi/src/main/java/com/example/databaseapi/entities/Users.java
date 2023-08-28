@@ -18,10 +18,10 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "tgname")
-    private String ticker;
+    @Column(name = "tg_name")
+    private String tgName;
     @Column(name = "username")
     private String username;
-    @Column(name = "registrationdate")
+    @Column(name = "registration_date")
     private Date registrationDate;
 }
