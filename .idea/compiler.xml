@@ -12,6 +12,7 @@
         <module name="serverConfig" />
         <module name="eurekaServer" />
         <module name="dictionaryApi" />
+        <module name="gateway" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
