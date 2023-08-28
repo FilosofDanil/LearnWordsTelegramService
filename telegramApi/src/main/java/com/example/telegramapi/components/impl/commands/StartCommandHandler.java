@@ -40,7 +40,7 @@ public class StartCommandHandler extends RequestHandler {
             userService.create(User.builder()
                     .username(username)
                     .registrationDate(new Date())
-                    .tgname(firstName)
+                    .tgName(firstName)
                     .build());
         }
         UserSession session = request.getUserSession();

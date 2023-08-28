@@ -9,10 +9,10 @@ import java.util.Date;
 @Data
 @Builder
 public class User {
-    @JsonProperty("tgname")
-    private String tgname;
+    @JsonProperty("tgName")
+    private String tgName;
     @JsonProperty("username")
     private String username;
-    @JsonProperty("registrationdate")
+    @JsonProperty("registrationDate")
     private Date registrationDate;
 }
