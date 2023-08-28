@@ -3,7 +3,8 @@ package com.example.databaseapi.restcontrollers.impl;
 import com.example.databaseapi.entities.Settings;
 import com.example.databaseapi.restcontrollers.IRestController;
 import com.example.databaseapi.services.DBAService;
-import com.example.databaseapi.services.impl.SettingsService;
+import com.example.databaseapi.services.SettingsService;
+import com.example.databaseapi.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,8 @@ import java.util.List;
 @RequestMapping("api/v1/data/settings")
 public class SettingsRestController implements IRestController<Settings> {
     private final DBAService<Settings> settingsService;
+    private final UserService userService;
+    private final SettingsService userSettingsService;
 
     @Override
     @GetMapping("")
@@ -25,6 +28,11 @@ public class SettingsRestController implements IRestController<Settings> {
     @GetMapping("/{id}")
     public Settings getById(@PathVariable("id") Long id) {
         return settingsService.getById(id);
+    }
+
+    @GetMapping("/username/{username}")
+    public Settings getByUsername(@PathVariable("username") String username) {
+        return userSettingsService.getSettingsByUser(userService.getByUsername(username));
     }
 
     @Override

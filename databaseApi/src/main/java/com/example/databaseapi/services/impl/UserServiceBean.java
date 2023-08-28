@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements DBAService<Users> {
+public class UserServiceBean implements DBAService<Users>, com.example.databaseapi.services.UserService {
     private final UserRepo userRepo;
 
     @Override
@@ -37,5 +37,10 @@ public class UserService implements DBAService<Users> {
     @Override
     public void update(Users users, Long id) {
         userRepo.updateUser(id, users.getUsername(), users.getRegistrationDate());
+    }
+
+    @Override
+    public Users getByUsername(String username) {
+        return userRepo.findByUsername(username);
     }
 }

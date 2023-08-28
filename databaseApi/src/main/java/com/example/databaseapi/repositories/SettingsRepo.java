@@ -1,6 +1,7 @@
 package com.example.databaseapi.repositories;
 
 import com.example.databaseapi.entities.Settings;
+import com.example.databaseapi.entities.Users;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -13,6 +14,8 @@ public interface SettingsRepo extends CrudRepository<Settings, Long> {
     List<Settings> findAll();
 
     Settings getById(Long id);
+
+    Settings findByUser(Users user);
 
     @Modifying
     @Transactional
