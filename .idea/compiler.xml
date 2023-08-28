@@ -9,9 +9,9 @@
         <outputRelativeToContentRoot value="true" />
         <module name="telegramApi" />
         <module name="databaseApi" />
-        <module name="serverConfig" />
-        <module name="eurekaServer" />
         <module name="dictionaryApi" />
+        <module name="eurekaServer" />
+        <module name="serverConfig" />
         <module name="gateway" />
       </profile>
     </annotationProcessing>
