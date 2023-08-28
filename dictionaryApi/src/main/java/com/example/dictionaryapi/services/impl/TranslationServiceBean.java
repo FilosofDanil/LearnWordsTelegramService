@@ -29,7 +29,7 @@ public class TranslationServiceBean implements TranslationService {
         return "Translate that word list from" +
                 from + " to " +
                 to +
-                ", and give the definitions(also on Ukrainian) for all the words, which present in the list: " +
+                ", which present in the list: " +
                 text +
                 "Please return back just translated word list. Required that you respond me it at such format: word1: here u give all the translations of this word; word2 e.t.c.";
     }
