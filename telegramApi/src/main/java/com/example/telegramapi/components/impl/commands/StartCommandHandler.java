@@ -1,14 +1,9 @@
 package com.example.telegramapi.components.impl.commands;
 
 import com.example.telegramapi.components.RequestHandler;
-import com.example.telegramapi.entities.User;
-import com.example.telegramapi.entities.UserRequest;
-import com.example.telegramapi.entities.UserSession;
+import com.example.telegramapi.entities.*;
 import com.example.telegramapi.enums.States;
-import com.example.telegramapi.services.SessionService;
-import com.example.telegramapi.services.TelegramBotService;
-import com.example.telegramapi.services.ObtainTextService;
-import com.example.telegramapi.services.UserService;
+import com.example.telegramapi.services.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +18,8 @@ public class StartCommandHandler extends RequestHandler {
 
     private final ObtainTextService obtainTextService;
 
+    private final SettingsService settingsService;
+
     private final UserService userService;
 
     private static final String command = "/start";
@@ -34,20 +31,33 @@ public class StartCommandHandler extends RequestHandler {
 
     @Override
     public void handle(UserRequest request) {
+
         String username = request.getUpdate().getMessage().getChat().getUserName();
         String firstName = request.getUpdate().getMessage().getChat().getFirstName();
-        if (userService.getByUsername(username) == null) {
-            userService.create(User.builder()
+        UserData userData = UserData.builder()
+                .user(userService.getByUsername(username))
+                .userSettings(settingsService.getSettingsByUsername(username))
+                .build();
+        if (userData.getUser() == null) {
+            userData.setUser(userService.create(User.builder()
                     .username(username)
                     .registrationDate(new Date())
                     .tgName(firstName)
-                    .build());
+                    .build()));
+        }
+        if(userData.getUserSettings() == null){
+            userData.setUserSettings(settingsService.create(UserSettings.builder()
+                    .nativeLang("none")
+                    .notifications(true)
+                    .interfaceLang("en")
+                    .user(userService.getByUsername(username))
+                    .build()));
         }
         UserSession session = request.getUserSession();
         session.setState(States.CONVERSATION_STARTED);
         sessionService.saveSession(request.getChatId(), session);
         telegramService.sendMessage(request.getChatId(),
-                obtainTextService.read("Start", "uk"));
+                obtainTextService.read("Start", userData.getUserSettings().getInterfaceLang()));
     }
 
     @Override

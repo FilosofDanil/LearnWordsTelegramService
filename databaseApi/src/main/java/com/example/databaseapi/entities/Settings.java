@@ -22,6 +22,6 @@ public class Settings {
     @Column(name = "notifications")
     private Boolean notifications;
     @OneToOne()
-    @JoinColumn(name = "userId", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
     private Users user;
 }
