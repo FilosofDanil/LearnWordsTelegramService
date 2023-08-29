@@ -4,6 +4,7 @@ import com.example.telegramapi.components.RequestHandler;
 import com.example.telegramapi.components.TextHandler;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.entities.UserSession;
+import com.example.telegramapi.services.SessionService;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,8 @@ import java.util.List;
 public class GTextHandler extends RequestHandler {
     private final List<TextHandler> textHandlers;
 
+    private final SessionService sessionService;
+
     @Override
     public boolean isApplicable(UserRequest request) {
         return isTextMessage(request.getUpdate());
@@ -23,7 +26,7 @@ public class GTextHandler extends RequestHandler {
 
     @Override
     public void handle(UserRequest request) {
-        UserSession session = request.getUserSession();
+        UserSession session = sessionService.getSession(request.getChatId());
         try {
             for (TextHandler textHandler : textHandlers) {
                 if (textHandler.getApplicableState().equals(session.getState())) {

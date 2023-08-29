@@ -8,6 +8,8 @@ import lombok.Data;
 @Data
 @Builder
 public class UserSettings {
+    @JsonProperty("id")
+    private Long id;
     @JsonProperty("interfaceLang")
     private String interfaceLang;
     @JsonProperty("nativeLang")

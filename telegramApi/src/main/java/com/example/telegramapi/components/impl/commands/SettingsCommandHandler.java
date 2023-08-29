@@ -31,7 +31,7 @@ public class SettingsCommandHandler extends RequestHandler {
 
     @Override
     public void handle(UserRequest request) {
-        UserSession session = request.getUserSession();
+        UserSession session = sessionService.getSession(request.getChatId());
         session = sessionService.checkUseData(session, request);
         session.setState(States.SETTINGS);
         sessionService.saveSession(request.getChatId(), session);

@@ -29,9 +29,9 @@ public class StartCommandHandler extends RequestHandler {
 
     @Override
     public void handle(UserRequest request) {
-        UserSession session = request.getUserSession();
+        UserSession session = sessionService.getSession(request.getChatId());
         session = sessionService.checkUseData(session, request);
-        session.setState(States.CONVERSATION_STARTED);
+        session.setState(States.FIRST_LANGUAGE_CHANGE);
         sessionService.saveSession(request.getChatId(), session);
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         List<String> replyList = List.of("\uD83C\uDDFA\uD83C\uDDE6 Українська","\uD83C\uDDEC\uD83C\uDDE7 English");
