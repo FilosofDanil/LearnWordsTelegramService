@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -61,7 +62,15 @@ public class SettingsChooseButton implements TextHandler {
             session.setState(States.CHANGE_NATIVE);
             sessionService.saveSession(request.getChatId(), session);
             List<String> replyList = List.of("Українська", "Русский", "English", "Deutsch", "Français", "Español");
-            telegramService.sendMessage(request.getChatId(), obtainTextService.read("Menu", lang), ReplyKeyboardHelper.buildMainMenu(replyList));
+            String definedNative = session.getUserData().getUserSettings().getNativeLang();
+            if (Objects.equals(definedNative, "none")) {
+                if(lang.equals("en")){
+                    definedNative = " not defined";
+                } else{
+                    definedNative = " ще не визначена";
+                }
+            }
+            telegramService.sendMessage(request.getChatId(), obtainTextService.read("choseNative", lang) + definedNative, ReplyKeyboardHelper.buildMainMenu(replyList));
         }
 
     }
