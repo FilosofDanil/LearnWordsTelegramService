@@ -27,11 +27,12 @@ public class ChooseLanguageButton implements TextHandler {
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
+        session = sessionService.checkUseData(session, request);
         String message = request.getUpdate().getMessage().getText();
         if (message.equals("🇬🇧 Змінити мову інтерфейсу") || message.equals("🇬🇧 Change interface language")) {
             session.setState(States.CHANGE_LANGUAGE);
             String lang = session.getUserData().getUserSettings().getInterfaceLang();
-            List<String> replyList = List.of("\uD83C\uDDFA\uD83C\uDDE6 Українська", "\uD83C\uDDEC\uD83C\uDDE7 English");
+            List<String> replyList = List.of("\uD83C\uDDFA\uD83C\uDDE6 Українська", "\uD83C\uDDEC\uD83C\uDDE7 English", obtainTextService.read("Rep004", session.getUserData().getUserSettings().getInterfaceLang()));
             telegramService.sendMessage(request.getChatId(),
                     obtainTextService.read("ChooseLanguage", lang), ReplyKeyboardHelper.buildMainMenu(replyList));
         }

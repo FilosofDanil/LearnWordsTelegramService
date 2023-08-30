@@ -28,6 +28,7 @@ public class MenuCommandHandler extends RequestHandler {
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
+        session = sessionService.checkUseData(session, request);
         session.setState(States.MENU);
         sessionService.saveSession(request.getChatId(), session);
         telegramService.sendMessage(request.getChatId(), "Here is your menu \uD83D\uDC47\uD83C\uDFFB", InlineKeyboardHelper.buildInlineKeyboard(List.of("⚙ Settings" , "ℹ About Bot" , "\uD83C\uDF93 My Assignments", "\uD83E\uDDD1\u200D\uD83D\uDCBB Follow-up tests", "\uD83D\uDE80 Launch test", "✍\uD83C\uDFFB Start learning"), false));
