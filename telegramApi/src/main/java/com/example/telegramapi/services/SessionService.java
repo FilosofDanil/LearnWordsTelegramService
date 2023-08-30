@@ -24,8 +24,16 @@ public class SessionService {
     }
 
     public UserSession checkUseData(UserSession session, UserRequest request) {
-        String username = request.getUpdate().getMessage().getChat().getUserName();
-        String firstName = request.getUpdate().getMessage().getChat().getFirstName();
+        String username;
+        String firstName;
+        if(request.getUpdate().getMessage()!=null){
+            username = request.getUpdate().getMessage().getChat().getUserName();
+            firstName = request.getUpdate().getMessage().getChat().getFirstName();
+        }else{
+            username = request.getUpdate().getCallbackQuery().getMessage().getChat().getUserName();
+            firstName = request.getUpdate().getCallbackQuery().getMessage().getChat().getFirstName();
+        }
+
         UserData userData = UserData.builder()
                 .user(userService.getByUsername(username))
                 .userSettings(settingsService.getSettingsByUsername(username))

@@ -3,6 +3,8 @@ package com.example.telegramapi.components.globalhandlers;
 import com.example.telegramapi.components.QueryHandler;
 import com.example.telegramapi.components.RequestHandler;
 import com.example.telegramapi.entities.UserRequest;
+import com.example.telegramapi.entities.UserSession;
+import com.example.telegramapi.services.SessionService;
 import feign.FeignException;
 import org.springframework.stereotype.Component;
 
@@ -14,12 +16,15 @@ import java.util.stream.Collectors;
 public class GQueryHandler extends RequestHandler {
     private final List<QueryHandler> queryHandlers;
 
-    public GQueryHandler(List<QueryHandler> queryHandlers) {
+    private final SessionService sessionService;
+
+    public GQueryHandler(List<QueryHandler> queryHandlers, SessionService sessionService) {
         this.queryHandlers = queryHandlers
                 .stream()
                 .sorted(Comparator
                         .comparing(QueryHandler::isInteger))
                 .collect(Collectors.toList());
+        this.sessionService = sessionService;
     }
 
     @Override
@@ -29,16 +34,18 @@ public class GQueryHandler extends RequestHandler {
 
     @Override
     public void handle(UserRequest request) {
+        UserSession session = sessionService.getSession(request.getChatId());
+        session = sessionService.checkUseData(session, request);
         try {
             for (QueryHandler queryHandler : queryHandlers) {
-                if ((queryHandler.getCallbackQuery().equals(request.getUpdate().getCallbackQuery().getData()) || queryHandler.isInteger())) {
+                if ((queryHandler.getCallbackQuery(session.getUserData().getUserSettings().getInterfaceLang()).equals(request.getUpdate().getCallbackQuery().getData()) || queryHandler.isInteger())) {
                     queryHandler.handle(request);
                     return;
                 }
             }
         } catch (FeignException ex) {
             if (ex.status() == 400) {
-               ex.printStackTrace();
+                ex.printStackTrace();
             }
         }
     }

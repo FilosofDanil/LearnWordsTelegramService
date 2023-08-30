@@ -5,7 +5,7 @@ import com.example.telegramapi.entities.UserRequest;
 public interface QueryHandler {
     void handle(UserRequest request);
 
-    String getCallbackQuery();
+    String getCallbackQuery(String lang);
 
     boolean isInteger();
 }

@@ -45,6 +45,7 @@ public class ChangeLanguageHandler implements TextHandler {
             List<String> replyList = List.of(obtainTextService.read("Rep000", lang), obtainTextService.read("Rep001", lang), obtainTextService.read("Rep002", lang), obtainTextService.read("Rep003", lang));
             telegramService.sendMessage(request.getChatId(),
                     obtainTextService.read("Settings", lang), ReplyKeyboardHelper.buildMainMenu(replyList));
+            return;
         }else {
             telegramService.sendMessage(request.getChatId(),
                     "Try one more.");

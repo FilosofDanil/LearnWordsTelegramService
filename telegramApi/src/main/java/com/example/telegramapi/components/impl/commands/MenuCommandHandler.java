@@ -4,6 +4,7 @@ import com.example.telegramapi.components.RequestHandler;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.entities.UserSession;
 import com.example.telegramapi.enums.States;
+import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;
 import com.example.telegramapi.services.TelegramBotService;
 import com.example.telegramapi.utils.InlineKeyboardHelper;
@@ -19,7 +20,10 @@ public class MenuCommandHandler extends RequestHandler {
 
     private final TelegramBotService telegramService;
 
+    private final ObtainTextService obtainTextService;
+
     private static final String command = "/menu";
+
     @Override
     public boolean isApplicable(UserRequest request) {
         return isCommand(request.getUpdate(), command);
@@ -29,9 +33,11 @@ public class MenuCommandHandler extends RequestHandler {
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
         session = sessionService.checkUseData(session, request);
+        String lang = session.getUserData().getUserSettings().getInterfaceLang();
         session.setState(States.MENU);
         sessionService.saveSession(request.getChatId(), session);
-        telegramService.sendMessage(request.getChatId(), "Here is your menu \uD83D\uDC47\uD83C\uDFFB", InlineKeyboardHelper.buildInlineKeyboard(List.of("⚙ Settings" , "ℹ About Bot" , "\uD83C\uDF93 My Assignments", "\uD83E\uDDD1\u200D\uD83D\uDCBB Follow-up tests", "\uD83D\uDE80 Launch test", "✍\uD83C\uDFFB Start learning"), false));
+        List<String> replyList = List.of(obtainTextService.read("menuBut0", lang), obtainTextService.read("menuBut1", lang), obtainTextService.read("menuBut2", lang), obtainTextService.read("menuBut3", lang), obtainTextService.read("menuBut4", lang), obtainTextService.read("menuBut5", lang));
+        telegramService.sendMessage(request.getChatId(), obtainTextService.read("Menu", lang), InlineKeyboardHelper.buildInlineKeyboard(replyList, false));
     }
 
     @Override
