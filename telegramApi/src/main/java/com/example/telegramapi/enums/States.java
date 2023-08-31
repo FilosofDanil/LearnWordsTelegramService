@@ -8,5 +8,6 @@ public enum States {
     FIRST_LANGUAGE_CHANGE,
     SUCCESSFULLY_CHANGED_SETTINGS,
     CHANGE_NATIVE,
-    ABOUT
+    ABOUT,
+    TEST_TAB
 }
