@@ -8,4 +8,5 @@ import lombok.Data;
 public class UserData {
     private User user;
     private UserSettings userSettings;
+    private String inputString;
 }
