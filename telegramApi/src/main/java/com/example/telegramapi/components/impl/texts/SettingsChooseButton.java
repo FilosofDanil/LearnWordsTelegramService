@@ -47,8 +47,6 @@ public class SettingsChooseButton implements TextHandler {
             List<String> replyList = List.of(obtainTextService.read("menuBut0", lang), obtainTextService.read("menuBut1", lang), obtainTextService.read("menuBut2", lang), obtainTextService.read("menuBut3", lang), obtainTextService.read("menuBut4", lang), obtainTextService.read("menuBut5", lang));
             telegramService.sendMessage(request.getChatId(), obtainTextService.read("Menu", lang), InlineKeyboardHelper.buildInlineKeyboard(replyList, false));
         } else if (message.equals("\uD83D\uDD15 Cancel notifications") || message.equals("\uD83D\uDD15 Скасувати сповіщення") || message.equals("\uD83D\uDD14 Enable notifications") || message.equals("\uD83D\uDD14 Увімкнути сповіщення")) {
-            session.setState(States.SUCCESSFULLY_CHANGED_SETTINGS);
-            telegramService.sendMessage(request.getChatId(), obtainTextService.read("ChangedLang", lang));
             UserSettings settings = settingsService.getSettingsByUsername(session.getUserData().getUser().getUsername());
             if (settings.getNotifications()) {
                 settings.setNotifications(false);
@@ -57,7 +55,9 @@ public class SettingsChooseButton implements TextHandler {
             }
             session.getUserData().setUserSettings(settings);
             settingsService.update(settings.getId(), settings);
+            session.setState(States.SUCCESSFULLY_CHANGED_SETTINGS);
             sessionService.saveSession(request.getChatId(), session);
+            telegramService.sendMessage(request.getChatId(), obtainTextService.read("ChangedLang", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
         } else if (message.equals("\uD83D\uDE48 Choose native languages") || message.equals("\uD83D\uDE48 Вибрати рідну мову")) {
             session.setState(States.CHANGE_NATIVE);
             sessionService.saveSession(request.getChatId(), session);

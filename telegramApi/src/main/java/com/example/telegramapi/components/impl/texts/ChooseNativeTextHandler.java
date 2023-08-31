@@ -9,8 +9,11 @@ import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;
 import com.example.telegramapi.services.SettingsService;
 import com.example.telegramapi.services.TelegramBotService;
+import com.example.telegramapi.utils.ReplyKeyboardHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -53,7 +56,7 @@ public class ChooseNativeTextHandler implements TextHandler {
         session.getUserData().setUserSettings(settings);
         sessionService.saveSession(request.getChatId(), session);
         telegramService.sendMessage(request.getChatId(),
-                obtainTextService.read("ChangedLang", lang));
+                obtainTextService.read("ChangedLang", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
     }
 
     @Override
