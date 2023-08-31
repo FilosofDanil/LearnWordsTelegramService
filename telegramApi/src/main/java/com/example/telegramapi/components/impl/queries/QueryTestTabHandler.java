@@ -3,7 +3,6 @@ package com.example.telegramapi.components.impl.queries;
 import com.example.telegramapi.components.QueryHandler;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.entities.UserSession;
-import com.example.telegramapi.entities.UserSettings;
 import com.example.telegramapi.enums.States;
 import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;
@@ -12,43 +11,39 @@ import com.example.telegramapi.utils.ReplyKeyboardHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class SettingsQueryHandler implements QueryHandler {
+public class QueryTestTabHandler implements QueryHandler {
     private final SessionService sessionService;
 
-    private final ObtainTextService obtainTextService;
-
     private final TelegramBotService telegramService;
+
+    private final ObtainTextService obtainTextService;
 
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
         session = sessionService.checkUseData(session, request);
-        session.setState(States.SETTINGS);
-        sessionService.saveSession(request.getChatId(), session);
-        UserSettings settings = session.getUserData().getUserSettings();
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
-        List<String> replyList = new ArrayList<>(List.of(obtainTextService.read("Rep000", lang), obtainTextService.read("Rep001", lang)));
-        if (settings.getNotifications()) {
-            replyList.add(obtainTextService.read("Rep002", lang));
+
+        if (session.getUserData().getUserSettings().getNativeLang().equals("none") || session.getUserData().getUserSettings().getNativeLang() == null) {
+            telegramService.sendMessage(request.getChatId(), obtainTextService.read("firstChooseN", lang));
         } else {
-            replyList.add(obtainTextService.read("Rep005", lang));
+            List<String> replyList = List.of(obtainTextService.read("Rep006", lang), obtainTextService.read("Rep007", lang), obtainTextService.read("Rep008", lang), obtainTextService.read("Rep004", lang));
+            session.setState(States.TEST_TAB);
+            telegramService.sendMessage(request.getChatId(), obtainTextService.read("testTab", lang), ReplyKeyboardHelper.buildMainMenu(replyList));
         }
-        replyList.add(obtainTextService.read("Rep003", lang));
-        telegramService.sendMessage(request.getChatId(),
-                obtainTextService.read("Settings", lang), ReplyKeyboardHelper.buildMainMenu(replyList));
+        sessionService.saveSession(request.getChatId(), session);
     }
 
     @Override
     public String getCallbackQuery(String lang) {
-        if (lang.equals("uk")) {
-            return "⚙️ Налаштування";
+        if (lang.equals("en")) {
+            return "✍🏻 Start Learning";
         } else {
-            return "⚙️ Settings";
+            return "✍🏻 Почати навчання";
         }
     }
 
