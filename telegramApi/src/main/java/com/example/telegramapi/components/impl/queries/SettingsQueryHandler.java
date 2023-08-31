@@ -1,6 +1,7 @@
 package com.example.telegramapi.components.impl.queries;
 
 import com.example.telegramapi.components.QueryHandler;
+import com.example.telegramapi.components.additions.SettingsComponent;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.entities.UserSession;
 import com.example.telegramapi.entities.UserSettings;
@@ -18,29 +19,11 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class SettingsQueryHandler implements QueryHandler {
-    private final SessionService sessionService;
-
-    private final ObtainTextService obtainTextService;
-
-    private final TelegramBotService telegramService;
+    private final SettingsComponent settingsComponent;
 
     @Override
     public void handle(UserRequest request) {
-        UserSession session = sessionService.getSession(request.getChatId());
-        session = sessionService.checkUseData(session, request);
-        session.setState(States.SETTINGS);
-        sessionService.saveSession(request.getChatId(), session);
-        UserSettings settings = session.getUserData().getUserSettings();
-        String lang = session.getUserData().getUserSettings().getInterfaceLang();
-        List<String> replyList = new ArrayList<>(List.of(obtainTextService.read("Rep000", lang), obtainTextService.read("Rep001", lang)));
-        if (settings.getNotifications()) {
-            replyList.add(obtainTextService.read("Rep002", lang));
-        } else {
-            replyList.add(obtainTextService.read("Rep005", lang));
-        }
-        replyList.add(obtainTextService.read("Rep003", lang));
-        telegramService.sendMessage(request.getChatId(),
-                obtainTextService.read("Settings", lang), ReplyKeyboardHelper.buildMainMenu(replyList));
+        settingsComponent.handleSettingRequest(request);
     }
 
     @Override

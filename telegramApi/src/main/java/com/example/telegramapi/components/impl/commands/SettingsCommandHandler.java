@@ -1,6 +1,7 @@
 package com.example.telegramapi.components.impl.commands;
 
 import com.example.telegramapi.components.RequestHandler;
+import com.example.telegramapi.components.additions.SettingsComponent;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.entities.UserSession;
 import com.example.telegramapi.entities.UserSettings;
@@ -18,11 +19,7 @@ import java.util.List;
 @Component
 @AllArgsConstructor
 public class SettingsCommandHandler extends RequestHandler {
-    private final SessionService sessionService;
-
-    private final TelegramBotService telegramService;
-
-    private final ObtainTextService obtainTextService;
+    private final SettingsComponent settingsComponent;
 
     private static final String command = "/settings";
 
@@ -33,21 +30,7 @@ public class SettingsCommandHandler extends RequestHandler {
 
     @Override
     public void handle(UserRequest request) {
-        UserSession session = sessionService.getSession(request.getChatId());
-        session = sessionService.checkUseData(session, request);
-        session.setState(States.SETTINGS);
-        sessionService.saveSession(request.getChatId(), session);
-        UserSettings settings = session.getUserData().getUserSettings();
-        String lang = session.getUserData().getUserSettings().getInterfaceLang();
-        List<String> replyList = new ArrayList<>(List.of(obtainTextService.read("Rep000", lang), obtainTextService.read("Rep001", lang)));
-        if(settings.getNotifications()){
-            replyList.add(obtainTextService.read("Rep002", lang));
-        }else{
-            replyList.add(obtainTextService.read("Rep005", lang));
-        }
-        replyList.add(obtainTextService.read("Rep003", lang));
-        telegramService.sendMessage(request.getChatId(),
-                obtainTextService.read("Settings", lang), ReplyKeyboardHelper.buildMainMenu(replyList));
+        settingsComponent.handleSettingRequest(request);
     }
 
     @Override
