@@ -15,7 +15,7 @@ import java.util.Map;
 @Document
 public class TranslatedList {
     @Id
-    private Long id;
+    private String id;
     @Field
     private Map<String, String> translations;
     @Field
