@@ -54,6 +54,7 @@ public class ChooseNativeTextHandler implements TextHandler {
         }
         settingsService.update(settings.getId(), settings);
         session.getUserData().setUserSettings(settings);
+        session.setState(States.SUCCESSFULLY_CHANGED_SETTINGS);
         sessionService.saveSession(request.getChatId(), session);
         telegramService.sendMessage(request.getChatId(),
                 obtainTextService.read("ChangedLang", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
