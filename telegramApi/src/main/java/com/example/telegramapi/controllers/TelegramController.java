@@ -46,7 +46,6 @@ public class TelegramController extends TelegramLongPollingBot {
                 .builder()
                 .update(update)
                 .chatId(chatId)
-                .userSession(session)
                 .build();
         dispatcher.dispatch(request);
     }

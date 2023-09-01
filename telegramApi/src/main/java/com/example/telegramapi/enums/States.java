@@ -3,5 +3,13 @@ package com.example.telegramapi.enums;
 public enum States {
     CONVERSATION_STARTED,
     MENU,
-    SETTINGS
+    SETTINGS,
+    CHANGE_LANGUAGE,
+    FIRST_LANGUAGE_CHANGE,
+    SUCCESSFULLY_CHANGED_SETTINGS,
+    CHANGE_NATIVE,
+    ABOUT,
+    TEST_TAB,
+    RANDOM_LIST_WAITING_FOR_NUM,
+    WAITING_FOR_LIST
 }

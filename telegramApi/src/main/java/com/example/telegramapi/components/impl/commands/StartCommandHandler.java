@@ -1,18 +1,15 @@
 package com.example.telegramapi.components.impl.commands;
 
 import com.example.telegramapi.components.RequestHandler;
-import com.example.telegramapi.entities.User;
-import com.example.telegramapi.entities.UserRequest;
-import com.example.telegramapi.entities.UserSession;
+import com.example.telegramapi.entities.*;
 import com.example.telegramapi.enums.States;
-import com.example.telegramapi.services.SessionService;
-import com.example.telegramapi.services.TelegramBotService;
-import com.example.telegramapi.services.ObtainTextService;
-import com.example.telegramapi.services.UserService;
+import com.example.telegramapi.services.*;
+import com.example.telegramapi.utils.ReplyKeyboardHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -23,8 +20,6 @@ public class StartCommandHandler extends RequestHandler {
 
     private final ObtainTextService obtainTextService;
 
-    private final UserService userService;
-
     private static final String command = "/start";
 
     @Override
@@ -34,20 +29,14 @@ public class StartCommandHandler extends RequestHandler {
 
     @Override
     public void handle(UserRequest request) {
-        String username = request.getUpdate().getMessage().getChat().getUserName();
-        String firstName = request.getUpdate().getMessage().getChat().getFirstName();
-        if (userService.getByUsername(username) == null) {
-            userService.create(User.builder()
-                    .username(username)
-                    .registrationDate(new Date())
-                    .tgName(firstName)
-                    .build());
-        }
-        UserSession session = request.getUserSession();
-        session.setState(States.CONVERSATION_STARTED);
+        UserSession session = sessionService.getSession(request.getChatId());
+        session = sessionService.checkUseData(session, request);
+        session.setState(States.FIRST_LANGUAGE_CHANGE);
         sessionService.saveSession(request.getChatId(), session);
+        String lang = session.getUserData().getUserSettings().getInterfaceLang();
+        List<String> replyList = List.of("\uD83C\uDDFA\uD83C\uDDE6 Українська","\uD83C\uDDEC\uD83C\uDDE7 English");
         telegramService.sendMessage(request.getChatId(),
-                obtainTextService.read("Start", "uk"));
+                obtainTextService.read("ChooseLanguage", lang), ReplyKeyboardHelper.buildMainMenu(replyList));
     }
 
     @Override
