@@ -1,5 +1,7 @@
 package com.example.dictionaryapi.services;
 
+import com.example.dictionaryapi.entities.TranslatedListModel;
+
 public interface TranslationService {
-    String translate(String text, String langs);
+    TranslatedListModel translate(String text, String langs);
 }
