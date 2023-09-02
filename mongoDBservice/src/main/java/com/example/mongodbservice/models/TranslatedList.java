@@ -20,4 +20,8 @@ public class TranslatedList {
     private Map<String, String> translations;
     @Field
     private Long userId;
+    @Field
+    private String langFrom;
+    @Field
+    private String langTo;
 }
