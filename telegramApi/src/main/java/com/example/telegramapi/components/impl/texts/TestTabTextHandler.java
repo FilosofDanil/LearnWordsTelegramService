@@ -8,6 +8,7 @@ import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;
 import com.example.telegramapi.services.TelegramBotService;
 import com.example.telegramapi.utils.InlineKeyboardHelper;
+import com.example.telegramapi.utils.ReplyKeyboardHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -30,13 +31,15 @@ public class TestTabTextHandler implements TextHandler {
         session = sessionService.checkUseData(session, request);
         String message = request.getUpdate().getMessage().getText();
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
-        if(message.equals("➕ New word list") || message.equals("➕ Новий список слів")){
-            session.setState(States.WAITING_FOR_LIST);
+        if (message.equals("➕ New word list") || message.equals("➕ Новий список слів")) {
+            session.setState(States.WAIT_FOR_LANG_PAIR);
+            List<String> replyList = List.of("English", "Deutsch", "Français", "Español");
             sessionService.saveSession(request.getChatId(), session);
-            telegramService.sendMessage(request.getChatId(), obtainTextService.read("waitList", lang));
-        } else if(message.equals("🚀 Launch random test") || message.equals("🚀 Запустити випадковий тест")){
+            telegramService.sendMessage(request.getChatId(), obtainTextService.read(
+                    "chooseLangList", lang), ReplyKeyboardHelper.buildMainMenu(replyList));
+        } else if (message.equals("🚀 Launch random test") || message.equals("🚀 Запустити випадковий тест")) {
 
-        } else if(message.equals("🎲 New random word list") || message.equals("🎲 Новий список випадкових слів")){
+        } else if (message.equals("🎲 New random word list") || message.equals("🎲 Новий список випадкових слів")) {
             session.setState(States.RANDOM_LIST_WAITING_FOR_NUM);
             sessionService.saveSession(request.getChatId(), session);
             telegramService.sendMessage(request.getChatId(), obtainTextService.read("randWaitNum", lang));

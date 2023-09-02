@@ -15,6 +15,10 @@ public class UserWordList {
     private Map<String, String> translations;
     @JsonProperty("userId")
     private Long userId;
+    @JsonProperty("langFrom")
+    private String langFrom;
+    @JsonProperty("langTo")
+    private String langTo;
 
     @Override
     public String toString() {

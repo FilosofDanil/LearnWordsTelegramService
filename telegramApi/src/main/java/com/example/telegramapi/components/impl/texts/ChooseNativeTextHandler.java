@@ -35,19 +35,21 @@ public class ChooseNativeTextHandler implements TextHandler {
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         UserSettings settings = settingsService.getSettingsByUsername(session.getUserData().getUser().getUsername());
         String message = request.getUpdate().getMessage().getText();
-        if (message.equals("Українська")) {
+        if (message.equals("\uD83C\uDDFA\uD83C\uDDE6 Українська")) {
             settings.setNativeLang("uk");
-        } else if (message.equals("English")) {
+        } else if (message.equals("\uD83C\uDDEC\uD83C\uDDE7 English")) {
             settings.setNativeLang("en");
-        } else if (message.equals("Русский")) {
+        } else if (message.equals("\uD83D\uDC37 Русский")) {
             settings.setNativeLang("ru");
-        } else if(message.equals("Deutsch")) {
+        } else if(message.equals("\uD83C\uDDE9\uD83C\uDDEA Deutsch")) {
             settings.setNativeLang("de");
-        } else if(message.equals("Français")){
-            settings.setNativeLang("fr");
-        } else if(message.equals("Español")){
-            settings.setNativeLang("es");
-        } else {
+        }
+//        } else if(message.equals("\uD83C\uDDEB\uD83C\uDDF7 Français")){
+//            settings.setNativeLang("fr");
+//        } else if(message.equals("\uD83C\uDDEA\uD83C\uDDF8 Español")){
+//            settings.setNativeLang("es");
+//        }
+        else {
             telegramService.sendMessage(request.getChatId(),
                     "Try one more.");
             return;
