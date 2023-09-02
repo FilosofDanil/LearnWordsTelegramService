@@ -11,5 +11,6 @@ public enum States {
     ABOUT,
     TEST_TAB,
     RANDOM_LIST_WAITING_FOR_NUM,
-    WAITING_FOR_LIST
+    WAITING_FOR_LIST,
+    RETURNED_USER_LIST
 }
