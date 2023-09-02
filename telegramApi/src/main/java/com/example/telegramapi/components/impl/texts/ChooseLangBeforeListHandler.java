@@ -4,16 +4,12 @@ import com.example.telegramapi.components.TextHandler;
 import com.example.telegramapi.entities.UserData;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.entities.UserSession;
-import com.example.telegramapi.entities.UserSettings;
 import com.example.telegramapi.enums.States;
 import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;
-import com.example.telegramapi.services.TelegramBotService;
-import com.example.telegramapi.utils.ReplyKeyboardHelper;
+import com.example.telegramapi.services.bot.TelegramBotService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor

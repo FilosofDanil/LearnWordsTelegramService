@@ -6,8 +6,7 @@ import com.example.telegramapi.entities.UserSession;
 import com.example.telegramapi.entities.UserWordList;
 import com.example.telegramapi.enums.States;
 import com.example.telegramapi.services.*;
-import com.example.telegramapi.services.impl.DivideServiceBean;
-import com.example.telegramapi.services.impl.TranslationServiceBean;
+import com.example.telegramapi.services.bot.TelegramBotService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +38,6 @@ public class WordListHandler implements TextHandler {
         List<String> definedList = divideServiceBean.divideRequestString(request.getUpdate().getMessage().getText());
         String langFrom = session.getUserData().getUserSettings().getNativeLang();
         String langTo = session.getUserData().getInputString();
-        System.out.println(langTo);
         UserWordList returnList = mongoDBService.create(definedList, userID, langFrom, langTo);
         telegramService.sendMessage(request.getChatId(), obtainTextService.read("gotList", session.getUserData().getUserSettings().getInterfaceLang()) + returnList.toString());
     }
