@@ -38,7 +38,9 @@ public class SessionService {
                 .user(userService.getByUsername(username))
                 .userSettings(settingsService.getSettingsByUsername(username))
                 .build();
-        session.setUserData(userData);
+        if(session.getUserData() == null) {
+            session.setUserData(userData);
+        }
         if (session.getUserData().getUser() == null) {
             userData.setUser(userService.create(User.builder()
                     .username(username)

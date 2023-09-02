@@ -1,6 +1,7 @@
 package com.example.telegramapi.components.impl.texts;
 
 import com.example.telegramapi.components.TextHandler;
+import com.example.telegramapi.entities.UserData;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.entities.UserSession;
 import com.example.telegramapi.entities.UserSettings;
@@ -40,7 +41,7 @@ public class ChooseLangBeforeListHandler implements TextHandler {
             inputString = "de";
         } else if (message.equals("\uD83C\uDDEB\uD83C\uDDF7 Français")) {
             inputString = "fr";
-        } else if (message.equals("\uD83C\uDDEA\uD83C\uDDF8 Español")) {
+        } else if (message.equals("\uD83C\uDDEB\uD83C\uDDF7 Español")) {
             inputString = "es";
         } else {
             telegramService.sendMessage(request.getChatId(),
@@ -48,7 +49,9 @@ public class ChooseLangBeforeListHandler implements TextHandler {
             return;
         }
         session.setState(States.WAITING_FOR_LIST);
-        session.getUserData().setInputString(inputString);
+        UserData userdata = session.getUserData();
+        userdata.setInputString(inputString);
+        session.setUserData(userdata);
         sessionService.saveSession(request.getChatId(), session);
         telegramService.sendMessage(request.getChatId(), obtainTextService.read("waitList", lang));
 
@@ -56,6 +59,6 @@ public class ChooseLangBeforeListHandler implements TextHandler {
 
     @Override
     public States getApplicableState() {
-        return null;
+        return applicable;
     }
 }

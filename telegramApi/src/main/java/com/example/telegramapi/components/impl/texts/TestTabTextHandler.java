@@ -33,7 +33,7 @@ public class TestTabTextHandler implements TextHandler {
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         if (message.equals("➕ New word list") || message.equals("➕ Новий список слів")) {
             session.setState(States.WAIT_FOR_LANG_PAIR);
-            List<String> replyList = List.of("English", "Deutsch", "Français", "Español");
+            List<String> replyList = List.of("\uD83C\uDDEC\uD83C\uDDE7 English", "\uD83C\uDDE9\uD83C\uDDEA Deutsch", "\uD83C\uDDEB\uD83C\uDDF7 Français", "\uD83C\uDDEB\uD83C\uDDF7 Español");
             sessionService.saveSession(request.getChatId(), session);
             telegramService.sendMessage(request.getChatId(), obtainTextService.read(
                     "chooseLangList", lang), ReplyKeyboardHelper.buildMainMenu(replyList));

@@ -37,6 +37,8 @@ public class TranslationServiceBean implements MongoDBService {
         });
         UserWordList savedList = UserWordList.builder()
                 .translations(map)
+                .langFrom(langFrom)
+                .langTo(langTo)
                 .build();
         client.create(savedList);
         return savedList;
