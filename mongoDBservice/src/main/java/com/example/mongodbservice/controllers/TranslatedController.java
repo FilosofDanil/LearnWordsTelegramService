@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/map")
+@RequestMapping("api/v1/map/translations")
 public class TranslatedController {
     private final TranslationService translationService;
 
