@@ -11,7 +11,7 @@ public interface MongoDBService {
 
     UserWordList getById(Long id);
 
-    UserWordList create(List<String> wordList, Long userId, String langFrom, String langTo);
+    UserWordList create( UserWordList wordList);
 
     void delete(Long id);
 

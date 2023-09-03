@@ -30,18 +30,9 @@ public class TranslationServiceBean implements MongoDBService {
     }
 
     @Override
-    public UserWordList create(List<String> wordList, Long userId, String langFrom, String langTo) {
-        HashMap<String, String> map = new HashMap<>();
-        wordList.forEach(word -> {
-            map.put(word, word);
-        });
-        UserWordList savedList = UserWordList.builder()
-                .translations(map)
-                .langFrom(langFrom)
-                .langTo(langTo)
-                .build();
-        client.create(savedList);
-        return savedList;
+    public UserWordList create( UserWordList wordList) {
+        client.create(wordList);
+        return wordList;
     }
 
     @Override

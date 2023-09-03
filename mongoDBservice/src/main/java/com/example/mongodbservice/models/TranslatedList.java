@@ -19,6 +19,8 @@ public class TranslatedList {
     @Field
     private Map<String, String> translations;
     @Field
+    private Map<String, String> definitions;
+    @Field
     private Long userId;
     @Field
     private String langFrom;
