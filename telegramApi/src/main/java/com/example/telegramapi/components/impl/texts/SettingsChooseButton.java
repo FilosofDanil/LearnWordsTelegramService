@@ -61,7 +61,7 @@ public class SettingsChooseButton implements TextHandler {
         } else if (message.equals("\uD83D\uDE48 Choose native languages") || message.equals("\uD83D\uDE48 Вибрати рідну мову")) {
             session.setState(States.CHANGE_NATIVE);
             sessionService.saveSession(request.getChatId(), session);
-            List<String> replyList = List.of("Українська", "Русский", "English", "Deutsch");
+            List<String> replyList = List.of("\uD83C\uDDFA\uD83C\uDDE6 Українська", "\uD83D\uDC37 Русский", "\uD83C\uDDEC\uD83C\uDDE7 English", "\uD83C\uDDE9\uD83C\uDDEA Deutsch");
             String definedNative = session.getUserData().getUserSettings().getNativeLang();
             if (Objects.equals(definedNative, "none")) {
                 if(lang.equals("en")){

@@ -1,7 +1,7 @@
 package com.example.telegramapi.services;
 
-import com.example.telegramapi.entities.GPTResponseEntity;
+import com.example.telegramapi.entities.TranslatedListModel;
 
 public interface GPTInterogativeService {
-    GPTResponseEntity getTranslation(String message, String langFrom, String langTo);
+    TranslatedListModel getTranslation(String message, String langFrom, String langTo);
 }

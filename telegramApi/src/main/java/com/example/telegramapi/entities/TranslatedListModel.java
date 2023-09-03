@@ -8,11 +8,11 @@ import java.util.Map;
 
 @Data
 @Builder
-public class GPTResponseEntity {
+public class TranslatedListModel {
     @JsonProperty("message")
     private String message;
     @JsonProperty("translatedMap")
     private Map<String, String> translatedMap;
-    @JsonProperty("translatedMap")
+    @JsonProperty("definitionMap")
     private Map<String, String> definitionMap;
 }

@@ -80,16 +80,30 @@ word2: definition
     * * */
 
     private String generateMessage(String text, String from, String to) {
+        String notation = "";
+        if (!to.equals("English")) {
+            notation = "\nPlease pay attention, that given definitions not on on English, but on " + to + "please care about that, and give also translated definitions.\n";
+        }
         return "Translate that word list from" + from + " to " +
-                to + ", and give the definitions (also on " + to + ") for all the words, which present in the list:\n" +
+                to + ", and give the definitions (also on " + to + ", not on +" + from + ") for all the words, which present in the list:\n" +
                 text + "\nPlease return back just translated word list with and the definition list (both separate)\n" +
-                "So your back must be such format(in order to convinient parse it then):\n" +
+                notation +
+                "So your back must be such format(in order to convenient parse it then):\n" +
                 "Translation list:\n" +
                 "word1: translation,\n" +
                 "word2: translation\n" +
                 "......\n" +
                 "Definition list:\n" +
-                "word1: definittion\n" +
-                "word2: definition";
+                "word1: definition\n" +
+                "word2: definition\n" + "For example you need to translate given word list: \"Macht unterhalten stutzen\" from German to Ukrainian, as a response you must return:\n" +
+                "Translation list:\n" +
+                "Macht: влада\n" +
+                "unterhalten: розважати\n" +
+                "stutzen: здивуватися\n" +
+                "\n" +
+                "Definition list:\n" +
+                "Macht: переважаюча сила або контроль, особливо у політичній або громадській сфері\n" +
+                "unterhalten: робити щось для розваги або задоволення; забавляти або займатися якоюсь діяльністю для розваги\n" +
+                "stutzen: відчувати велику несподіванку або незнайомство; бути здивованим або здивуватися, часто у зв'язку з чимось несподіваним";
     }
 }
