@@ -41,7 +41,7 @@ public class WordListHandler implements TextHandler {
         String langFrom = session.getUserData().getUserSettings().getNativeLang();
         String langTo = session.getUserData().getInputString();
         String message = listToString(divideServiceBean.divideRequestString(request.getUpdate().getMessage().getText()));
-        GPTResponseEntity gptResponseEntity = gptInterogativeService.getTranslation(message);
+        GPTResponseEntity gptResponseEntity = gptInterogativeService.getTranslation(message, langFrom, langTo);
         UserWordList wordList = UserWordList.builder()
                 .translations(gptResponseEntity.getTranslatedMap())
                 .definitions(gptResponseEntity.getDefinitionMap())
