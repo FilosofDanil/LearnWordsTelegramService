@@ -1,4 +1,4 @@
-package com.example.telegramapi.services;
+package com.example.telegramapi.services.bot;
 
 import com.example.telegramapi.configs.BotConfig;
 import lombok.extern.slf4j.Slf4j;

@@ -5,7 +5,7 @@ import com.example.telegramapi.entities.UserSession;
 import com.example.telegramapi.enums.States;
 import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;
-import com.example.telegramapi.services.TelegramBotService;
+import com.example.telegramapi.services.bot.TelegramBotService;
 import com.example.telegramapi.utils.ReplyKeyboardHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
