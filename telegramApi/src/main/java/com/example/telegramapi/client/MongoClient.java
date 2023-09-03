@@ -11,9 +11,9 @@ import java.util.List;
 
 @FeignClient(name = "mongoDBservice", url = "${application.config.mongodb-url}")
 public interface MongoClient {
-    @GetMapping("/user/{userId}")
+    @GetMapping("/translations/user/{userId}")
     List<UserWordList> getAllByUserId(@PathVariable("userId") Long userId);
 
-    @PostMapping("")
+    @PostMapping("/translations")
     UserWordList create(@RequestBody UserWordList wordList);
 }
