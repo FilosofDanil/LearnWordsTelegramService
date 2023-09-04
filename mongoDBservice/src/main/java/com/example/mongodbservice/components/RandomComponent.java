@@ -5,21 +5,19 @@ import com.example.mongodbservice.models.TranslatedList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class RandomComponent {
     public Map<String, TestFormat> generateTests(TranslatedList translatedList) {
         Map<String, TestFormat> randomMap = new HashMap<>();
-        List<String> values = translatedList.getTranslations().values().stream().toList();
-        Collections.shuffle(values);
+        List<String> immutableValues = translatedList.getTranslations().values().stream().toList();
+        List<String> values = new ArrayList<>(immutableValues);
+        Collections.shuffle(values, new Random(10));
         int num = values.size();
-        int simpleTextFormat = (int) (0.25 * num);
-        int testFormat = (int) (0.4 * num);
-        int quizFormat = (int) (0.15 * num);
+        int simpleTextFormat = (int) (0.25 * num) + 1;
+        int testFormat = (int) (0.45 * num);
+        int quizFormat = (int) (0.1 * num) + 1;
         int backDefinitionFormat = num - simpleTextFormat - testFormat - quizFormat;
         int index = 0;
         while (simpleTextFormat > 0) {
