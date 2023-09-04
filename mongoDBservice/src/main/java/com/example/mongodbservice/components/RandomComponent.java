@@ -2,7 +2,6 @@ package com.example.mongodbservice.components;
 
 import com.example.mongodbservice.enums.TestFormat;
 import com.example.mongodbservice.models.TranslatedList;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -11,7 +10,7 @@ import java.util.*;
 public class RandomComponent {
     public Map<String, TestFormat> generateTests(TranslatedList translatedList) {
         Map<String, TestFormat> randomMap = new HashMap<>();
-        List<String> immutableValues = translatedList.getTranslations().values().stream().toList();
+        List<String> immutableValues = translatedList.getTranslations().keySet().stream().toList();
         List<String> values = new ArrayList<>(immutableValues);
         Collections.shuffle(values, new Random(10));
         int num = values.size();

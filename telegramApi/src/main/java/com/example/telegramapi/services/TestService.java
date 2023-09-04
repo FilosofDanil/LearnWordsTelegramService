@@ -9,9 +9,9 @@ public interface TestService {
 
     List<TestEntity> getAllByUserId(Long userId);
 
-    TestEntity getById(Long id);
+    TestEntity getById(String id);
 
-    void update(TestEntity testEntity, Long id);
+    void update(TestEntity testEntity, String id);
 
     void delete(Long id);
 }

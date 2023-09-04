@@ -9,11 +9,11 @@ public interface MongoDBService {
 
     List<UserWordList> getAllByUserId(Long userID);
 
-    UserWordList getById(Long id);
+    UserWordList getById(String id);
 
     UserWordList create( UserWordList wordList);
 
     void delete(Long id);
 
-    void update(Long userID, UserWordList wordList);
+    void update(String userID, UserWordList wordList);
 }

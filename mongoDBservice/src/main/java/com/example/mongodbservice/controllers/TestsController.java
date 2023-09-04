@@ -23,13 +23,13 @@ public class TestsController {
     }
 
     @GetMapping("/{id}")
-    public TestEntity getById(@PathVariable Long id) {
+    public TestEntity getById(@PathVariable String id) {
         return testService.getById(id);
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable Long id, @RequestBody TestEntity testEntity) {
-
+    public void update(@PathVariable String id, @RequestBody TestEntity testEntity) {
+        testService.update(testEntity, id);
     }
 
     @DeleteMapping("/{id}")

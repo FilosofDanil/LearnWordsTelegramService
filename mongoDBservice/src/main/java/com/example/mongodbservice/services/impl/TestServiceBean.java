@@ -24,13 +24,17 @@ public class TestServiceBean implements TestService {
     }
 
     @Override
-    public TestEntity getById(Long id) {
-        return repo.findById(id).get();
+    public TestEntity getById(String id) {
+        return repo.findById(id);
     }
 
     @Override
-    public void update(TestEntity testEntity, Long id) {
-
+    public void update(TestEntity testEntity, String id) {
+        TestEntity entity = repo.findById(id);
+        entity.setTestDate(testEntity.getTestDate());
+        entity.setTests(testEntity.getTests());
+        entity.setPassedTimes(testEntity.getPassedTimes());
+        repo.save(entity);
     }
 
     @Override

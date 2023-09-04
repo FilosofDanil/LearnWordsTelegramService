@@ -24,13 +24,13 @@ public class TestServiceBean implements TestService {
     }
 
     @Override
-    public TestEntity getById(Long id) {
+    public TestEntity getById(String id) {
         return client.getTestById(id);
     }
 
     @Override
-    public void update(TestEntity testEntity, Long id) {
-
+    public void update(TestEntity testEntity, String id) {
+        client.updateTest(id, testEntity);
     }
 
     @Override

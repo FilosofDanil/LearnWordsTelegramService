@@ -11,10 +11,7 @@ import com.example.mongodbservice.services.TranslationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -36,14 +33,15 @@ public class TranslationServiceBean implements TranslationService {
     }
 
     @Override
-    public TranslatedList getById(Long id) {
-        return listRepo.findById(id).get();
+    public TranslatedList getById(String id) {
+        return listRepo.findById(id);
     }
 
     @Override
     public TranslatedList create(TranslatedList translatedList) {
-        createTest(translatedList);
-        return listRepo.save(translatedList);
+        TranslatedList savedTranslatedList = listRepo.save(translatedList);
+        createTest(savedTranslatedList);
+        return savedTranslatedList;
     }
 
     @Override
@@ -52,7 +50,7 @@ public class TranslationServiceBean implements TranslationService {
     }
 
     @Override
-    public void update(TranslatedList translatedList, Long id) {
+    public void update(TranslatedList translatedList, String id) {
         listRepo.updateByUserId(id, translatedList);
     }
 
@@ -60,20 +58,20 @@ public class TranslationServiceBean implements TranslationService {
         Map<String, TestFormat> tests = randomComponent.generateTests(translatedList);
         Date today = new Date();
         List<Test> testList = new ArrayList<>();
-        translatedList.getTranslations().values().stream().forEach(row -> {
+        translatedList.getTranslations().keySet().stream().forEach(row -> {
             testList.add(Test.builder()
                     .answer(null)
                     .correct(false)
                     .testFormat(tests.get(row))
-                    .correctAnswers(List.of(row))
+                    .correctAnswers(List.of(row, row.toUpperCase(Locale.ROOT), row.toLowerCase(Locale.ROOT)))
                     .build());
-
         });
         TestEntity testEntity = TestEntity.builder()
                 .tests(testList)
                 .testDate(today)
                 .userId(translatedList.getUserId())
                 .passedTimes(0)
+                .listId(translatedList.getId())
                 .build();
         testEntitiesRepo.save(testEntity);
     }

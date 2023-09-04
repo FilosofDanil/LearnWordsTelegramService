@@ -11,6 +11,8 @@ import java.util.List;
 public interface MongoClient {
     @GetMapping("/translations/user/{userId}")
     List<UserWordList> getAllByUserId(@PathVariable("userId") Long userId);
+    @GetMapping("/translations/{id}")
+    UserWordList getWordListById(@PathVariable("id") String id);
 
     @GetMapping("/tests/user/{userId}")
     List<TestEntity> getAllTestsByUserId(@PathVariable("userId") Long userId);
@@ -19,7 +21,10 @@ public interface MongoClient {
     List<TestEntity> getAllTests();
 
     @GetMapping("/tests/{id}")
-    TestEntity getTestById(@PathVariable("id") Long id);
+    TestEntity getTestById(@PathVariable("id") String id);
+
+    @PutMapping("/tests/{id}")
+    TestEntity updateTest(@PathVariable("id") String id, @RequestBody TestEntity testEntity);
 
     @DeleteMapping("/tests/{id}")
     void deleteTest(@PathVariable("id") Long id);

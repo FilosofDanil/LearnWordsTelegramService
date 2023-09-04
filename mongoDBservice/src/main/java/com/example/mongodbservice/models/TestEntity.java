@@ -1,5 +1,6 @@
 package com.example.mongodbservice.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,4 +26,6 @@ public class TestEntity {
     private Long userId;
     @Field
     private Integer passedTimes;
+    @Field
+    private String listId;
 }
