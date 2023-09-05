@@ -15,5 +15,6 @@ public enum States {
     WAIT_FOR_LANG_PAIR,
     RETURNED_USER_LIST,
     TEST_STARTED,
+    TEST_FINISHED,
     PREPARES_TEST
 }

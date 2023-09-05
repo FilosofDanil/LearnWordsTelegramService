@@ -1,14 +1,17 @@
 package com.example.telegramapi.components.impl.texts;
 
 import com.example.telegramapi.components.TextHandler;
-import com.example.telegramapi.entities.UserRequest;
-import com.example.telegramapi.entities.UserSession;
+import com.example.telegramapi.entities.*;
 import com.example.telegramapi.enums.States;
 import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;
+import com.example.telegramapi.services.TestService;
 import com.example.telegramapi.services.bot.TelegramBotService;
+import com.example.telegramapi.utils.ReplyKeyboardHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -21,10 +24,52 @@ public class TestTextHandler implements TextHandler {
 
     private final ObtainTextService obtainTextService;
 
+    private final TestService testService;
+
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
         session = sessionService.checkUseData(session, request);
+        TestEntity test = session.getUserData().getCurrentTest();
+        String lang = session.getUserData().getUserSettings().getInterfaceLang();
+        if (test != null) {
+            if (session.getUserData().getCurrentTask() + 1 < test.getTests().size()) {
+                nextTest(session);
+                telegramService.sendMessage(request.getChatId(), formTaskString(session));
+            } else {
+                saveTest(session, test);
+                session.setState(States.TEST_FINISHED);
+                sessionService.saveSession(request.getChatId(), session);
+                telegramService.sendMessage(request.getChatId(), obtainTextService.read("endTest", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
+            }
+
+        }
+    }
+
+    private void nextTest(UserSession session) {
+        UserData userData = session.getUserData();
+        int taskNum = userData.getCurrentTask() + 1;
+        userData.setCurrentTask(taskNum);
+        session.setUserData(userData);
+    }
+
+    private String formTaskString(UserSession session) {
+        int taskNum = session.getUserData().getCurrentTask();
+        Test firstTask = session.getUserData().getCurrentTest().getTests().get(taskNum);
+        String responseMessage = "Task#" + taskNum + " \n";
+        return responseMessage + firstTask.getResponseMessage();
+    }
+
+    private void saveTestInUserData() {
+
+    }
+
+    private void saveTest(UserSession session, TestEntity test) {
+        UserData userData = session.getUserData();
+        userData.setCurrentTest(null);
+        userData.setCurrentTest(null);
+        session.setUserData(userData);
+        testService.update(test, test.getId());
     }
 
     @Override
