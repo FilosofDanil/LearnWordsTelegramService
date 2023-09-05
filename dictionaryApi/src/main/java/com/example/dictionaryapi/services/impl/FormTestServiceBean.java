@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -20,7 +21,7 @@ public class FormTestServiceBean implements FormTestService {
         String message = botComponent.getResponseMessage(formRequest(word, lang));
         List<String> wordList = Arrays.stream(message.split("[,\\s]+"))
                 .collect(Collectors.toList());
-        if (!wordList.contains(word)) {
+        if (!wordList.contains(word) || !wordList.contains(word.toLowerCase(Locale.ROOT))) {
             wordList.add(word);
         }
         return wordList;
@@ -30,6 +31,6 @@ public class FormTestServiceBean implements FormTestService {
         return "Think of three more words, which seems to the given word, but not mean the same, also you can define at least one absolutely wrong word. You return this three words, in order to me create the guess word test, so consider that it'll be sensible, and it'll be hard to guess the given word in the test. So the given word is(language of the word" +
                 " - " + lang + "), so as a return list you also must return it on " +
                 lang + ", without losing sense: \n" + word +
-                "Return it at such format: word1,word2,word3 givenWord, without any other text.";
+                "Return it at such format: word1,word2,word3 givenWord, without any other text, and without numbers, and no more than 3 words.";
     }
 }

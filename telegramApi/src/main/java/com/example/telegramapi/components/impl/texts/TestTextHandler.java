@@ -3,6 +3,7 @@ package com.example.telegramapi.components.impl.texts;
 import com.example.telegramapi.components.TextHandler;
 import com.example.telegramapi.entities.*;
 import com.example.telegramapi.enums.States;
+import com.example.telegramapi.enums.TestFormat;
 import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;
 import com.example.telegramapi.services.TestService;
@@ -34,7 +35,12 @@ public class TestTextHandler implements TextHandler {
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         if (test != null) {
             if (session.getUserData().getCurrentTask() + 1 < test.getTests().size()) {
-                nextTest(session);
+                int taskNum = nextTest(session);
+                Test current = session.getUserData().getCurrentTest().getTests().get(taskNum);
+                if(current.getTestFormat().equals(TestFormat.PICK_FROM_LIST_FORMAT)){
+                    telegramService.sendMessage(request.getChatId(), formTaskString(session), ReplyKeyboardHelper.buildMainMenu(current.getResponseKeyboard()));
+                    return;
+                }
                 telegramService.sendMessage(request.getChatId(), formTaskString(session));
             } else {
                 saveTest(session, test);
@@ -46,11 +52,12 @@ public class TestTextHandler implements TextHandler {
         }
     }
 
-    private void nextTest(UserSession session) {
+    private int nextTest(UserSession session) {
         UserData userData = session.getUserData();
         int taskNum = userData.getCurrentTask() + 1;
         userData.setCurrentTask(taskNum);
         session.setUserData(userData);
+        return taskNum;
     }
 
     private String formTaskString(UserSession session) {

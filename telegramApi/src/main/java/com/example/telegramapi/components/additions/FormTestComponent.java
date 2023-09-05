@@ -4,6 +4,7 @@ import com.example.telegramapi.entities.Test;
 import com.example.telegramapi.entities.TestEntity;
 import com.example.telegramapi.entities.UserWordList;
 import com.example.telegramapi.enums.TestFormat;
+import com.example.telegramapi.services.GPTInterogativeService;
 import com.example.telegramapi.services.ObtainTextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,10 @@ import java.util.Map;
 public class FormTestComponent {
     private final ObtainTextService obtainTextService;
 
+    private final GPTInterogativeService gptService;
+
+    private final LanguageComponent languageComponent;
+
     public List<Test> formTest(TestEntity entity, String lang, UserWordList model) {
         Map<String, String> translatedMap = model.getTranslations();
         Map<String, String> definitionMap = model.getDefinitions();
@@ -26,6 +31,13 @@ public class FormTestComponent {
                 row.setResponseMessage(obtainTextService.read("testText_200", lang) + ":\n" + translatedMap.get(correct));
             } else if (row.getTestFormat().equals(TestFormat.PICK_FROM_LIST_FORMAT)) {
                 row.setResponseMessage(obtainTextService.read("testText_201", lang) + ":\n" + translatedMap.get(correct));
+                String language = languageComponent.getLang(model.getLangFrom());
+                row.setResponseKeyboard(gptService.getTests(correct, language));
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             } else if (row.getTestFormat().equals(TestFormat.QUIZ_FORMAT)) {
                 row.setResponseMessage(obtainTextService.read("testText_203", lang) + ":\n" + translatedMap.get(correct));
             } else if (row.getTestFormat().equals(TestFormat.BACK_DEFINITION_FORMAT)) {
