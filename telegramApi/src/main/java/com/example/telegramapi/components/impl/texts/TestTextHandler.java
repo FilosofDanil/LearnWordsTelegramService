@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Locale;
 
 @Component
 @RequiredArgsConstructor
@@ -32,11 +33,20 @@ public class TestTextHandler implements TextHandler {
         UserSession session = sessionService.getSession(request.getChatId());
         TestEntity test = session.getUserData().getCurrentTest();
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
+        int curr = session.getUserData().getCurrentTask();
         if (test != null) {
-            if (session.getUserData().getCurrentTask() + 1 < test.getTests().size()) {
-                int taskNum = nextTest(session);
-                Test current = session.getUserData().getCurrentTest().getTests().get(taskNum);
-                if(current.getTestFormat().equals(TestFormat.PICK_FROM_LIST_FORMAT)){
+            if (curr + 1 < test.getTests().size()) {
+                checkPreviousTest(test, request.getUpdate().getMessage().getText(), session);
+                saveInUserData(test, session);
+                sessionService.saveSession(request.getChatId(), session);
+                if(test.getTests().get(curr).getCorrect()){
+                    telegramService.sendMessage(request.getChatId(), obtainTextService.read("correct", lang));
+                } else{
+                    telegramService.sendMessage(request.getChatId(), obtainTextService.read("incorrect", lang));
+                }
+                curr = nextTest(session);
+                Test current = session.getUserData().getCurrentTest().getTests().get(curr);
+                if (current.getTestFormat().equals(TestFormat.PICK_FROM_LIST_FORMAT)) {
                     telegramService.sendMessage(request.getChatId(), formTaskString(session), ReplyKeyboardHelper.buildMainMenu(current.getResponseKeyboard()));
                     return;
                 }
@@ -66,16 +76,35 @@ public class TestTextHandler implements TextHandler {
         return responseMessage + firstTask.getResponseMessage();
     }
 
-    private void saveTestInUserData() {
-
-    }
-
     private void saveTest(UserSession session, TestEntity test) {
         UserData userData = session.getUserData();
         userData.setCurrentTest(null);
         userData.setCurrentTest(null);
         session.setUserData(userData);
         testService.update(test, test.getId());
+    }
+
+    private void checkPreviousTest(TestEntity test, String answer, UserSession session) {
+        int curr = session.getUserData().getCurrentTask();
+        boolean correct = checkAnswer(test, answer, curr);
+        List<Test> tests = test.getTests();
+        Test currTest = tests.get(curr);
+        currTest.setCorrect(correct);
+        tests.set(curr, currTest);
+        test.setTests(tests);
+    }
+
+    private boolean checkAnswer(TestEntity test, String answer, int curr) {
+        Test checkingTest = test.getTests().get(curr);
+        if (checkingTest.getCorrectAnswers().contains(answer)) {
+            return true;
+        } else return checkingTest.getCorrectAnswers().contains(answer.toLowerCase(Locale.ROOT));
+    }
+
+    private void saveInUserData(TestEntity test, UserSession session) {
+        UserData userData = session.getUserData();
+        userData.setCurrentTest(test);
+        session.setUserData(userData);
     }
 
     @Override
