@@ -28,7 +28,6 @@ public class TestTabTextHandler implements TextHandler {
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
-        session = sessionService.checkUseData(session, request);
         String message = request.getUpdate().getMessage().getText();
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         if (message.equals("➕ New word list") || message.equals("➕ Новий список слів")) {

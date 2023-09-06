@@ -30,7 +30,6 @@ public class TestTextHandler implements TextHandler {
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
-        session = sessionService.checkUseData(session, request);
         TestEntity test = session.getUserData().getCurrentTest();
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         if (test != null) {

@@ -23,11 +23,11 @@ public class TestTabComponent {
 
     public void handleTestRequest(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
-        session = sessionService.checkUseData(session, request);
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
 
         if (session.getUserData().getUserSettings().getNativeLang().equals("none") || session.getUserData().getUserSettings().getNativeLang() == null) {
-            telegramService.sendMessage(request.getChatId(), obtainTextService.read("firstChooseN", lang));
+            List<String> replyList = List.of("\uD83C\uDDFA\uD83C\uDDE6 Українська", "\uD83D\uDC37 Кацапська");
+            telegramService.sendMessage(request.getChatId(), obtainTextService.read("firstChooseN", lang), ReplyKeyboardHelper.buildMainMenu(replyList));
         } else {
             List<String> replyList = List.of(obtainTextService.read("Rep006", lang), obtainTextService.read("Rep007", lang), obtainTextService.read("Rep008", lang), obtainTextService.read("Rep004", lang));
             session.setState(States.TEST_TAB);

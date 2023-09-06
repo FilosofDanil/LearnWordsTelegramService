@@ -32,7 +32,6 @@ public class MenuCommandHandler extends RequestHandler {
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
-        session = sessionService.checkUseData(session, request);
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         session.setState(States.MENU);
         sessionService.saveSession(request.getChatId(), session);

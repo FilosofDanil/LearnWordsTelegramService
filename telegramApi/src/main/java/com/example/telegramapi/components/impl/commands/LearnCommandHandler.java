@@ -45,7 +45,6 @@ public class LearnCommandHandler extends RequestHandler {
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
-        session = sessionService.checkUseData(session, request);
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         List<TestEntity> tests = testService.getAllByUserId(session.getUserData().getUser().getId());
         if (!tests.isEmpty()) {

@@ -33,7 +33,6 @@ public class SettingsChooseButton implements TextHandler {
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
-        session = sessionService.checkUseData(session, request);
         String message = request.getUpdate().getMessage().getText();
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         if (message.equals("🇬🇧 Змінити мову інтерфейсу") || message.equals("🇬🇧 Change interface language")) {
@@ -61,7 +60,7 @@ public class SettingsChooseButton implements TextHandler {
         } else if (message.equals("\uD83D\uDE48 Choose native languages") || message.equals("\uD83D\uDE48 Вибрати рідну мову")) {
             session.setState(States.CHANGE_NATIVE);
             sessionService.saveSession(request.getChatId(), session);
-            List<String> replyList = List.of("\uD83C\uDDFA\uD83C\uDDE6 Українська", "\uD83D\uDC37 Русский", "\uD83C\uDDEC\uD83C\uDDE7 English", "\uD83C\uDDE9\uD83C\uDDEA Deutsch");
+            List<String> replyList = List.of("\uD83C\uDDFA\uD83C\uDDE6 Українська", "\uD83D\uDC37 Кацапська");
             String definedNative = session.getUserData().getUserSettings().getNativeLang();
             if (Objects.equals(definedNative, "none")) {
                 if(lang.equals("en")){

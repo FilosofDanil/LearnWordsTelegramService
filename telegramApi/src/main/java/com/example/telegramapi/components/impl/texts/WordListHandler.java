@@ -1,13 +1,12 @@
 package com.example.telegramapi.components.impl.texts;
 
 import com.example.telegramapi.components.TextHandler;
-import com.example.telegramapi.entities.TranslatedListModel;
-import com.example.telegramapi.entities.UserRequest;
-import com.example.telegramapi.entities.UserSession;
-import com.example.telegramapi.entities.UserWordList;
+import com.example.telegramapi.components.additions.UserListCreatorComponent;
+import com.example.telegramapi.entities.*;
 import com.example.telegramapi.enums.States;
 import com.example.telegramapi.services.*;
 import com.example.telegramapi.services.bot.TelegramBotService;
+import com.example.telegramapi.utils.ReplyKeyboardHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -26,32 +25,19 @@ public class WordListHandler implements TextHandler {
 
     private final DivideService divideServiceBean;
 
-    private final MongoDBService mongoDBService;
-
-    private final GPTInterogativeService gptInterogativeService;
+    private final UserListCreatorComponent creator;
 
 
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
-        session = sessionService.checkUseData(session, request);
-        Long userID = session.getUserData().getUser().getId();
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
-        session.setState(States.WAITING_FOR_LIST);
-        sessionService.saveSession(request.getChatId(), session);
-        String langTo = session.getUserData().getUserSettings().getNativeLang();
-        String langFrom = session.getUserData().getInputString();
+        session.setState(States.PREPARES_LIST);
         String message = listToString(divideServiceBean.divideRequestString(request.getUpdate().getMessage().getText()));
-        telegramService.sendMessage(request.getChatId(), obtainTextService.read("waitMoment", lang));
-        TranslatedListModel translatedListModel = gptInterogativeService.getTranslation(message, langFrom, langTo);
-        UserWordList wordList = UserWordList.builder()
-                .translations(translatedListModel.getTranslatedMap())
-                .definitions(translatedListModel.getDefinitionMap())
-                .langTo(langTo)
-                .langFrom(langFrom)
-                .userId(userID)
-                .build();
-        mongoDBService.create(wordList);
+        saveMessage(message, session);
+        sessionService.saveSession(request.getChatId(), session);
+        telegramService.sendMessage(request.getChatId(), obtainTextService.read("waitMoment", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("tryAgain", lang))));
+        TranslatedListModel translatedListModel = creator.createUserSettings(session, message);
         telegramService.sendMessage(request.getChatId(), obtainTextService.read("gotList", lang) + "\n" + translatedListModel.getMessage());
     }
 
@@ -62,6 +48,12 @@ public class WordListHandler implements TextHandler {
             stringBuilder.append(" ");
         });
         return stringBuilder.toString();
+    }
+
+    private void saveMessage(String message, UserSession session){
+        UserData userData = session.getUserData();
+        userData.setPreviousMessage(message);
+        session.setUserData(userData);
     }
 
     @Override

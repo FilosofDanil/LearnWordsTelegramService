@@ -35,7 +35,6 @@ public class GQueryHandler extends RequestHandler {
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
-        session = sessionService.checkUseData(session, request);
         try {
             for (QueryHandler queryHandler : queryHandlers) {
                 if ((queryHandler.getCallbackQuery(session.getUserData().getUserSettings().getInterfaceLang()).equals(request.getUpdate().getCallbackQuery().getData()) || queryHandler.isInteger())) {

@@ -25,9 +25,6 @@ public class ChooseLangBeforeListHandler implements TextHandler {
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
-        session = sessionService.checkUseData(session, request);
-
-
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         String message = request.getUpdate().getMessage().getText();
         String inputString;

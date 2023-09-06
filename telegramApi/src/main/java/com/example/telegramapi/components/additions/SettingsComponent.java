@@ -25,7 +25,6 @@ public class SettingsComponent {
 
     public void handleSettingRequest(UserRequest request){
         UserSession session = sessionService.getSession(request.getChatId());
-        session = sessionService.checkUseData(session, request);
         session.setState(States.SETTINGS);
         sessionService.saveSession(request.getChatId(), session);
         UserSettings settings = session.getUserData().getUserSettings();

@@ -22,7 +22,6 @@ public class AboutQueryHandler implements QueryHandler {
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
-        session = sessionService.checkUseData(session, request);
         session.setState(States.ABOUT);
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         sessionService.saveSession(request.getChatId(), session);

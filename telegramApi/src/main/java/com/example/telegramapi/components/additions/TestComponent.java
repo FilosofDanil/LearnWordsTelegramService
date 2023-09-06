@@ -26,7 +26,6 @@ public class TestComponent {
 
     public void handleTestRequest(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
-        session = sessionService.checkUseData(session, request);
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
 
         sessionService.saveSession(request.getChatId(), session);

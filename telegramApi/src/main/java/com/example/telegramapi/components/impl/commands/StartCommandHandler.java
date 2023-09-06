@@ -30,7 +30,6 @@ public class StartCommandHandler extends RequestHandler {
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
-        session = sessionService.checkUseData(session, request);
         session.setState(States.FIRST_LANGUAGE_CHANGE);
         sessionService.saveSession(request.getChatId(), session);
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
