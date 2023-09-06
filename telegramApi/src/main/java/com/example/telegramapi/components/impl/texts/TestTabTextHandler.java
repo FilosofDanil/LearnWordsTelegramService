@@ -1,6 +1,7 @@
 package com.example.telegramapi.components.impl.texts;
 
 import com.example.telegramapi.components.TextHandler;
+import com.example.telegramapi.components.additions.MenuComponent;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.entities.UserSession;
 import com.example.telegramapi.enums.States;
@@ -25,6 +26,8 @@ public class TestTabTextHandler implements TextHandler {
 
     private final ObtainTextService obtainTextService;
 
+    private final MenuComponent menuComponent;
+
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
@@ -43,10 +46,7 @@ public class TestTabTextHandler implements TextHandler {
             sessionService.saveSession(request.getChatId(), session);
             telegramService.sendMessage(request.getChatId(), obtainTextService.read("randWaitNum", lang));
         } else if (message.equals("🔙 Back") || message.equals("🔙 Назад")) {
-            session.setState(States.MENU);
-            sessionService.saveSession(request.getChatId(), session);
-            List<String> replyList = List.of(obtainTextService.read("menuBut0", lang), obtainTextService.read("menuBut1", lang), obtainTextService.read("menuBut2", lang), obtainTextService.read("menuBut3", lang), obtainTextService.read("menuBut4", lang), obtainTextService.read("menuBut5", lang));
-            telegramService.sendMessage(request.getChatId(), obtainTextService.read("Menu", lang), InlineKeyboardHelper.buildInlineKeyboard(replyList, false));
+            menuComponent.handleMenuRequest(request);
         }
     }
 
