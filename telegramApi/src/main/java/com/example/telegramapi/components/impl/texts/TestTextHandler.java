@@ -39,9 +39,9 @@ public class TestTextHandler implements TextHandler {
                 checkPreviousTest(test, request.getUpdate().getMessage().getText(), session);
                 saveInUserData(test, session);
                 sessionService.saveSession(request.getChatId(), session);
-                if(test.getTests().get(curr).getCorrect()){
+                if (test.getTests().get(curr).getCorrect()) {
                     telegramService.sendMessage(request.getChatId(), obtainTextService.read("correct", lang));
-                } else{
+                } else {
                     telegramService.sendMessage(request.getChatId(), obtainTextService.read("incorrect", lang));
                 }
                 curr = nextTest(session);
@@ -52,6 +52,7 @@ public class TestTextHandler implements TextHandler {
                 }
                 telegramService.sendMessage(request.getChatId(), formTaskString(session));
             } else {
+                test.setPassedTimes(test.getPassedTimes() + 1);
                 saveTest(session, test);
                 session.setState(States.TEST_FINISHED);
                 sessionService.saveSession(request.getChatId(), session);

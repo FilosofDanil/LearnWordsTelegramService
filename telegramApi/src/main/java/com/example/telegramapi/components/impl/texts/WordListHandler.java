@@ -38,7 +38,9 @@ public class WordListHandler implements TextHandler {
         sessionService.saveSession(request.getChatId(), session);
         telegramService.sendMessage(request.getChatId(), obtainTextService.read("waitMoment", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("tryAgain", lang))));
         TranslatedListModel translatedListModel = creator.createUserSettings(session, message);
-        telegramService.sendMessage(request.getChatId(), obtainTextService.read("gotList", lang) + "\n" + translatedListModel.getMessage());
+        session.setState(States.RETURNED_USER_LIST);
+        sessionService.saveSession(request.getChatId(), session);
+        telegramService.sendMessage(request.getChatId(), obtainTextService.read("gotList", lang) + "\n" + translatedListModel.getMessage(), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
     }
 
     private String listToString(List<String> list) {
@@ -50,7 +52,7 @@ public class WordListHandler implements TextHandler {
         return stringBuilder.toString();
     }
 
-    private void saveMessage(String message, UserSession session){
+    private void saveMessage(String message, UserSession session) {
         UserData userData = session.getUserData();
         userData.setPreviousMessage(message);
         session.setUserData(userData);

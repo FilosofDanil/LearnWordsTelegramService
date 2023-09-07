@@ -38,13 +38,13 @@ public class TestServiceBean implements TestService {
         TestEntity entity = repo.findById(id);
         Integer passedTimes = testEntity.getPassedTimes();
         if(!Objects.equals(entity.getPassedTimes(), passedTimes)){
-            if(passedTimes!=7){
+            if(passedTimes<7){
+                System.out.println(getFurtherTestDate(passedTimes));
                 entity.setTestDate(getFurtherTestDate(passedTimes));
             } else {
                 repo.deleteById(id);
             }
         }
-        entity.setTestDate(testEntity.getTestDate());
         entity.setTests(testEntity.getTests());
         entity.setPassedTimes(testEntity.getPassedTimes());
         repo.save(entity);

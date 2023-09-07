@@ -18,5 +18,6 @@ public enum States {
     TEST_STARTED,
     TEST_FINISHED,
     PREPARES_TEST,
+    ASSIGNMENTS,
     FURTHER_QUERY
 }

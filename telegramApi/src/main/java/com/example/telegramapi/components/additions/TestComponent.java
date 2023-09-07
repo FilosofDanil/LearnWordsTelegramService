@@ -47,6 +47,8 @@ public class TestComponent {
                 startTest(session, first);
                 sessionService.saveSession(request.getChatId(), session);
                 telegramService.sendMessage(request.getChatId(), formTaskString(session));
+            } else {
+                testTabComponent.handleTestRequest(request);
             }
         } else {
             testTabComponent.handleTestRequest(request);

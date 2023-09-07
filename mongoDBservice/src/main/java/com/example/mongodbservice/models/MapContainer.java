@@ -13,12 +13,12 @@ public class MapContainer {
     private Map<Integer, LocalDateTime> map;
 
     public Map<Integer, LocalDateTime> getMap() {
-        map = Map.of(0, LocalDateTime.now().plus(Duration.of(5, ChronoUnit.MINUTES)),
-                1, LocalDateTime.now().plus(Duration.of(1, ChronoUnit.HOURS)),
-                2, LocalDateTime.now().plus(Duration.of(1, ChronoUnit.DAYS)),
-                3, LocalDateTime.now().plus(Duration.of(3, ChronoUnit.DAYS)),
-                4, LocalDateTime.now().plus(Duration.of(1, ChronoUnit.WEEKS)),
-                5, LocalDateTime.now().plus(Duration.of(1, ChronoUnit.MONTHS)));
+        map = Map.of(1, LocalDateTime.now().plus(Duration.of(5, ChronoUnit.MINUTES)),
+                2, LocalDateTime.now().plus(Duration.of(1, ChronoUnit.HOURS)),
+                3, LocalDateTime.now().plus(Duration.of(1, ChronoUnit.DAYS)),
+                4, LocalDateTime.now().plus(Duration.of(3, ChronoUnit.DAYS)),
+                5, LocalDateTime.now().plus(Duration.of(7, ChronoUnit.DAYS)),
+                6, LocalDateTime.now().plus(Duration.of(30, ChronoUnit.DAYS)));
         return map;
     }
 
