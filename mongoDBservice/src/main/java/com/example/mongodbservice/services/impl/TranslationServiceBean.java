@@ -45,7 +45,7 @@ public class TranslationServiceBean implements TranslationService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(String id) {
         listRepo.deleteById(id);
     }
 

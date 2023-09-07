@@ -1,12 +1,17 @@
 package com.example.mongodbservice.services.impl;
 
+import com.example.mongodbservice.models.MapContainer;
 import com.example.mongodbservice.models.TestEntity;
 import com.example.mongodbservice.repositories.TestEntitiesRepo;
 import com.example.mongodbservice.services.TestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -31,14 +36,29 @@ public class TestServiceBean implements TestService {
     @Override
     public void update(TestEntity testEntity, String id) {
         TestEntity entity = repo.findById(id);
+        Integer passedTimes = testEntity.getPassedTimes();
+        if(!Objects.equals(entity.getPassedTimes(), passedTimes)){
+            if(passedTimes!=7){
+                entity.setTestDate(getFurtherTestDate(passedTimes));
+            } else {
+                repo.deleteById(id);
+            }
+        }
         entity.setTestDate(testEntity.getTestDate());
         entity.setTests(testEntity.getTests());
         entity.setPassedTimes(testEntity.getPassedTimes());
         repo.save(entity);
     }
 
+    private Date getFurtherTestDate(Integer passedTimes){
+        MapContainer mapContainer = new MapContainer();
+        LocalDateTime dateTime = mapContainer.getMap().get(passedTimes);
+        return Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
+
+    }
+
     @Override
-    public void delete(Long id) {
+    public void delete(String id) {
         repo.deleteById(id);
     }
 }

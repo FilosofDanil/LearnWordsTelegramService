@@ -33,7 +33,7 @@ public class TestsController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable String id) {
         testService.delete(id);
     }
 

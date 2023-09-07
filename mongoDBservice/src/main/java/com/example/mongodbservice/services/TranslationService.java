@@ -13,7 +13,7 @@ public interface TranslationService {
 
     TranslatedList create(TranslatedList translatedList);
 
-    void delete(Long id);
+    void delete(String id);
 
     void update(TranslatedList translatedList, String id);
 }

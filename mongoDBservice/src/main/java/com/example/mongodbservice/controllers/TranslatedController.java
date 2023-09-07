@@ -35,7 +35,7 @@ public class TranslatedController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id) {
+    public void delete(@PathVariable("id") String id) {
         translationService.delete(id);
 
     }

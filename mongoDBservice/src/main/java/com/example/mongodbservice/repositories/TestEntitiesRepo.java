@@ -11,4 +11,6 @@ public interface TestEntitiesRepo extends MongoRepository<TestEntity, Long> {
     List<TestEntity> findByUserId(Long userId);
 
     TestEntity findById(String id);
+
+    void deleteById(String id);
 }

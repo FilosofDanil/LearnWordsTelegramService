@@ -15,4 +15,6 @@ public interface TranslatedListRepo extends MongoRepository<TranslatedList, Long
 
     @Query("{'userId': ?0}")
     void updateByUserId(String userId, TranslatedList updatedTranslatedList);
+
+    void deleteById(String id);
 }

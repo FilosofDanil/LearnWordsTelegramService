@@ -13,5 +13,5 @@ public interface TestService {
 
     void update(TestEntity testEntity, String id);
 
-    void delete(Long id);
+    void delete(String id);
 }
