@@ -1,7 +1,9 @@
 package com.example.telegramapi.components.impl.texts;
 
 import com.example.telegramapi.components.TextHandler;
+import com.example.telegramapi.components.additions.MenuComponent;
 import com.example.telegramapi.components.additions.UserListCreatorComponent;
+import com.example.telegramapi.components.additions.WordListComponentAdvicor;
 import com.example.telegramapi.entities.*;
 import com.example.telegramapi.enums.States;
 import com.example.telegramapi.services.*;
@@ -17,45 +19,16 @@ import java.util.List;
 public class WordListHandler implements TextHandler {
     private final States applicable = States.WAITING_FOR_LIST;
 
-    private final TelegramBotService telegramService;
+    private final WordListComponentAdvicor advicor;
 
-    private final SessionService sessionService;
-
-    private final ObtainTextService obtainTextService;
-
-    private final DivideService divideServiceBean;
-
-    private final UserListCreatorComponent creator;
-
+    private final MenuComponent menuComponent;
 
     @Override
     public void handle(UserRequest request) {
-        UserSession session = sessionService.getSession(request.getChatId());
-        String lang = session.getUserData().getUserSettings().getInterfaceLang();
-        session.setState(States.PREPARES_LIST);
-        String message = listToString(divideServiceBean.divideRequestString(request.getUpdate().getMessage().getText()));
-        saveMessage(message, session);
-        sessionService.saveSession(request.getChatId(), session);
-        telegramService.sendMessage(request.getChatId(), obtainTextService.read("waitMoment", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("tryAgain", lang))));
-        TranslatedListModel translatedListModel = creator.createUserSettings(session, message);
-        session.setState(States.RETURNED_USER_LIST);
-        sessionService.saveSession(request.getChatId(), session);
-        telegramService.sendMessage(request.getChatId(), obtainTextService.read("gotList", lang) + "\n" + translatedListModel.getMessage(), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
-    }
-
-    private String listToString(List<String> list) {
-        StringBuilder stringBuilder = new StringBuilder("\n");
-        list.forEach(row -> {
-            stringBuilder.append(row);
-            stringBuilder.append(" ");
-        });
-        return stringBuilder.toString();
-    }
-
-    private void saveMessage(String message, UserSession session) {
-        UserData userData = session.getUserData();
-        userData.setPreviousMessage(message);
-        session.setUserData(userData);
+        if(request.getUpdate().getMessage().getText().equals("🔙 Back") || request.getUpdate().getMessage().getText().equals("🔙 Назад")){
+            menuComponent.handleMenuRequest(request);
+        }
+        advicor.createWordList(request);
     }
 
     @Override

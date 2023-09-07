@@ -1,4 +1,4 @@
-package com.example.telegramapi.components.impl.texts;
+package com.example.telegramapi.components.impl.texts.backbuttons;
 
 import com.example.telegramapi.components.TextHandler;
 import com.example.telegramapi.components.additions.MenuComponent;
@@ -16,7 +16,9 @@ public class AboutBackButton implements TextHandler {
 
     @Override
     public void handle(UserRequest request) {
-        menuComponent.handleMenuRequest(request);
+        if(request.getUpdate().getMessage().getText().equals("🔙 Back") || request.getUpdate().getMessage().getText().equals("🔙 Назад")){
+            menuComponent.handleMenuRequest(request);
+        }
     }
 
     @Override

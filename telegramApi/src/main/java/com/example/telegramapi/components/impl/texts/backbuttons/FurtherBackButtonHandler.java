@@ -1,4 +1,4 @@
-package com.example.telegramapi.components.impl.texts;
+package com.example.telegramapi.components.impl.texts.backbuttons;
 
 import com.example.telegramapi.components.TextHandler;
 import com.example.telegramapi.components.additions.MenuComponent;
@@ -9,14 +9,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ListBackButton implements TextHandler {
-    private final States applicable = States.RETURNED_USER_LIST;
+public class FurtherBackButtonHandler implements TextHandler {
+    private final States applicable = States.FURTHER_QUERY;
 
     private final MenuComponent menuComponent;
 
     @Override
     public void handle(UserRequest request) {
-        menuComponent.handleMenuRequest(request);
+        if(request.getUpdate().getMessage().getText().equals("🔙 Back") || request.getUpdate().getMessage().getText().equals("🔙 Назад")){
+            menuComponent.handleMenuRequest(request);
+        }
     }
 
     @Override
