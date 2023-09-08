@@ -9,11 +9,11 @@ public interface TranslationService {
 
     List<TranslatedList> getAllByUser(Long userId);
 
-    TranslatedList getById(Long id);
+    TranslatedList getById(String id);
 
     TranslatedList create(TranslatedList translatedList);
 
-    void delete(Long id);
+    void delete(String id);
 
-    void update(TranslatedList translatedList, Long id);
+    void update(TranslatedList translatedList, String id);
 }

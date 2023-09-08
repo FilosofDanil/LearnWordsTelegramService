@@ -1,7 +1,7 @@
 package com.example.telegramapi.components.impl.commands;
 
 import com.example.telegramapi.components.RequestHandler;
-import com.example.telegramapi.components.additions.TestTabComponent;
+import com.example.telegramapi.components.additions.TestComponent;
 import com.example.telegramapi.entities.UserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,8 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class LearnCommandHandler extends RequestHandler {
-
-    private final TestTabComponent testTabComponent;
+    private final TestComponent testComponent;
 
     private static final String command = "/test";
 
@@ -21,7 +20,7 @@ public class LearnCommandHandler extends RequestHandler {
 
     @Override
     public void handle(UserRequest request) {
-        testTabComponent.handleTestRequest(request);
+        testComponent.handleTestRequest(request);
     }
 
     @Override

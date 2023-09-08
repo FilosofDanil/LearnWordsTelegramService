@@ -7,6 +7,8 @@ import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class GPTInterogativeServiceBean implements GPTInterogativeService {
@@ -16,6 +18,11 @@ public class GPTInterogativeServiceBean implements GPTInterogativeService {
     public TranslatedListModel getTranslation(String message, String langFrom, String langTo) {
         String langs = defineLangFrom(langFrom) + "/" + defineLangTo(langTo);
         return gptClient.getMessage(message, langs);
+    }
+
+    @Override
+    public List<String> getTests(String word, String lang) {
+        return gptClient.getTests(word, lang);
     }
 
     private String defineLangFrom(String langFrom) {

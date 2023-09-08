@@ -1,6 +1,7 @@
 package com.example.telegramapi.components.impl.commands;
 
 import com.example.telegramapi.components.RequestHandler;
+import com.example.telegramapi.components.additions.MenuComponent;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.entities.UserSession;
 import com.example.telegramapi.enums.States;
@@ -16,11 +17,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class MenuCommandHandler extends RequestHandler {
-    private final SessionService sessionService;
-
-    private final TelegramBotService telegramService;
-
-    private final ObtainTextService obtainTextService;
+    private final MenuComponent menuComponent;
 
     private static final String command = "/menu";
 
@@ -31,13 +28,7 @@ public class MenuCommandHandler extends RequestHandler {
 
     @Override
     public void handle(UserRequest request) {
-        UserSession session = sessionService.getSession(request.getChatId());
-        session = sessionService.checkUseData(session, request);
-        String lang = session.getUserData().getUserSettings().getInterfaceLang();
-        session.setState(States.MENU);
-        sessionService.saveSession(request.getChatId(), session);
-        List<String> replyList = List.of(obtainTextService.read("menuBut0", lang), obtainTextService.read("menuBut1", lang), obtainTextService.read("menuBut2", lang), obtainTextService.read("menuBut3", lang), obtainTextService.read("menuBut4", lang), obtainTextService.read("menuBut5", lang));
-        telegramService.sendMessage(request.getChatId(), obtainTextService.read("Menu", lang), InlineKeyboardHelper.buildInlineKeyboard(replyList, false));
+        menuComponent.handleMenuRequest(request);
     }
 
     @Override

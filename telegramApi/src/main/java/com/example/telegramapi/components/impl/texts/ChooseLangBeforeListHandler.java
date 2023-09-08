@@ -8,8 +8,11 @@ import com.example.telegramapi.enums.States;
 import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;
 import com.example.telegramapi.services.bot.TelegramBotService;
+import com.example.telegramapi.utils.ReplyKeyboardHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -25,9 +28,6 @@ public class ChooseLangBeforeListHandler implements TextHandler {
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
-        session = sessionService.checkUseData(session, request);
-
-
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         String message = request.getUpdate().getMessage().getText();
         String inputString;
@@ -49,7 +49,7 @@ public class ChooseLangBeforeListHandler implements TextHandler {
         userdata.setInputString(inputString);
         session.setUserData(userdata);
         sessionService.saveSession(request.getChatId(), session);
-        telegramService.sendMessage(request.getChatId(), obtainTextService.read("waitList", lang));
+        telegramService.sendMessage(request.getChatId(), obtainTextService.read("waitList", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
 
     }
 

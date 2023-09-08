@@ -11,6 +11,8 @@ import java.util.Map;
 @Data
 @Builder
 public class TestEntity {
+    @JsonProperty("id")
+    private String id;
     @JsonProperty("tests")
     private List<Test> tests;
     @JsonProperty("testDate")
@@ -19,4 +21,6 @@ public class TestEntity {
     private Long userId;
     @JsonProperty("passedTimes")
     private Integer passedTimes;
+    @JsonProperty("listId")
+    private String listId;
 }

@@ -25,8 +25,8 @@ public class TranslationServiceBean implements MongoDBService {
     }
 
     @Override
-    public UserWordList getById(Long id) {
-        return null;
+    public UserWordList getById(String id) {
+        return client.getWordListById(id);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class TranslationServiceBean implements MongoDBService {
     }
 
     @Override
-    public void update(Long userID, UserWordList wordList) {
+    public void update(String userID, UserWordList wordList) {
 
     }
 }

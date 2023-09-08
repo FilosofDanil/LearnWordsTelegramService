@@ -14,6 +14,8 @@ public class Test {
     private TestFormat testFormat;
     @JsonProperty("responseMessage")
     private String responseMessage;
+    @JsonProperty("responseKeyboard")
+    private List<String> responseKeyboard;
     @JsonProperty("correct")
     private Boolean correct;
     @JsonProperty("correctAnswers")

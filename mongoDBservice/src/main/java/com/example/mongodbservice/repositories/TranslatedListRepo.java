@@ -11,6 +11,10 @@ import java.util.List;
 public interface TranslatedListRepo extends MongoRepository<TranslatedList, Long> {
     List<TranslatedList> getByUserId(Long userId);
 
+    TranslatedList findById(String id);
+
     @Query("{'userId': ?0}")
-    void updateByUserId(Long userId, TranslatedList updatedTranslatedList);
+    void updateByUserId(String userId, TranslatedList updatedTranslatedList);
+
+    void deleteById(String id);
 }

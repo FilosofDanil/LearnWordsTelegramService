@@ -1,6 +1,7 @@
 package com.example.telegramapi.components.impl.texts;
 
 import com.example.telegramapi.components.TextHandler;
+import com.example.telegramapi.components.additions.MenuComponent;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.entities.UserSession;
 import com.example.telegramapi.entities.UserSettings;
@@ -30,10 +31,11 @@ public class SettingsChooseButton implements TextHandler {
 
     private final SettingsService settingsService;
 
+    private final MenuComponent menuComponent;
+
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
-        session = sessionService.checkUseData(session, request);
         String message = request.getUpdate().getMessage().getText();
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         if (message.equals("🇬🇧 Змінити мову інтерфейсу") || message.equals("🇬🇧 Change interface language")) {
@@ -42,10 +44,7 @@ public class SettingsChooseButton implements TextHandler {
             telegramService.sendMessage(request.getChatId(),
                     obtainTextService.read("ChooseLanguage", lang), ReplyKeyboardHelper.buildMainMenu(replyList));
         } else if (message.equals("🔙 Back to the menu tab") || message.equals("🔙 Повернутися до вкладки меню")) {
-            session.setState(States.MENU);
-            sessionService.saveSession(request.getChatId(), session);
-            List<String> replyList = List.of(obtainTextService.read("menuBut0", lang), obtainTextService.read("menuBut1", lang), obtainTextService.read("menuBut2", lang), obtainTextService.read("menuBut3", lang), obtainTextService.read("menuBut4", lang), obtainTextService.read("menuBut5", lang));
-            telegramService.sendMessage(request.getChatId(), obtainTextService.read("Menu", lang), InlineKeyboardHelper.buildInlineKeyboard(replyList, false));
+            menuComponent.handleMenuRequest(request);
         } else if (message.equals("\uD83D\uDD15 Cancel notifications") || message.equals("\uD83D\uDD15 Скасувати сповіщення") || message.equals("\uD83D\uDD14 Enable notifications") || message.equals("\uD83D\uDD14 Увімкнути сповіщення")) {
             UserSettings settings = settingsService.getSettingsByUsername(session.getUserData().getUser().getUsername());
             if (settings.getNotifications()) {
@@ -61,7 +60,7 @@ public class SettingsChooseButton implements TextHandler {
         } else if (message.equals("\uD83D\uDE48 Choose native languages") || message.equals("\uD83D\uDE48 Вибрати рідну мову")) {
             session.setState(States.CHANGE_NATIVE);
             sessionService.saveSession(request.getChatId(), session);
-            List<String> replyList = List.of("\uD83C\uDDFA\uD83C\uDDE6 Українська", "\uD83D\uDC37 Русский", "\uD83C\uDDEC\uD83C\uDDE7 English", "\uD83C\uDDE9\uD83C\uDDEA Deutsch");
+            List<String> replyList = List.of("\uD83C\uDDFA\uD83C\uDDE6 Українська", "\uD83D\uDC37 Кацапська");
             String definedNative = session.getUserData().getUserSettings().getNativeLang();
             if (Objects.equals(definedNative, "none")) {
                 if(lang.equals("en")){

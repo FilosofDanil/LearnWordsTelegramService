@@ -28,8 +28,6 @@ public class FirstLanguageChange implements TextHandler {
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
-        session = sessionService.checkUseData(session, request);
-
         UserSettings settings = settingsService.getSettingsByUsername(session.getUserData().getUser().getUsername());
         String message = request.getUpdate().getMessage().getText();
         if(message.equals("\uD83C\uDDFA\uD83C\uDDE6 Українська")){

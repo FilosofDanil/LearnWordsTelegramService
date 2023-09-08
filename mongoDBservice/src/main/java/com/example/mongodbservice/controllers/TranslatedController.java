@@ -19,7 +19,7 @@ public class TranslatedController {
     }
 
     @GetMapping("/{id}")
-    public TranslatedList getById(@PathVariable("id") Long id) {
+    public TranslatedList getById(@PathVariable("id") String id) {
         return translationService.getById(id);
     }
 
@@ -35,13 +35,13 @@ public class TranslatedController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id) {
+    public void delete(@PathVariable("id") String id) {
         translationService.delete(id);
 
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable("id") Long id, @RequestBody TranslatedList list) {
+    public void update(@PathVariable("id") String id, @RequestBody TranslatedList list) {
         translationService.update(list, id);
 
     }
