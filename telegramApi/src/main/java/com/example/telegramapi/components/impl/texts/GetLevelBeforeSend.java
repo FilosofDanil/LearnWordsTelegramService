@@ -43,9 +43,10 @@ public class GetLevelBeforeSend implements TextHandler {
         if (langMap.containsKey(message)) {
             String definedLang = langMap.get(message);
             session.setState(States.GENERATED_RANDOM_LIST);
-            sessionService.saveSession(request.getChatId(), session);
             String randomList = getRandomList(session, definedLang);
-            telegramService.sendMessage(request.getChatId(), randomList);
+            updateData(session, randomList);
+            sessionService.saveSession(request.getChatId(), session);
+            telegramService.sendMessage(request.getChatId(), randomList, ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("randReturn", lang), obtainTextService.read("Rep004", lang))));
         } else {
             telegramService.sendMessage(request.getChatId(), obtainTextService.read("levelEx", lang), ReplyKeyboardHelper.buildMainMenu(replyList()));
         }
@@ -54,6 +55,12 @@ public class GetLevelBeforeSend implements TextHandler {
 
     private List<String> replyList() {
         return List.of("A1 Elementary", "A2 Pre-Intermediate", "B1 Intermediate", "B2 Upper-Intermediate", "C1 Advanced");
+    }
+
+    private void updateData(UserSession session, String randomList) {
+        UserData userData = session.getUserData();
+        userData.setPreviousMessage(randomList);
+        session.setUserData(userData);
     }
 
     private String getRandomList(UserSession session, String level) {
