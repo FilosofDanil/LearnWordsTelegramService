@@ -17,6 +17,6 @@ public class RandomTestServiceBean implements RandomTestServiceGenerator {
 
     private String formRequest(Integer amount, String lang, String level) {
         return "Generate" + amount + " " + lang + " words, which require to know, having " + level + " " + lang + " knowledge level. \n"
-                + "Please return just words, without any text or numbers in such format: word1 word2 word3";
+                + "Note: You must give response without any other text, just words, also without numbers. Please give it in the such format: word1 word2 word3.";
     }
 }
