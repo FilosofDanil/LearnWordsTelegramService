@@ -33,6 +33,7 @@ public class GetAmountBeforeSend implements TextHandler {
         try {
             Integer amount = Integer.parseInt(message);
             saveUserData(amount, session);
+            session.setState(States.WAITING_FOR_LEVEL);
             sessionService.saveSession(request.getChatId(), session);
             telegramService.sendMessage(request.getChatId(), obtainTextService.read("randWaitLevel", lang), ReplyKeyboardHelper.buildMainMenu(replyList()));
         } catch (NumberFormatException e) {

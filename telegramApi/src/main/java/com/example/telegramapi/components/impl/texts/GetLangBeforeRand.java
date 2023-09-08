@@ -2,7 +2,6 @@ package com.example.telegramapi.components.impl.texts;
 
 import com.example.telegramapi.components.TextHandler;
 import com.example.telegramapi.components.additions.LanguageChoosingComponent;
-import com.example.telegramapi.entities.UserData;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.entities.UserSession;
 import com.example.telegramapi.enums.States;
@@ -17,8 +16,8 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class ChooseLangBeforeListHandler implements TextHandler {
-    private final States applicable = States.WAIT_FOR_LANG_PAIR;
+public class GetLangBeforeRand implements TextHandler {
+    private final States applicable = States.WAITING_FOR_LANG_BEFORE_RANDOM;
 
     private final ObtainTextService obtainTextService;
 
@@ -34,11 +33,10 @@ public class ChooseLangBeforeListHandler implements TextHandler {
         if (session == null) {
             return;
         }
-        session.setState(States.WAITING_FOR_LIST);
+        session.setState(States.WAITING_FOR_AMOUNT);
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         sessionService.saveSession(request.getChatId(), session);
-        telegramService.sendMessage(request.getChatId(), obtainTextService.read("waitList", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
-
+        telegramService.sendMessage(request.getChatId(), obtainTextService.read("randWaitNum", lang));
     }
 
     @Override

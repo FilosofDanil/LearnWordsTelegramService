@@ -58,7 +58,8 @@ public class GetLevelBeforeSend implements TextHandler {
 
     private String getRandomList(UserSession session, String level) {
         Integer amount = session.getUserData().getInputInt();
-        return gptService.getRandomWordList(amount, "en", level);
+        String lang = session.getUserData().getInputString();
+        return gptService.getRandomWordList(amount, lang, level);
     }
 
     @Override
