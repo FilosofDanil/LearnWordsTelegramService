@@ -41,7 +41,7 @@ public class TestTabTextHandler implements TextHandler {
         } else if (message.equals("🚀 Launch random test") || message.equals("🚀 Запустити випадковий тест")) {
 
         } else if (message.equals("🎲 New random word list") || message.equals("🎲 Новий список випадкових слів")) {
-            session.setState(States.RANDOM_LIST_WAITING_FOR_NUM);
+            session.setState(States.WAITING_FOR_AMOUNT);
             sessionService.saveSession(request.getChatId(), session);
             telegramService.sendMessage(request.getChatId(), obtainTextService.read("randWaitNum", lang));
         } else if (message.equals("🔙 Back") || message.equals("🔙 Назад")) {

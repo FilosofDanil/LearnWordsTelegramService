@@ -3,6 +3,8 @@ package com.example.telegramapi.entities;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Builder
 public class UserData {
@@ -12,4 +14,6 @@ public class UserData {
     private String previousMessage;
     private TestEntity currentTest;
     private Integer currentTask;
+    private Integer inputInt;
+    private List<String> randList;
 }

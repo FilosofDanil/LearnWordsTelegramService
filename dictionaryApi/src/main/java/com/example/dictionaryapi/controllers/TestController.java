@@ -25,7 +25,7 @@ public class TestController {
     }
 
     @GetMapping("/random/{amount}")
-    public List<String> formRandomTest(@PathVariable("amount") Integer amount, @PathParam("lang") String lang, @PathParam("level") String level) {
+    public String formRandomTest(@PathVariable("amount") Integer amount, @PathParam("lang") String lang, @PathParam("level") String level) {
         return randomGenerator.formRandomService(amount, lang, level);
     }
 }
