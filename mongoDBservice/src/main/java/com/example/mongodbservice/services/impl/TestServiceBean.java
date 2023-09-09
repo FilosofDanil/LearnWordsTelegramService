@@ -34,6 +34,11 @@ public class TestServiceBean implements TestService {
     }
 
     @Override
+    public TestEntity getByWordListId(String id) {
+        return repo.findByListId(id);
+    }
+
+    @Override
     public void update(TestEntity testEntity, String id) {
         TestEntity entity = repo.findById(id);
         Integer passedTimes = testEntity.getPassedTimes();
