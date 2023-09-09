@@ -3,7 +3,6 @@ package com.example.telegramapi.services.impl;
 import com.example.telegramapi.client.GPTClient;
 import com.example.telegramapi.entities.TranslatedListModel;
 import com.example.telegramapi.services.GPTInterogativeService;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +15,8 @@ public class GPTInterogativeServiceBean implements GPTInterogativeService {
 
     @Override
     public TranslatedListModel getTranslation(String message, String langFrom, String langTo) {
-        String langs = defineLangFrom(langFrom) + "/" + defineLangTo(langTo);
-        return gptClient.getMessage(message, langs);
+        String lang = defineLangFrom(langFrom) + "/" + defineLangTo(langTo);
+        return gptClient.getMessage(message, lang);
     }
 
     @Override
@@ -47,7 +46,7 @@ public class GPTInterogativeServiceBean implements GPTInterogativeService {
         if (langTo.equals("en")) {
             langTo = "English";
         } else if (langTo.equals("uk")) {
-            langTo = "Ukranian";
+            langTo = "Ukrainian";
         } else if (langTo.equals("ru")) {
             langTo = "Russian";
         } else if (langTo.equals("de")) {

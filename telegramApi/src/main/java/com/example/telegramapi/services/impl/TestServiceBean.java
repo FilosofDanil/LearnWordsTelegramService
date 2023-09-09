@@ -29,6 +29,11 @@ public class TestServiceBean implements TestService {
     }
 
     @Override
+    public TestEntity getByWordListId(String id) {
+        return client.getTestByWordListId(id);
+    }
+
+    @Override
     public void update(TestEntity testEntity, String id) {
         client.updateTest(id, testEntity);
     }

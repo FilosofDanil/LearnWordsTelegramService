@@ -23,6 +23,9 @@ public interface MongoClient {
     @GetMapping("/tests/{id}")
     TestEntity getTestById(@PathVariable("id") String id);
 
+    @GetMapping("/tests/list/{listId}")
+    TestEntity getTestByWordListId(@PathVariable("listId") String listId);
+
     @PutMapping("/tests/{id}")
     TestEntity updateTest(@PathVariable("id") String id, @RequestBody TestEntity testEntity);
 
