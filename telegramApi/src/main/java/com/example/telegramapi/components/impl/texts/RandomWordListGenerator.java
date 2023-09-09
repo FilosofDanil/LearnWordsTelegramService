@@ -2,6 +2,7 @@ package com.example.telegramapi.components.impl.texts;
 
 import com.example.telegramapi.components.TextHandler;
 import com.example.telegramapi.components.additions.MenuComponent;
+import com.example.telegramapi.components.additions.ReturnListComponent;
 import com.example.telegramapi.components.additions.UserListCreatorComponent;
 import com.example.telegramapi.entities.TranslatedListModel;
 import com.example.telegramapi.entities.UserRequest;
@@ -27,7 +28,7 @@ public class RandomWordListGenerator implements TextHandler {
 
     private final ObtainTextService obtainTextService;
 
-    private final UserListCreatorComponent creator;
+    private final ReturnListComponent returnListComponent;
 
     private final MenuComponent menuComponent;
 
@@ -41,10 +42,7 @@ public class RandomWordListGenerator implements TextHandler {
         } if(message.equals("🆗 Translate it and start the test!") || message.equals("🆗 Перекласти і почати тест!")){
             telegramService.sendMessage(request.getChatId(), obtainTextService.read("waitMoment", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("tryAgain", lang))));
             session.setState(States.PREPARES_LIST);
-            TranslatedListModel translatedListModel = creator.createUserSettings(session, session.getUserData().getPreviousMessage());
-            session.setState(States.RETURNED_USER_LIST);
-            sessionService.saveSession(request.getChatId(), session);
-            telegramService.sendMessage(request.getChatId(), obtainTextService.read("gotList", lang) + "\n" + translatedListModel.getMessage(),ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))) );
+            returnListComponent.sendTest(request);
         }
     }
 

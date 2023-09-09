@@ -27,7 +27,8 @@ public class UserListCreatorComponent {
                 .langFrom(langFrom)
                 .userId(userId)
                 .build();
-        mongoDBService.create(wordList);
+        UserWordList createdList = mongoDBService.create(wordList);
+        translatedListModel.setId(createdList.getId());
         return translatedListModel;
     }
 }

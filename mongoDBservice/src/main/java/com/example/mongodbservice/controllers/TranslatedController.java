@@ -29,9 +29,8 @@ public class TranslatedController {
     }
 
     @PostMapping("")
-    public void create(@RequestBody TranslatedList list) {
-        translationService.create(list);
-
+    public TranslatedList create(@RequestBody TranslatedList list) {
+        return translationService.create(list);
     }
 
     @DeleteMapping("/{id}")
