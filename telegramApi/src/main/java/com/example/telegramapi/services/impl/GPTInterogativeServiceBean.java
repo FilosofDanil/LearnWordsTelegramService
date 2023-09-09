@@ -25,6 +25,11 @@ public class GPTInterogativeServiceBean implements GPTInterogativeService {
         return gptClient.getTests(word, lang);
     }
 
+    @Override
+    public String getRandomWordList(Integer amount, String lang, String level) {
+        return gptClient.getRandomWordList(amount, lang, level);
+    }
+
     private String defineLangFrom(String langFrom) {
         if (langFrom.equals("en")) {
             langFrom = "English";
