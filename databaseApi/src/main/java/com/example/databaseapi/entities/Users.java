@@ -24,6 +24,6 @@ public class Users {
     private String username;
     @Column(name = "registration_date")
     private Date registrationDate;
-    @Column(name = "chatId")
+    @Column(name = "chat_id")
     private Long chatId;
 }

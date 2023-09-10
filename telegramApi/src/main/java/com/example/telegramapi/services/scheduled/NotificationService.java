@@ -30,22 +30,24 @@ public class NotificationService {
 
     private final TestService testService;
 
+    private final SettingsService settingsService;
+
     @Scheduled(cron = "0 * * ? * *")
     public void notifyAllUsers() {
         List<User> userList = userService.getAll();
         userList.forEach(user -> {
             List<TestEntity> tests = testService.getAllByUserId(user.getId());
             UserSession session = sessionService.getSession(user.getChatId());
-            LocalDateTime localDateTime = LocalDateTime.now().minus(Duration.of(1, ChronoUnit.DAYS));
+            LocalDateTime localDateTime = LocalDateTime.now().plus(Duration.of(1, ChronoUnit.DAYS));
             LocalDateTime plusTime = LocalDateTime.now().plus(Duration.of(30, ChronoUnit.MINUTES));
-            if (session.getUserData().getUserSettings().getNotifications()) {
+            if (settingsService.getSettingsByUsername(user.getUsername()).getNotifications()) {
                 tests.forEach(testEntity -> {
                     if (!testEntity.getNotified()) {
-                        if (testEntity.getTestDate().before(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()))) {
+                        if (testEntity.getTestDate().after(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()))) {
                             sendMessage(testEntity, user.getChatId(), session.getUserData().getUserSettings().getInterfaceLang());
                         }
                     }
-                    if (!testEntity.getFirstNotify() && !testEntity.getTestDate().after(new Date()) && !session.getState().equals(States.RETURNED_USER_LIST) && !session.getState().equals(States.TEST_STARTED)) {
+                    if (!testEntity.getFirstNotify() && !testEntity.getTestDate().before(new Date()) && !session.getState().equals(States.RETURNED_USER_LIST) && !session.getState().equals(States.TEST_STARTED)) {
                         if (testEntity.getTestDate().before(Date.from(plusTime.atZone(ZoneId.systemDefault()).toInstant()))) {
                             sendPreMessage(testEntity, user.getChatId(), session.getUserData().getUserSettings().getInterfaceLang());
                         }

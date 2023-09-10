@@ -55,9 +55,10 @@ public class SettingsChooseButton implements TextHandler {
             session.getUserData().setUserSettings(settings);
             settingsService.update(settings.getId(), settings);
             session.setState(States.SUCCESSFULLY_CHANGED_SETTINGS);
+            session.setState(States.SUCCESSFULLY_CHANGED_SETTINGS);
             sessionService.saveSession(request.getChatId(), session);
             telegramService.sendMessage(request.getChatId(), obtainTextService.read("ChangedLang", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
-        } else if (message.equals("\uD83D\uDE48 Choose native languages") || message.equals("\uD83D\uDE48 Вибрати рідну мову")) {
+        } else if (message.equals("🙈 Choose translation languages") || message.equals("🙈 Вибрати мову перекладу")) {
             session.setState(States.CHANGE_NATIVE);
             sessionService.saveSession(request.getChatId(), session);
             List<String> replyList = List.of("\uD83C\uDDFA\uD83C\uDDE6 Українська", "\uD83D\uDC37 Кацапська");

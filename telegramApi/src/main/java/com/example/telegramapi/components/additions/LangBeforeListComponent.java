@@ -25,7 +25,7 @@ public class LangBeforeListComponent {
         UserSession session = sessionService.getSession(request.getChatId());
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         session.setState(States.WAIT_FOR_LANG_PAIR);
-        List<String> replyList = List.of("\uD83C\uDDEC\uD83C\uDDE7 English", "\uD83C\uDDE9\uD83C\uDDEA Deutsch", "\uD83C\uDDEB\uD83C\uDDF7 Français", "\uD83C\uDDEB\uD83C\uDDF7 Español");
+        List<String> replyList = List.of("\uD83C\uDDEC\uD83C\uDDE7 English", "\uD83C\uDDE9\uD83C\uDDEA Deutsch", "\uD83C\uDDEB\uD83C\uDDF7 Français", "\uD83C\uDDEA\uD83C\uDDF8 Español");
         sessionService.saveSession(request.getChatId(), session);
         telegramService.sendMessage(request.getChatId(), obtainTextService.read(
                 "chooseLangList", lang), ReplyKeyboardHelper.buildMainMenu(replyList));

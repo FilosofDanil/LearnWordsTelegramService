@@ -42,7 +42,7 @@ public class TestTabTextHandler implements TextHandler {
 
         } else if (message.equals("🎲 New random word list") || message.equals("🎲 Новий список випадкових слів")) {
             session.setState(States.WAITING_FOR_LANG_BEFORE_RANDOM);
-            List<String> replyList = List.of("\uD83C\uDDEC\uD83C\uDDE7 English", "\uD83C\uDDE9\uD83C\uDDEA Deutsch", "\uD83C\uDDEB\uD83C\uDDF7 Français", "\uD83C\uDDEB\uD83C\uDDF7 Español");
+            List<String> replyList = List.of("\uD83C\uDDEC\uD83C\uDDE7 English", "\uD83C\uDDE9\uD83C\uDDEA Deutsch", "\uD83C\uDDEB\uD83C\uDDF7 Français", "\uD83C\uDDEA\uD83C\uDDF8 Español");
             sessionService.saveSession(request.getChatId(), session);
             telegramService.sendMessage(request.getChatId(), obtainTextService.read(
                     "chooseLangList", lang), ReplyKeyboardHelper.buildMainMenu(replyList));
