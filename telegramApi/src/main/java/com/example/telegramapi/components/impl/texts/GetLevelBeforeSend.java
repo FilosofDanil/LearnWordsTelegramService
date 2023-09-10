@@ -1,6 +1,7 @@
 package com.example.telegramapi.components.impl.texts;
 
 import com.example.telegramapi.components.TextHandler;
+import com.example.telegramapi.components.additions.RandomMessageSender;
 import com.example.telegramapi.entities.UserData;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.entities.UserSession;
@@ -35,6 +36,8 @@ public class GetLevelBeforeSend implements TextHandler {
 
     private final GPTInterogativeService gptService;
 
+    private final RandomMessageSender randomMessageSender;
+
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
@@ -46,9 +49,10 @@ public class GetLevelBeforeSend implements TextHandler {
             String randomList = getRandomList(session, definedLang);
             updateData(session, randomList);
             sessionService.saveSession(request.getChatId(), session);
-            telegramService.sendMessage(request.getChatId(), randomList, ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("randReturn", lang), obtainTextService.read("Rep004", lang))));
+            telegramService.sendMessage(request.getChatId(), randomList, ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("randReturn", lang), obtainTextService.read("Rep004", lang), obtainTextService.read("tryAgain", lang))));
         } else {
             telegramService.sendMessage(request.getChatId(), obtainTextService.read("levelEx", lang), ReplyKeyboardHelper.buildMainMenu(replyList()));
+            randomMessageSender.sendMessage(request);
         }
 
     }

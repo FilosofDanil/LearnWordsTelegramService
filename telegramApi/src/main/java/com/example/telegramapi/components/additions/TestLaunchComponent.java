@@ -30,7 +30,6 @@ public class TestLaunchComponent {
     private final MongoDBService mongoDBService;
 
     public void launchPickedTest(UserRequest request) {
-        System.out.println("ferfe");
         UserSession session = sessionService.getSession(request.getChatId());
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         TestEntity test = getTest(session);
@@ -72,7 +71,6 @@ public class TestLaunchComponent {
     }
 
     private TestEntity getTest(UserSession session) {
-        System.out.println(session.getUserData().getPreviousMessage());
         return testService.getByWordListId(session.getUserData().getPreviousMessage());
     }
 }
