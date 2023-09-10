@@ -20,7 +20,7 @@ public class HelpCommandHandler extends RequestHandler {
 
     private final ObtainTextService obtainTextService;
 
-    private static final String command = "/test";
+    private static final String command = "/help";
 
     @Override
     public boolean isApplicable(UserRequest request) {
