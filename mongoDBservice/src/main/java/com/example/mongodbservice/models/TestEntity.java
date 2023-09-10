@@ -28,4 +28,8 @@ public class TestEntity {
     private Integer passedTimes;
     @Field
     private String listId;
+    @Field
+    private Boolean notified;
+    @Field
+    private Boolean firstNotify;
 }

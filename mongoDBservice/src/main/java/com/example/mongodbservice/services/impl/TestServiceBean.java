@@ -44,7 +44,6 @@ public class TestServiceBean implements TestService {
         Integer passedTimes = testEntity.getPassedTimes();
         if(!Objects.equals(entity.getPassedTimes(), passedTimes)){
             if(passedTimes<7){
-                System.out.println(getFurtherTestDate(passedTimes));
                 entity.setTestDate(getFurtherTestDate(passedTimes));
             } else {
                 repo.deleteById(id);

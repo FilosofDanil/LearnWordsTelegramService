@@ -46,7 +46,7 @@ public class SessionServiceBean implements SessionService {
                     .build();
         }
         if (userData.getUser() == null) {
-            createUser(userData, username, firstName);
+            createUser(userData, username, firstName, request);
         }
         if (userData.getUserSettings() == null) {
             createSettings(userData, username);
@@ -55,11 +55,12 @@ public class SessionServiceBean implements SessionService {
         return session;
     }
 
-    private void createUser(UserData userData, String username, String firstName) {
+    private void createUser(UserData userData, String username, String firstName, UserRequest request) {
         userData.setUser(userService.create(User.builder()
                 .username(username)
                 .registrationDate(new Date())
                 .tgName(firstName)
+                .chatId(request.getChatId())
                 .build()));
     }
 

@@ -1,11 +1,21 @@
 package com.example.telegramapi.services.scheduled;
 
-import com.example.telegramapi.services.ObtainTextService;
-import com.example.telegramapi.services.SessionService;
+import com.example.telegramapi.entities.TestEntity;
+import com.example.telegramapi.entities.User;
+import com.example.telegramapi.entities.UserSession;
+import com.example.telegramapi.enums.States;
+import com.example.telegramapi.services.*;
 import com.example.telegramapi.services.bot.TelegramBotService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,8 +26,45 @@ public class NotificationService {
 
     private final ObtainTextService obtainTextService;
 
-    @Scheduled(cron = "0 * * ? * *")
-    public void notifyAllUsers(){
+    private final UserService userService;
 
+    private final TestService testService;
+
+    @Scheduled(cron = "0 * * ? * *")
+    public void notifyAllUsers() {
+        List<User> userList = userService.getAll();
+        userList.forEach(user -> {
+            List<TestEntity> tests = testService.getAllByUserId(user.getId());
+            UserSession session = sessionService.getSession(user.getChatId());
+            LocalDateTime localDateTime = LocalDateTime.now().minus(Duration.of(1, ChronoUnit.DAYS));
+            LocalDateTime plusTime = LocalDateTime.now().plus(Duration.of(30, ChronoUnit.MINUTES));
+            if (session.getUserData().getUserSettings().getNotifications()) {
+                tests.forEach(testEntity -> {
+                    if (!testEntity.getNotified()) {
+                        if (testEntity.getTestDate().before(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()))) {
+                            sendMessage(testEntity, user.getChatId(), session.getUserData().getUserSettings().getInterfaceLang());
+                        }
+                    }
+                    if (!testEntity.getFirstNotify() && !testEntity.getTestDate().after(new Date()) && !session.getState().equals(States.RETURNED_USER_LIST) && !session.getState().equals(States.TEST_STARTED)) {
+                        if (testEntity.getTestDate().before(Date.from(plusTime.atZone(ZoneId.systemDefault()).toInstant()))) {
+                            sendPreMessage(testEntity, user.getChatId(), session.getUserData().getUserSettings().getInterfaceLang());
+                        }
+                    }
+
+                });
+            }
+        });
+    }
+
+    private void sendMessage(TestEntity testEntity, Long chatId, String lang) {
+        testEntity.setNotified(true);
+        testService.update(testEntity, testEntity.getId());
+        telegramService.sendMessage(chatId, obtainTextService.read("notifications", lang));
+    }
+
+    private void sendPreMessage(TestEntity testEntity, Long chatId, String lang) {
+        testEntity.setFirstNotify(true);
+        testService.update(testEntity, testEntity.getId());
+        telegramService.sendMessage(chatId, obtainTextService.read("notifyBefore", lang));
     }
 }
