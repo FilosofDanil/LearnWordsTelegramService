@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ public class FormTestServiceBean implements FormTestService {
         if (!wordList.contains(word) || !wordList.contains(word.toLowerCase(Locale.ROOT))) {
             wordList.add(word);
         }
+        modifyList(wordList);
         return wordList;
     }
 
@@ -32,5 +34,10 @@ public class FormTestServiceBean implements FormTestService {
                 " - " + lang + "), so as a return list you also must return it on " +
                 lang + ", without losing sense: \n" + word +
                 "Return it at such format: word1,word2,word3 givenWord, without any other text, and without numbers, and no more than 3 words.";
+    }
+
+    private void modifyList(List<String> wordList) {
+        wordList.stream().filter(word -> word != null && !word.equals("null") && !word.contains("."));
+        Collections.shuffle(wordList);
     }
 }
