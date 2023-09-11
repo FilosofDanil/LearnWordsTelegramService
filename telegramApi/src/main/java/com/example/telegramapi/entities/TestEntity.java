@@ -27,4 +27,6 @@ public class TestEntity {
     private Boolean notified;
     @JsonProperty("firstNotify")
     private Boolean firstNotify;
+    @JsonProperty("testReady")
+    private Boolean testReady;
 }

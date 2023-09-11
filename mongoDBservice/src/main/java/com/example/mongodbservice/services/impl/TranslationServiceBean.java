@@ -74,6 +74,7 @@ public class TranslationServiceBean implements TranslationService {
                 .listId(translatedList.getId())
                 .firstNotify(false)
                 .notified(false)
+                .testReady(false)
                 .build();
         testEntitiesRepo.save(testEntity);
     }

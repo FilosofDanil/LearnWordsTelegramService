@@ -32,4 +32,6 @@ public class TestEntity {
     private Boolean notified;
     @Field
     private Boolean firstNotify;
+    @Field
+    private Boolean testReady;
 }

@@ -52,6 +52,7 @@ public class TestServiceBean implements TestService {
         entity.setFirstNotify(testEntity.getFirstNotify());
         entity.setNotified(testEntity.getNotified());
         entity.setPassedTimes(testEntity.getPassedTimes());
+        entity.setTestReady(testEntity.getTestReady());
         repo.save(entity);
     }
 
