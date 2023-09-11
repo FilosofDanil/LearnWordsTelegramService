@@ -2,6 +2,7 @@ package com.example.telegramapi.components.impl.texts;
 
 import com.example.telegramapi.components.TextHandler;
 import com.example.telegramapi.components.additions.MenuComponent;
+import com.example.telegramapi.components.additions.RandomMessageSender;
 import com.example.telegramapi.components.additions.ReturnListComponent;
 import com.example.telegramapi.components.additions.UserListCreatorComponent;
 import com.example.telegramapi.entities.TranslatedListModel;
@@ -32,6 +33,8 @@ public class RandomWordListGenerator implements TextHandler {
 
     private final MenuComponent menuComponent;
 
+    private final RandomMessageSender randomMessageSender;
+
     @Override
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
@@ -47,6 +50,7 @@ public class RandomWordListGenerator implements TextHandler {
         }
         if (message.equals("\uD83D\uDD04 Try again") || message.equals("🔄 Надіслати ще раз")) {
             telegramService.sendMessage(request.getChatId(), obtainTextService.read("okCouldTry", lang));
+            randomMessageSender.sendMessage(request);
         }
     }
 
