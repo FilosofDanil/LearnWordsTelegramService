@@ -49,6 +49,7 @@ public class TestServiceBean implements TestService {
                 repo.deleteById(id);
             }
         }
+        entity.setTests(testEntity.getTests());
         entity.setFirstNotify(testEntity.getFirstNotify());
         entity.setNotified(testEntity.getNotified());
         entity.setPassedTimes(testEntity.getPassedTimes());

@@ -20,7 +20,7 @@ public class UserServiceBean implements DBAService<Users>, com.example.databasea
 
     @Override
     public Users getById(Long id) {
-        return userRepo.getById(id);
+        return userRepo.findById(id).get();
     }
 
     @Override

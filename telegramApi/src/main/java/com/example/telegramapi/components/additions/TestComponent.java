@@ -8,6 +8,7 @@ import com.example.telegramapi.services.SessionService;
 import com.example.telegramapi.services.TestService;
 import com.example.telegramapi.services.bot.TelegramBotService;
 import com.example.telegramapi.sorterts.TestEntitiesDateComparator;
+import com.example.telegramapi.threads.PreparingTestThread;
 import com.example.telegramapi.utils.ReplyKeyboardHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -22,28 +23,30 @@ public class TestComponent {
 
     private final TelegramBotService telegramService;
 
-    private final ObtainTextService obtainTextService;
+    private final PreparingTestComponent preparingTestComponent;
 
     private final TestService testService;
-
-    private final FormTestComponent formComponent;
-
-    private final MongoDBService mongoDBService;
 
     private final TestTabComponent testTabComponent;
 
     public void handleTestRequest(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
-        String lang = session.getUserData().getUserSettings().getInterfaceLang();
         List<TestEntity> tests = testService.getAllByUserId(session.getUserData().getUser().getId());
         if (!tests.isEmpty()) {
             TestEntity first = getFirst(tests);
             if (first.getTestDate().before(new Date())) {
-                session.setState(States.PREPARES_TEST);
-                sessionService.saveSession(request.getChatId(), session);
-                telegramService.sendMessage(request.getChatId(), obtainTextService.read(
-                        "PreparingTest", lang));
-                createTest(first, lang);
+                if (!first.getTestReady()) {
+                    preparingTestComponent.prepareTest(request);
+                    PreparingTestThread testThread = new PreparingTestThread(first.getId(), testService);
+                    synchronized (testThread) {
+                        try {
+                            testThread.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    first = testService.getById(first.getId());
+                }
                 startTest(session, first);
                 sessionService.saveSession(request.getChatId(), session);
                 telegramService.sendMessage(request.getChatId(), formTaskString(session));
@@ -76,9 +79,9 @@ public class TestComponent {
         return tests.get(0);
     }
 
-    private void createTest(TestEntity first, String lang) {
-        List<Test> resultTests = formComponent.formTest(first, lang, mongoDBService.getById(first.getListId()));
-        first.setTests(resultTests);
-        testService.update(first, first.getId());
-    }
+//    private void createTest(TestEntity first, String lang) {
+//        List<Test> resultTests = formComponent.formTest(first, lang, mongoDBService.getById(first.getListId()));
+//        first.setTests(resultTests);
+//        testService.update(first, first.getId());
+//    }
 }
