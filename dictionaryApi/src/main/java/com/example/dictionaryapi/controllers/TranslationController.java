@@ -24,7 +24,7 @@ public class TranslationController {
     }
 
     @GetMapping("/detailed/{word}")
-    public String detailedTranslate(@PathVariable String word) {
-        return detailedTranslateService.translate(word);
+    public String detailedTranslate(@PathVariable String word, @PathParam("langs") String langs) {
+        return detailedTranslateService.translate(word, langs);
     }
 }
