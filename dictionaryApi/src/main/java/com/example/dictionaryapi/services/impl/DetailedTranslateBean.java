@@ -24,7 +24,8 @@ public class DetailedTranslateBean implements DetailedTranslateService {
     private String formRequest(String word, String from, String to) {
         return "Translate please given word: " + word + " from " + from + " to " + to + " \n" +
                 "Give completely definition of this word. Also give all the word forms and build 2-3 example sentences with that." +
-                "Note: Definitions and sentences also must be translated on " + to;
+                "Note: Definitions and sentences also must be translated on " + to +"\n" +
+                "So, you should give definitions on the "+to +" Not on English or any other language";
     }
 
     private String[] detectLanguages(String langs) {
