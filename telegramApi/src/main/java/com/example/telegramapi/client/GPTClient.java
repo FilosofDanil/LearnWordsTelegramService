@@ -14,6 +14,9 @@ public interface GPTClient {
     @RequestMapping(method = RequestMethod.GET, value = "/translate/{text}")
     TranslatedListModel getMessage(@PathVariable("text") String text, @RequestParam("langs") String langs);
 
+    @RequestMapping(method = RequestMethod.GET, value = "/translate/detailed/{word}")
+    String getDetailedTranslate(@PathVariable("word") String word, @RequestParam("langs") String langs);
+
     @RequestMapping(method = RequestMethod.GET, value = "/test/{answer}")
     List<String> getTests(@PathVariable("answer") String answer, @RequestParam("lang") String lang);
 

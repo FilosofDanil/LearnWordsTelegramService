@@ -20,6 +20,12 @@ public class GPTInterogativeServiceBean implements GPTInterogativeService {
     }
 
     @Override
+    public String getDetailedTranslate(String word, String langFrom, String langTo) {
+        String lang = defineLangFrom(langFrom) + "/" + defineLangTo(langTo);
+        return gptClient.getDetailedTranslate(word, lang);
+    }
+
+    @Override
     public List<String> getTests(String word, String lang) {
         return gptClient.getTests(word, lang);
     }
