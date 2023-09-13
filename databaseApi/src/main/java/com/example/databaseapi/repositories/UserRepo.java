@@ -13,8 +13,6 @@ import java.util.List;
 public interface UserRepo extends CrudRepository<Users, Long> {
     List<Users> findAll();
 
-    Users getById(Long id);
-
     Users findByUsername(String username);
 
     @Modifying

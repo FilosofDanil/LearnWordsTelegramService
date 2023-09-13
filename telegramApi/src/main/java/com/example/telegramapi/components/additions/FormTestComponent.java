@@ -34,7 +34,7 @@ public class FormTestComponent {
                 String language = languageComponent.getLang(model.getLangFrom());
                 row.setResponseKeyboard(gptService.getTests(correct, language));
                 try {
-                    Thread.sleep(10000);
+                    Thread.sleep(15000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

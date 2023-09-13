@@ -27,6 +27,7 @@ public class TestTabComponent {
 
         if (session.getUserData().getUserSettings().getNativeLang().equals("none") || session.getUserData().getUserSettings().getNativeLang() == null) {
             List<String> replyList = List.of("\uD83C\uDDFA\uD83C\uDDE6 Українська", "\uD83D\uDC37 Кацапська");
+            session.setState(States.CHOOSE_NATIVE_BEFORE);
             telegramService.sendMessage(request.getChatId(), obtainTextService.read("firstChooseN", lang), ReplyKeyboardHelper.buildMainMenu(replyList));
         } else {
             List<String> replyList = List.of(obtainTextService.read("Rep006", lang), obtainTextService.read("Rep007", lang), obtainTextService.read("Rep008", lang), obtainTextService.read("Rep004", lang));

@@ -31,8 +31,7 @@ public class TranslationServiceBean implements MongoDBService {
 
     @Override
     public UserWordList create( UserWordList wordList) {
-        client.create(wordList);
-        return wordList;
+        return client.create(wordList);
     }
 
     @Override

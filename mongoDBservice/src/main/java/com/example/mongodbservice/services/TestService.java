@@ -11,6 +11,9 @@ public interface TestService {
 
     TestEntity getById(String id);
 
+    TestEntity getByWordListId(String id);
+
+
     void update(TestEntity testEntity, String id);
 
     void delete(String id);

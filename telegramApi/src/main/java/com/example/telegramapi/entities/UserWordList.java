@@ -11,6 +11,8 @@ import java.util.Map;
 @Builder
 @ToString
 public class UserWordList {
+    @JsonProperty("id")
+    private String id;
     @JsonProperty("translations")
     private Map<String, String> translations;
     @JsonProperty("definitions")

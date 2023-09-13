@@ -23,4 +23,10 @@ public class TestEntity {
     private Integer passedTimes;
     @JsonProperty("listId")
     private String listId;
+    @JsonProperty("notified")
+    private Boolean notified;
+    @JsonProperty("firstNotify")
+    private Boolean firstNotify;
+    @JsonProperty("testReady")
+    private Boolean testReady;
 }

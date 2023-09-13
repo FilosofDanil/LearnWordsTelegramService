@@ -18,4 +18,6 @@ public class User {
     private String username;
     @JsonProperty("registrationDate")
     private Date registrationDate;
+    @JsonProperty("chatId")
+    private Long chatId;
 }

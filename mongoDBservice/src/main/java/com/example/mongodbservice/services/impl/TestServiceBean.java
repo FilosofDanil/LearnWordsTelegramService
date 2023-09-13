@@ -34,19 +34,26 @@ public class TestServiceBean implements TestService {
     }
 
     @Override
+    public TestEntity getByWordListId(String id) {
+        return repo.findByListId(id);
+    }
+
+    @Override
     public void update(TestEntity testEntity, String id) {
         TestEntity entity = repo.findById(id);
         Integer passedTimes = testEntity.getPassedTimes();
         if(!Objects.equals(entity.getPassedTimes(), passedTimes)){
             if(passedTimes<7){
-                System.out.println(getFurtherTestDate(passedTimes));
                 entity.setTestDate(getFurtherTestDate(passedTimes));
             } else {
                 repo.deleteById(id);
             }
         }
         entity.setTests(testEntity.getTests());
+        entity.setFirstNotify(testEntity.getFirstNotify());
+        entity.setNotified(testEntity.getNotified());
         entity.setPassedTimes(testEntity.getPassedTimes());
+        entity.setTestReady(testEntity.getTestReady());
         repo.save(entity);
     }
 

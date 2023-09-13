@@ -26,7 +26,7 @@ public class WordListComponentAdvicor {
 
     private final DivideService divideServiceBean;
 
-    private final UserListCreatorComponent creator;
+    private final ReturnListComponent returnListComponent;
 
     public void createWordList(UserRequest request){
         UserSession session = sessionService.getSession(request.getChatId());
@@ -36,10 +36,7 @@ public class WordListComponentAdvicor {
         saveMessage(message, session);
         sessionService.saveSession(request.getChatId(), session);
         telegramService.sendMessage(request.getChatId(), obtainTextService.read("waitMoment", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("tryAgain", lang))));
-        TranslatedListModel translatedListModel = creator.createUserSettings(session, message);
-        session.setState(States.RETURNED_USER_LIST);
-        sessionService.saveSession(request.getChatId(), session);
-        telegramService.sendMessage(request.getChatId(), obtainTextService.read("gotList", lang) + "\n" + translatedListModel.getMessage(), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
+        returnListComponent.sendTest(request);
     }
 
     private String listToString(List<String> list) {

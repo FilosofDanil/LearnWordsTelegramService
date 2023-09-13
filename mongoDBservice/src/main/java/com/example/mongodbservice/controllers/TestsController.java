@@ -12,6 +12,7 @@ import java.util.List;
 @RequestMapping("api/v1/map/tests")
 public class TestsController {
     private final TestService testService;
+
     @GetMapping("")
     public List<TestEntity> getAll() {
         return testService.getAll();
@@ -25,6 +26,11 @@ public class TestsController {
     @GetMapping("/{id}")
     public TestEntity getById(@PathVariable String id) {
         return testService.getById(id);
+    }
+
+    @GetMapping("/list/{listId}")
+    public TestEntity getByWordListId(@PathVariable String listId) {
+        return testService.getByWordListId(listId);
     }
 
     @PutMapping("/{id}")

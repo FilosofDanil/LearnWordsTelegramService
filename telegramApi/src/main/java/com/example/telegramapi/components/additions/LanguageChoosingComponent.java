@@ -13,8 +13,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class LanguageChoosingComponent {
-    private final ObtainTextService obtainTextService;
-
     private final SessionService sessionService;
 
     private final TelegramBotService telegramService;
@@ -24,13 +22,13 @@ public class LanguageChoosingComponent {
         String message = request.getUpdate().getMessage().getText();
         String inputString;
         if (message.equals("\uD83C\uDDEC\uD83C\uDDE7 English")) {
-            inputString = "en";
+            inputString = "English";
         } else if (message.equals("\uD83C\uDDE9\uD83C\uDDEA Deutsch")) {
-            inputString = "de";
+            inputString = "German";
         } else if (message.equals("\uD83C\uDDEB\uD83C\uDDF7 Français")) {
-            inputString = "fr";
+            inputString = "French";
         } else if (message.equals("\uD83C\uDDEB\uD83C\uDDF7 Español")) {
-            inputString = "es";
+            inputString = "Spanish";
         } else {
             telegramService.sendMessage(request.getChatId(),
                     "Try one more.");

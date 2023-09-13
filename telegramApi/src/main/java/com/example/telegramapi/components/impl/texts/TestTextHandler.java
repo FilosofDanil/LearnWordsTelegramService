@@ -80,7 +80,6 @@ public class TestTextHandler implements TextHandler {
     private void saveTest(UserSession session, TestEntity test) {
         UserData userData = session.getUserData();
         userData.setCurrentTest(null);
-        userData.setCurrentTest(null);
         session.setUserData(userData);
         testService.update(test, test.getId());
     }
