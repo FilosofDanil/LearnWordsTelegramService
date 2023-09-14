@@ -35,6 +35,9 @@ public class TestComponent {
         List<TestEntity> tests = testService.getAllByUserId(session.getUserData().getUser().getId());
         if (!tests.isEmpty()) {
             TestEntity first = getTest(session);
+            if(first == null) {
+                first = getFirst(tests);
+            }
             if (!first.getTestDate().before(new Date())) {
                 first = getFirst(tests);
             }
@@ -88,6 +91,10 @@ public class TestComponent {
     }
 
     private TestEntity getTest(UserSession session) {
-        return testService.getByWordListId(session.getUserData().getPreviousMessage());
+        if(session.getUserData().getPreviousMessage()==null){
+            return null;
+        } else{
+            return testService.getByWordListId(session.getUserData().getPreviousMessage());
+        }
     }
 }

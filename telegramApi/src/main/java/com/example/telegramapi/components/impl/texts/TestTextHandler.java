@@ -50,6 +50,10 @@ public class TestTextHandler implements TextHandler {
                     telegramService.sendMessage(request.getChatId(), formTaskString(session), ReplyKeyboardHelper.buildMainMenu(current.getResponseKeyboard()));
                     return;
                 }
+                if (current.getTestFormat().equals(TestFormat.QUIZ_FORMAT)) {
+                    session.setState(States.QUIZ);
+                    sessionService.saveSession(request.getChatId(), session);
+                }
                 telegramService.sendMessage(request.getChatId(), formTaskString(session));
             } else {
                 test.setPassedTimes(test.getPassedTimes() + 1);
