@@ -18,4 +18,5 @@ public class UserData {
     private Integer inputInt;
     private List<String> randList;
     private Map<Character, List<Integer>> replacedMap;
+    private Integer quizAttempts;
 }
