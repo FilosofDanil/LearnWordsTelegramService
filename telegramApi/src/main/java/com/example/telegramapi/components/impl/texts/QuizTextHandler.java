@@ -6,7 +6,6 @@ import com.example.telegramapi.entities.*;
 import com.example.telegramapi.enums.States;
 import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;
-import com.example.telegramapi.services.TestService;
 import com.example.telegramapi.services.bot.TelegramBotService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -26,8 +25,6 @@ public class QuizTextHandler implements TextHandler {
 
     private final ObtainTextService obtainTextService;
 
-    private final TestService testService;
-
     private final QuizGenerateComponent quizGenerateComponent;
 
     @Override
@@ -36,25 +33,33 @@ public class QuizTextHandler implements TextHandler {
         TestEntity test = session.getUserData().getCurrentTest();
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         String message = request.getUpdate().getMessage().getText();
-        if (message.length() > 1) {
+        if(session.getUserData().getLettersList() == null){
+            message = "Got it!";
+            saveLettersList(session, generateLetterList(test.getTests().get(session.getUserData().getCurrentTask()).getCorrectAnswers().get(0)));
+            telegramService.sendMessage(request.getChatId(), "Fine lets start our test!");
+        } else if (message.length() > 1) {
             telegramService.sendMessage(request.getChatId(), "Try one more!");
             return;
         }
         Character answer = getAnswer(message);
-        List<Character> lettersList = generateLetterList(message);
+        List<Character> lettersList = session.getUserData().getLettersList();
         if (session.getUserData().getReplacedMap() == null) {
             saveMapInUserData(session, quizGenerateComponent.generateQuiz(lettersList));
         }
         Map<Character, List<Integer>> replacedMap = session.getUserData().getReplacedMap();
         if (!replacedMap.isEmpty() && session.getUserData().getQuizAttempts() > 0) {
             String response = guess(answer, lettersList, replacedMap);
-            if(response.equals("Incorrect")){
+            if (message.equals("Got it!")){
+                response = "Just type the letters below";
+            }else if (response.equals("Incorrect")) {
                 attempt(session);
             }
             sessionService.saveSession(request.getChatId(), session);
             telegramService.sendMessage(request.getChatId(), lettersToString(lettersList) + response);
-        } else {
+        }
+        if (replacedMap.isEmpty() || session.getUserData().getQuizAttempts() == 0) {
             saveMapInUserData(session, null);
+            saveLettersList(session, null);
             telegramService.sendMessage(request.getChatId(), obtainTextService.read("quizFinished", lang));
             startTest(session, test);
             sessionService.saveSession(request.getChatId(), session);
@@ -74,7 +79,7 @@ public class QuizTextHandler implements TextHandler {
     private String formTaskString(UserSession session) {
         Integer currentTask = session.getUserData().getCurrentTask();
         Test task = session.getUserData().getCurrentTest().getTests().get(currentTask);
-        String responseMessage = "Test Started! \n " + "Task#" + currentTask + " \n";
+        String responseMessage = "Task#" + currentTask + " \n";
         return responseMessage + task.getResponseMessage();
     }
 
@@ -94,9 +99,7 @@ public class QuizTextHandler implements TextHandler {
                          Map<Character, List<Integer>> replacedLettersList) {
         if (replacedLettersList.containsKey(guess)) {
             List<Integer> list = replacedLettersList.get(guess);
-            list.forEach(lettersIdx -> {
-                lettersList.set(lettersIdx, guess);
-            });
+            list.forEach(lettersIdx -> lettersList.set(lettersIdx, guess));
             replacedLettersList.remove(guess);
             return "Correct";
         }
@@ -122,7 +125,13 @@ public class QuizTextHandler implements TextHandler {
             stringBuilder.append(letter);
             stringBuilder.append(" ");
         });
-        return stringBuilder.toString() +"\n";
+        return stringBuilder + "\n";
+    }
+
+    private void saveLettersList(UserSession session, List<Character> letters) {
+        UserData userData = session.getUserData();
+        userData.setLettersList(letters);
+        session.setUserData(userData);
     }
 
     @Override
