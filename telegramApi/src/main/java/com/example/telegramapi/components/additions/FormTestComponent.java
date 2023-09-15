@@ -39,7 +39,8 @@ public class FormTestComponent {
                     e.printStackTrace();
                 }
             } else if (row.getTestFormat().equals(TestFormat.QUIZ_FORMAT)) {
-                row.setResponseMessage(obtainTextService.read("testText_203", lang) + ":\n" + translatedMap.get(correct));
+                row.setResponseMessage(obtainTextService.read("testText_203", lang) + ":\n");
+                row.setResponseKeyboard(List.of(obtainTextService.read("gotIt", lang)));
             } else if (row.getTestFormat().equals(TestFormat.BACK_DEFINITION_FORMAT)) {
                 row.setResponseMessage(obtainTextService.read("testText_202", lang) + ":\n" + definitionMap.get(correct));
             } else {

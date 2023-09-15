@@ -1,7 +1,7 @@
 package com.example.telegramapi.components.impl.queries;
 
 import com.example.telegramapi.components.QueryHandler;
-import com.example.telegramapi.components.additions.TestLaunchComponent;
+import com.example.telegramapi.components.additions.TestComponent;
 import com.example.telegramapi.entities.UserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class TestLaunchQueryHandler implements QueryHandler {
-    private final TestLaunchComponent testLaunchComponent;
+    private final TestComponent testComponent;
 
     @Override
     public void handle(UserRequest request) {
-        testLaunchComponent.launchPickedTest(request);
+        testComponent.handleTestRequest(request);
     }
 
     @Override

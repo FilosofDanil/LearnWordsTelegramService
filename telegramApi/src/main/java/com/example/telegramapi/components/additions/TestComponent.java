@@ -2,6 +2,7 @@ package com.example.telegramapi.components.additions;
 
 import com.example.telegramapi.entities.*;
 import com.example.telegramapi.enums.States;
+import com.example.telegramapi.enums.TestFormat;
 import com.example.telegramapi.services.MongoDBService;
 import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;
@@ -33,7 +34,13 @@ public class TestComponent {
         UserSession session = sessionService.getSession(request.getChatId());
         List<TestEntity> tests = testService.getAllByUserId(session.getUserData().getUser().getId());
         if (!tests.isEmpty()) {
-            TestEntity first = getFirst(tests);
+            TestEntity first = getTest(session);
+            if(first == null) {
+                first = getFirst(tests);
+            }
+            if (!first.getTestDate().before(new Date())) {
+                first = getFirst(tests);
+            }
             if (first.getTestDate().before(new Date())) {
                 if (!first.getTestReady()) {
                     preparingTestComponent.prepareTest(request);
@@ -65,6 +72,10 @@ public class TestComponent {
         userData.setCurrentTest(first);
         userData.setCurrentTask(0);
         session.setUserData(userData);
+        if (first.getTests().get(0).getTestFormat().equals(TestFormat.QUIZ_FORMAT)) {
+            session.setState(States.QUIZ);
+            return;
+        }
         session.setState(States.TEST_STARTED);
     }
 
@@ -79,9 +90,11 @@ public class TestComponent {
         return tests.get(0);
     }
 
-//    private void createTest(TestEntity first, String lang) {
-//        List<Test> resultTests = formComponent.formTest(first, lang, mongoDBService.getById(first.getListId()));
-//        first.setTests(resultTests);
-//        testService.update(first, first.getId());
-//    }
+    private TestEntity getTest(UserSession session) {
+        if(session.getUserData().getPreviousMessage()==null){
+            return null;
+        } else{
+            return testService.getByWordListId(session.getUserData().getPreviousMessage());
+        }
+    }
 }

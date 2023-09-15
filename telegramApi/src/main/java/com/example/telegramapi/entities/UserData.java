@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -16,4 +17,7 @@ public class UserData {
     private Integer currentTask;
     private Integer inputInt;
     private List<String> randList;
+    private List<Character> lettersList;
+    private Map<Character, List<Integer>> replacedMap;
+    private Integer quizAttempts;
 }
