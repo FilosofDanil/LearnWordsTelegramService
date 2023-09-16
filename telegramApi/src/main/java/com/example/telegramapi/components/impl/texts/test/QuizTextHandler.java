@@ -1,7 +1,7 @@
 package com.example.telegramapi.components.impl.texts.test;
 
 import com.example.telegramapi.components.TextHandler;
-import com.example.telegramapi.components.additions.QuizGenerateComponent;
+import com.example.telegramapi.components.sup.test.QuizGenerateComponent;
 import com.example.telegramapi.entities.*;
 import com.example.telegramapi.enums.States;
 import com.example.telegramapi.services.ObtainTextService;

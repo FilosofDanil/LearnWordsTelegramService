@@ -1,4 +1,4 @@
-package com.example.telegramapi.components.additions;
+package com.example.telegramapi.components.sup.tab;
 
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.entities.UserSession;

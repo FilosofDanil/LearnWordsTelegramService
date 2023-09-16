@@ -1,11 +1,9 @@
 package com.example.telegramapi.components.impl.texts.tabs;
 
 import com.example.telegramapi.components.TextHandler;
-import com.example.telegramapi.components.additions.MenuComponent;
-import com.example.telegramapi.components.additions.RandomMessageSender;
-import com.example.telegramapi.components.additions.ReturnListComponent;
-import com.example.telegramapi.components.additions.UserListCreatorComponent;
-import com.example.telegramapi.entities.TranslatedListModel;
+import com.example.telegramapi.components.sup.tab.MenuComponent;
+import com.example.telegramapi.components.sup.word_list.RandomMessageSender;
+import com.example.telegramapi.components.sup.word_list.ReturnListComponent;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.entities.UserSession;
 import com.example.telegramapi.enums.States;

@@ -1,7 +1,7 @@
 package com.example.telegramapi.components.impl.texts.backbuttons;
 
 import com.example.telegramapi.components.TextHandler;
-import com.example.telegramapi.components.additions.WordListComponentAdvicor;
+import com.example.telegramapi.components.sup.word_list.WordListComponentAdvicor;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.enums.States;
 import lombok.RequiredArgsConstructor;

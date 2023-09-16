@@ -1,4 +1,4 @@
-package com.example.telegramapi.components.additions;
+package com.example.telegramapi.components.sup.word_list;
 
 import com.example.telegramapi.entities.TranslatedListModel;
 import com.example.telegramapi.entities.UserSession;

@@ -1,4 +1,4 @@
-package com.example.telegramapi.components.additions;
+package com.example.telegramapi.components.sup.test;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

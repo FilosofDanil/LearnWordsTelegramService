@@ -1,18 +1,12 @@
 package com.example.telegramapi.components.impl.texts.intermidiate_operations;
 
 import com.example.telegramapi.components.TextHandler;
-import com.example.telegramapi.components.additions.MenuComponent;
-import com.example.telegramapi.components.additions.UserListCreatorComponent;
-import com.example.telegramapi.components.additions.WordListComponentAdvicor;
+import com.example.telegramapi.components.sup.tab.MenuComponent;
+import com.example.telegramapi.components.sup.word_list.WordListComponentAdvicor;
 import com.example.telegramapi.entities.*;
 import com.example.telegramapi.enums.States;
-import com.example.telegramapi.services.*;
-import com.example.telegramapi.services.bot.TelegramBotService;
-import com.example.telegramapi.utils.ReplyKeyboardHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor

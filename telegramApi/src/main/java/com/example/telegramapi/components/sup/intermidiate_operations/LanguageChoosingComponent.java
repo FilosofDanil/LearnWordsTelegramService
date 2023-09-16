@@ -1,13 +1,11 @@
-package com.example.telegramapi.components.additions;
+package com.example.telegramapi.components.sup.intermidiate_operations;
 
 import com.example.telegramapi.entities.UserData;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.entities.UserSession;
-import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;
 import com.example.telegramapi.services.bot.TelegramBotService;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 @Component

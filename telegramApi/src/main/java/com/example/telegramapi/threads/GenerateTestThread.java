@@ -1,6 +1,6 @@
 package com.example.telegramapi.threads;
 
-import com.example.telegramapi.components.additions.FormTestComponent;
+import com.example.telegramapi.components.sup.test.FormTestComponent;
 import com.example.telegramapi.entities.*;
 import com.example.telegramapi.services.MongoDBService;
 import com.example.telegramapi.services.SessionService;

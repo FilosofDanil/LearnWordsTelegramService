@@ -1,7 +1,7 @@
 package com.example.telegramapi.components.impl.texts.tabs;
 
 import com.example.telegramapi.components.TextHandler;
-import com.example.telegramapi.components.additions.MenuComponent;
+import com.example.telegramapi.components.sup.tab.MenuComponent;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.entities.UserSession;
 import com.example.telegramapi.entities.UserSettings;
@@ -10,7 +10,6 @@ import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;
 import com.example.telegramapi.services.SettingsService;
 import com.example.telegramapi.services.bot.TelegramBotService;
-import com.example.telegramapi.utils.InlineKeyboardHelper;
 import com.example.telegramapi.utils.ReplyKeyboardHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

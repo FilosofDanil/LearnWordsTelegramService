@@ -14,15 +14,5 @@ public class MessageSenderComponent {
 
     private final ObtainTextService obtainTextService;
 
-    public void sendMessage(String code){
 
-    }
-
-    public void sendMessage(String code, List<String> replyList){
-
-    }
-
-    public void sendMessage(String code, List<String> replyList, boolean inline){
-
-    }
 }

@@ -1,7 +1,6 @@
 package com.example.telegramapi.components.impl.commands;
 
 import com.example.telegramapi.components.RequestHandler;
-import com.example.telegramapi.components.additions.TestComponent;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.entities.UserSession;
 import com.example.telegramapi.enums.States;

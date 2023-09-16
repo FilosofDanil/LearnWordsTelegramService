@@ -1,7 +1,7 @@
 package com.example.telegramapi.components.impl.texts.intermidiate_operations;
 
 import com.example.telegramapi.components.TextHandler;
-import com.example.telegramapi.components.additions.RandomMessageSender;
+import com.example.telegramapi.components.sup.word_list.RandomMessageSender;
 import com.example.telegramapi.entities.UserData;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.entities.UserSession;

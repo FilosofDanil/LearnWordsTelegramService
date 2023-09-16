@@ -1,5 +1,6 @@
-package com.example.telegramapi.components.additions;
+package com.example.telegramapi.components.sup.test;
 
+import com.example.telegramapi.components.sup.data.LanguageComponent;
 import com.example.telegramapi.entities.Test;
 import com.example.telegramapi.entities.TestEntity;
 import com.example.telegramapi.entities.UserWordList;

@@ -1,16 +1,15 @@
-package com.example.telegramapi.components.additions;
+package com.example.telegramapi.components.sup.test;
 
+import com.example.telegramapi.components.sup.intermidiate_operations.PreparingTestComponent;
+import com.example.telegramapi.components.sup.tab.TestTabComponent;
 import com.example.telegramapi.entities.*;
 import com.example.telegramapi.enums.States;
 import com.example.telegramapi.enums.TestFormat;
-import com.example.telegramapi.services.MongoDBService;
-import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;
 import com.example.telegramapi.services.TestService;
 import com.example.telegramapi.services.bot.TelegramBotService;
 import com.example.telegramapi.sorterts.TestEntitiesDateComparator;
 import com.example.telegramapi.threads.PreparingTestThread;
-import com.example.telegramapi.utils.ReplyKeyboardHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

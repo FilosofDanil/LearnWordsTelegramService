@@ -1,4 +1,4 @@
-package com.example.telegramapi.components.additions;
+package com.example.telegramapi.components.sup.data;
 
 import org.springframework.stereotype.Component;
 

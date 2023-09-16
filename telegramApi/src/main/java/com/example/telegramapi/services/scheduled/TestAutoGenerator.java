@@ -1,6 +1,6 @@
 package com.example.telegramapi.services.scheduled;
 
-import com.example.telegramapi.components.additions.FormTestComponent;
+import com.example.telegramapi.components.sup.test.FormTestComponent;
 import com.example.telegramapi.services.MongoDBService;
 import com.example.telegramapi.services.SessionService;
 import com.example.telegramapi.services.TestService;

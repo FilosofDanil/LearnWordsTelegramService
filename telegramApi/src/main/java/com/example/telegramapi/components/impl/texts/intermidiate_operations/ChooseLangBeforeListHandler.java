@@ -1,8 +1,7 @@
 package com.example.telegramapi.components.impl.texts.intermidiate_operations;
 
 import com.example.telegramapi.components.TextHandler;
-import com.example.telegramapi.components.additions.LanguageChoosingComponent;
-import com.example.telegramapi.entities.UserData;
+import com.example.telegramapi.components.sup.intermidiate_operations.LanguageChoosingComponent;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.entities.UserSession;
 import com.example.telegramapi.enums.States;

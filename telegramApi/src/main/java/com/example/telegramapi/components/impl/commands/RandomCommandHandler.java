@@ -1,7 +1,7 @@
 package com.example.telegramapi.components.impl.commands;
 
 import com.example.telegramapi.components.RequestHandler;
-import com.example.telegramapi.components.additions.RandomMessageSender;
+import com.example.telegramapi.components.sup.word_list.RandomMessageSender;
 import com.example.telegramapi.entities.UserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

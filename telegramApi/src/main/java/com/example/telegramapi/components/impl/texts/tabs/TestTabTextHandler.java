@@ -1,9 +1,9 @@
 package com.example.telegramapi.components.impl.texts.tabs;
 
 import com.example.telegramapi.components.TextHandler;
-import com.example.telegramapi.components.additions.LangBeforeListComponent;
-import com.example.telegramapi.components.additions.MenuComponent;
-import com.example.telegramapi.components.additions.RandomMessageSender;
+import com.example.telegramapi.components.sup.intermidiate_operations.LangBeforeListComponent;
+import com.example.telegramapi.components.sup.tab.MenuComponent;
+import com.example.telegramapi.components.sup.word_list.RandomMessageSender;
 import com.example.telegramapi.entities.UserRequest;
 import com.example.telegramapi.enums.States;
 import lombok.RequiredArgsConstructor;
