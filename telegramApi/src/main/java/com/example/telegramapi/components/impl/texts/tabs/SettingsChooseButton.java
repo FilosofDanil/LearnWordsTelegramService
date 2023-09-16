@@ -1,4 +1,4 @@
-package com.example.telegramapi.components.impl.texts;
+package com.example.telegramapi.components.impl.texts.tabs;
 
 import com.example.telegramapi.components.TextHandler;
 import com.example.telegramapi.components.additions.MenuComponent;
@@ -47,14 +47,9 @@ public class SettingsChooseButton implements TextHandler {
             menuComponent.handleMenuRequest(request);
         } else if (message.equals("\uD83D\uDD15 Cancel notifications") || message.equals("\uD83D\uDD15 Скасувати сповіщення") || message.equals("\uD83D\uDD14 Enable notifications") || message.equals("\uD83D\uDD14 Увімкнути сповіщення")) {
             UserSettings settings = settingsService.getSettingsByUsername(session.getUserData().getUser().getUsername());
-            if (settings.getNotifications()) {
-                settings.setNotifications(false);
-            } else {
-                settings.setNotifications(true);
-            }
+            settings.setNotifications(!settings.getNotifications());
             session.getUserData().setUserSettings(settings);
             settingsService.update(settings.getId(), settings);
-            session.setState(States.SUCCESSFULLY_CHANGED_SETTINGS);
             session.setState(States.SUCCESSFULLY_CHANGED_SETTINGS);
             sessionService.saveSession(request.getChatId(), session);
             telegramService.sendMessage(request.getChatId(), obtainTextService.read("ChangedLang", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));

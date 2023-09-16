@@ -1,4 +1,4 @@
-package com.example.telegramapi.components.impl.texts;
+package com.example.telegramapi.components.impl.texts.backbuttons;
 
 import com.example.telegramapi.components.TextHandler;
 import com.example.telegramapi.components.additions.MenuComponent;

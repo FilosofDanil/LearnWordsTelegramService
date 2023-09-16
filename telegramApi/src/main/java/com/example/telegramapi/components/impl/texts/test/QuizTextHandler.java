@@ -1,4 +1,4 @@
-package com.example.telegramapi.components.impl.texts;
+package com.example.telegramapi.components.impl.texts.test;
 
 import com.example.telegramapi.components.TextHandler;
 import com.example.telegramapi.components.additions.QuizGenerateComponent;

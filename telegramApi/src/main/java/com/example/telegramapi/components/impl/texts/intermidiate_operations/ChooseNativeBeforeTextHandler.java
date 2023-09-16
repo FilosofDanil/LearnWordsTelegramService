@@ -1,4 +1,4 @@
-package com.example.telegramapi.components.impl.texts;
+package com.example.telegramapi.components.impl.texts.intermidiate_operations;
 
 import com.example.telegramapi.components.TextHandler;
 import com.example.telegramapi.entities.UserRequest;
@@ -17,14 +17,14 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class ChangeLanguageHandler implements TextHandler {
-    private final States applicable = States.CHANGE_LANGUAGE;
+public class ChooseNativeBeforeTextHandler implements TextHandler {
+    private final States applicable = States.CHOOSE_NATIVE_BEFORE;
+
+    private final ObtainTextService obtainTextService;
 
     private final SessionService sessionService;
 
     private final TelegramBotService telegramService;
-
-    private final ObtainTextService obtainTextService;
 
     private final SettingsService settingsService;
 
@@ -35,32 +35,21 @@ public class ChangeLanguageHandler implements TextHandler {
         UserSettings settings = settingsService.getSettingsByUsername(session.getUserData().getUser().getUsername());
         String message = request.getUpdate().getMessage().getText();
         if (message.equals("\uD83C\uDDFA\uD83C\uDDE6 Українська")) {
-            settings.setInterfaceLang("uk");
-        } else if (message.equals("\uD83C\uDDEC\uD83C\uDDE7 English")) {
-            settings.setInterfaceLang("en");
-        } else if (message.equals("🔙 Back") || message.equals("🔙 Назад")) {
-            session.setState(States.SETTINGS);
-            sessionService.saveSession(request.getChatId(), session);
-            List<String> replyList = List.of(obtainTextService.read("Rep000", lang), obtainTextService.read("Rep001", lang), obtainTextService.read("Rep002", lang), obtainTextService.read("Rep003", lang));
-            telegramService.sendMessage(request.getChatId(),
-                    obtainTextService.read("Settings", lang), ReplyKeyboardHelper.buildMainMenu(replyList));
-            return;
-        } else {
+            settings.setNativeLang("uk");
+        }  else if (message.equals("\uD83D\uDC37 Кацапська")) {
+            settings.setNativeLang("ru");
+        }
+        else {
             telegramService.sendMessage(request.getChatId(),
                     "Try one more.");
             return;
         }
-        updateData(session, settings);
-        lang = session.getUserData().getUserSettings().getInterfaceLang();
-        sessionService.saveSession(request.getChatId(), session);
-        telegramService.sendMessage(request.getChatId(),
-                obtainTextService.read("ChangedLang", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
-    }
-
-    private void updateData(UserSession session, UserSettings settings) {
         settingsService.update(settings.getId(), settings);
         session.getUserData().setUserSettings(settings);
-        session.setState(States.SUCCESSFULLY_CHANGED_SETTINGS);
+        session.setState(States.TEST_TAB);
+        sessionService.saveSession(request.getChatId(), session);
+        List<String> replyList = List.of(obtainTextService.read("Rep006", lang), obtainTextService.read("Rep007", lang), obtainTextService.read("Rep008", lang), obtainTextService.read("Rep004", lang));
+        telegramService.sendMessage(request.getChatId(), obtainTextService.read("testTab", lang), ReplyKeyboardHelper.buildMainMenu(replyList));
     }
 
     @Override
