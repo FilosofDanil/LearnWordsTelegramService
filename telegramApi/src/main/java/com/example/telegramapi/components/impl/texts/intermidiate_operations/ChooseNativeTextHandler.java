@@ -36,7 +36,7 @@ public class ChooseNativeTextHandler implements TextHandler {
         String message = request.getUpdate().getMessage().getText();
         if (message.equals("\uD83C\uDDFA\uD83C\uDDE6 Українська")) settings.setNativeLang("uk");
         else if (message.equals("\uD83C\uDDEC\uD83C\uDDE7 English")) settings.setNativeLang("en");
-        else if (message.equals("\uD83D\uDC37 Русский")) settings.setNativeLang("ru");
+        else if (message.equals("\uD83D\uDC37 Кацапська")) settings.setNativeLang("ru");
         else if (message.equals("\uD83C\uDDE9\uD83C\uDDEA Deutsch")) settings.setNativeLang("de");
         else {
             telegramService.sendMessage(request.getChatId(),

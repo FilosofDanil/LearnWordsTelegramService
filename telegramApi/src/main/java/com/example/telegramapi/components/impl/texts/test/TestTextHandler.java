@@ -43,11 +43,8 @@ public class TestTextHandler implements TextHandler {
                 checkPreviousTest(test, request.getUpdate().getMessage().getText(), session);
                 saveInUserData(test, session);
                 sessionService.saveSession(request.getChatId(), session);
-                if (test.getTests().get(curr).getCorrect()) {
-                    telegramService.sendMessage(request.getChatId(), obtainTextService.read("correct", lang));
-                } else {
-                    telegramService.sendMessage(request.getChatId(), obtainTextService.read("incorrect", lang));
-                }
+                if (test.getTests().get(curr).getCorrect()) telegramService.sendMessage(request.getChatId(), obtainTextService.read("correct", lang));
+                else telegramService.sendMessage(request.getChatId(), obtainTextService.read("incorrect", lang));
                 curr = nextTest(session);
                 Test current = session.getUserData().getCurrentTest().getTests().get(curr);
                 if (current.getTestFormat().equals(TestFormat.PICK_FROM_LIST_FORMAT)) {
@@ -60,13 +57,8 @@ public class TestTextHandler implements TextHandler {
                 }
                 telegramService.sendMessage(request.getChatId(), formTaskString(session));
             } else {
-                test.setPassedTimes(test.getPassedTimes() + 1);
-                saveTest(session, test);
-                session.setState(States.TEST_FINISHED);
-                sessionService.saveSession(request.getChatId(), session);
-                telegramService.sendMessage(request.getChatId(), obtainTextService.read("endTest", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
+                finishTest(test, request, session, lang);
             }
-
         }
     }
 
@@ -76,6 +68,14 @@ public class TestTextHandler implements TextHandler {
         userData.setCurrentTask(taskNum);
         session.setUserData(userData);
         return taskNum;
+    }
+
+    private void finishTest(TestEntity test, UserRequest request, UserSession session, String lang){
+        test.setPassedTimes(test.getPassedTimes() + 1);
+        saveTest(session, test);
+        session.setState(States.TEST_FINISHED);
+        sessionService.saveSession(request.getChatId(), session);
+        telegramService.sendMessage(request.getChatId(), obtainTextService.read("endTest", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
     }
 
     private String formTaskString(UserSession session) {
@@ -104,9 +104,8 @@ public class TestTextHandler implements TextHandler {
 
     private boolean checkAnswer(TestEntity test, String answer, int curr) {
         Test checkingTest = test.getTests().get(curr);
-        if (checkingTest.getCorrectAnswers().contains(answer)) {
-            return true;
-        } else return checkingTest.getCorrectAnswers().contains(answer.toLowerCase(Locale.ROOT));
+        if (checkingTest.getCorrectAnswers().contains(answer)) return true;
+        else return checkingTest.getCorrectAnswers().contains(answer.toLowerCase(Locale.ROOT));
     }
 
     private void saveInUserData(TestEntity test, UserSession session) {
