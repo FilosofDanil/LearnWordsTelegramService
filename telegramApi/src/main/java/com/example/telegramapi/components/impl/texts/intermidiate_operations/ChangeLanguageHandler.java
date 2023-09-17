@@ -34,11 +34,9 @@ public class ChangeLanguageHandler implements TextHandler {
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         UserSettings settings = settingsService.getSettingsByUsername(session.getUserData().getUser().getUsername());
         String message = request.getUpdate().getMessage().getText();
-        if (message.equals("\uD83C\uDDFA\uD83C\uDDE6 Українська")) {
-            settings.setInterfaceLang("uk");
-        } else if (message.equals("\uD83C\uDDEC\uD83C\uDDE7 English")) {
-            settings.setInterfaceLang("en");
-        } else if (message.equals("🔙 Back") || message.equals("🔙 Назад")) {
+        if (message.equals("\uD83C\uDDFA\uD83C\uDDE6 Українська")) settings.setInterfaceLang("uk");
+        else if (message.equals("\uD83C\uDDEC\uD83C\uDDE7 English")) settings.setInterfaceLang("en");
+        else if (message.equals("🔙 Back") || message.equals("🔙 Назад")) {
             session.setState(States.SETTINGS);
             sessionService.saveSession(request.getChatId(), session);
             List<String> replyList = List.of(obtainTextService.read("Rep000", lang), obtainTextService.read("Rep001", lang), obtainTextService.read("Rep002", lang), obtainTextService.read("Rep003", lang));

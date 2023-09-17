@@ -19,9 +19,8 @@ public class WordListHandler implements TextHandler {
 
     @Override
     public void handle(UserRequest request) {
-        if(request.getUpdate().getMessage().getText().equals("🔙 Back") || request.getUpdate().getMessage().getText().equals("🔙 Назад")){
-            menuComponent.handleMenuRequest(request);
-        }
+        if(request.getUpdate().getMessage().getText().equals("🔙 Back")
+                || request.getUpdate().getMessage().getText().equals("🔙 Назад")) menuComponent.handleMenuRequest(request);
         advicor.createWordList(request);
     }
 

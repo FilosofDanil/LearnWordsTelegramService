@@ -30,11 +30,9 @@ public class FirstLanguageChange implements TextHandler {
         UserSession session = sessionService.getSession(request.getChatId());
         UserSettings settings = settingsService.getSettingsByUsername(session.getUserData().getUser().getUsername());
         String message = request.getUpdate().getMessage().getText();
-        if(message.equals("\uD83C\uDDFA\uD83C\uDDE6 Українська")){
-            settings.setInterfaceLang("uk");
-        } else if(message.equals("\uD83C\uDDEC\uD83C\uDDE7 English")){
-            settings.setInterfaceLang("en");
-        } else{
+        if (message.equals("\uD83C\uDDFA\uD83C\uDDE6 Українська")) settings.setInterfaceLang("uk");
+        else if (message.equals("\uD83C\uDDEC\uD83C\uDDE7 English")) settings.setInterfaceLang("en");
+        else {
             telegramService.sendMessage(request.getChatId(),
                     "Try one more.");
             return;

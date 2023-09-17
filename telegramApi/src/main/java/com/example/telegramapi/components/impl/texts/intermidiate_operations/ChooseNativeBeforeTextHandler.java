@@ -34,11 +34,8 @@ public class ChooseNativeBeforeTextHandler implements TextHandler {
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         UserSettings settings = settingsService.getSettingsByUsername(session.getUserData().getUser().getUsername());
         String message = request.getUpdate().getMessage().getText();
-        if (message.equals("\uD83C\uDDFA\uD83C\uDDE6 Українська")) {
-            settings.setNativeLang("uk");
-        }  else if (message.equals("\uD83D\uDC37 Кацапська")) {
-            settings.setNativeLang("ru");
-        }
+        if (message.equals("\uD83C\uDDFA\uD83C\uDDE6 Українська")) settings.setNativeLang("uk");
+        else if (message.equals("\uD83D\uDC37 Кацапська")) settings.setNativeLang("ru");
         else {
             telegramService.sendMessage(request.getChatId(),
                     "Try one more.");

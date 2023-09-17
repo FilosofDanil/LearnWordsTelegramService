@@ -30,9 +30,7 @@ public class ChooseLangBeforeListHandler implements TextHandler {
     @Override
     public void handle(UserRequest request) {
         UserSession session = choosingComponent.defineListLanguage(request);
-        if (session == null) {
-            return;
-        }
+        if (session == null) return;
         session.setState(States.WAITING_FOR_LIST);
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         sessionService.saveSession(request.getChatId(), session);

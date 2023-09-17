@@ -37,48 +37,55 @@ public class SettingsChooseButton implements TextHandler {
         UserSession session = sessionService.getSession(request.getChatId());
         String message = request.getUpdate().getMessage().getText();
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
-        if (message.equals("🇬🇧 Змінити мову інтерфейсу") || message.equals("🇬🇧 Change interface language")) {
-            session.setState(States.CHANGE_LANGUAGE);
-            List<String> replyList = List.of("\uD83C\uDDFA\uD83C\uDDE6 Українська", "\uD83C\uDDEC\uD83C\uDDE7 English", obtainTextService.read("Rep004", lang));
-            telegramService.sendMessage(request.getChatId(),
-                    obtainTextService.read("ChooseLanguage", lang), ReplyKeyboardHelper.buildMainMenu(replyList));
-        } else if (message.equals("🔙 Back to the menu tab") || message.equals("🔙 Повернутися до вкладки меню")) {
+        if (message.equals("🇬🇧 Змінити мову інтерфейсу")
+                || message.equals("🇬🇧 Change interface language")) {
+            changeInterfaceLang(session, request, lang);
+        } else if (message.equals("🔙 Back to the menu tab")
+                || message.equals("🔙 Повернутися до вкладки меню")) {
             menuComponent.handleMenuRequest(request);
-        } else if (message.equals("\uD83D\uDD15 Cancel notifications") || message.equals("\uD83D\uDD15 Скасувати сповіщення") || message.equals("\uD83D\uDD14 Enable notifications") || message.equals("\uD83D\uDD14 Увімкнути сповіщення")) {
-            UserSettings settings = settingsService.getSettingsByUsername(session.getUserData().getUser().getUsername());
-            settings.setNotifications(!settings.getNotifications());
-            session.getUserData().setUserSettings(settings);
-            settingsService.update(settings.getId(), settings);
-            session.setState(States.SUCCESSFULLY_CHANGED_SETTINGS);
-            sessionService.saveSession(request.getChatId(), session);
-            telegramService.sendMessage(request.getChatId(), obtainTextService.read("ChangedLang", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
-        } else if (message.equals("🙈 Choose translation languages") || message.equals("🙈 Вибрати мову перекладу")) {
-            session.setState(States.CHANGE_NATIVE);
-            sessionService.saveSession(request.getChatId(), session);
-            List<String> replyList = List.of("\uD83C\uDDFA\uD83C\uDDE6 Українська", "\uD83D\uDC37 Кацапська");
-            String definedNative = session.getUserData().getUserSettings().getNativeLang();
-            if (Objects.equals(definedNative, "none")) {
-                if(lang.equals("en")){
-                    definedNative = " not defined";
-                } else{
-                    definedNative = " ще не визначена";
-                }
-            } else if(definedNative.equals("uk")){
-                definedNative = "Українська";
-            }else if(definedNative.equals("ru")){
-                definedNative = "Русский";
-            }else if(definedNative.equals("en")){
-                definedNative = "English";
-            }else if(definedNative.equals("de")){
-                definedNative = "Deutsch";
-            }else if(definedNative.equals("fr")){
-                definedNative = "Français";
-            }else if(definedNative.equals("es")){
-                definedNative = "Español";
-            }
-            telegramService.sendMessage(request.getChatId(), obtainTextService.read("choseNative", lang) + definedNative, ReplyKeyboardHelper.buildMainMenu(replyList));
+        } else if (message.equals("\uD83D\uDD15 Cancel notifications")
+                || message.equals("\uD83D\uDD15 Скасувати сповіщення")
+                || message.equals("\uD83D\uDD14 Enable notifications")
+                || message.equals("\uD83D\uDD14 Увімкнути сповіщення")) {
+            changeNotifications(session, request, lang);
+        } else if (message.equals("🙈 Choose translation languages")
+                || message.equals("🙈 Вибрати мову перекладу")) {
+            changeNative(session, request, lang);
         }
 
+    }
+
+    private void changeNotifications(UserSession session, UserRequest request, String lang) {
+        UserSettings settings = settingsService.getSettingsByUsername(session.getUserData().getUser().getUsername());
+        settings.setNotifications(!settings.getNotifications());
+        session.getUserData().setUserSettings(settings);
+        settingsService.update(settings.getId(), settings);
+        session.setState(States.SUCCESSFULLY_CHANGED_SETTINGS);
+        sessionService.saveSession(request.getChatId(), session);
+        telegramService.sendMessage(request.getChatId(), obtainTextService.read("ChangedLang", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
+    }
+
+    private void changeNative(UserSession session, UserRequest request, String lang) {
+        session.setState(States.CHANGE_NATIVE);
+        sessionService.saveSession(request.getChatId(), session);
+        List<String> replyList = List.of("\uD83C\uDDFA\uD83C\uDDE6 Українська", "\uD83D\uDC37 Кацапська");
+        String definedNative = session.getUserData().getUserSettings().getNativeLang();
+        if (Objects.equals(definedNative, "none")) {
+            if (lang.equals("en")) definedNative = " not defined";
+            else definedNative = " ще не визначена";
+        } else if (definedNative.equals("uk")) definedNative = "Українська";
+        else if (definedNative.equals("ru")) definedNative = "Русский";
+        else if (definedNative.equals("en")) definedNative = "English";
+        else if (definedNative.equals("de")) definedNative = "Deutsch";
+
+        telegramService.sendMessage(request.getChatId(), obtainTextService.read("choseNative", lang) + definedNative, ReplyKeyboardHelper.buildMainMenu(replyList));
+    }
+
+    private void changeInterfaceLang(UserSession session, UserRequest request, String lang) {
+        session.setState(States.CHANGE_LANGUAGE);
+        List<String> replyList = List.of("\uD83C\uDDFA\uD83C\uDDE6 Українська", "\uD83C\uDDEC\uD83C\uDDE7 English", obtainTextService.read("Rep004", lang));
+        telegramService.sendMessage(request.getChatId(),
+                obtainTextService.read("ChooseLanguage", lang), ReplyKeyboardHelper.buildMainMenu(replyList));
     }
 
     @Override
