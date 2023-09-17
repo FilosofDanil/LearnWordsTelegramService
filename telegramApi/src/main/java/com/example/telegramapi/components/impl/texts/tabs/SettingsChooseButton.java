@@ -2,9 +2,9 @@ package com.example.telegramapi.components.impl.texts.tabs;
 
 import com.example.telegramapi.components.TextHandler;
 import com.example.telegramapi.components.sup.tab.MenuComponent;
-import com.example.telegramapi.entities.UserRequest;
-import com.example.telegramapi.entities.UserSession;
-import com.example.telegramapi.entities.UserSettings;
+import com.example.telegramapi.entities.telegram.UserRequest;
+import com.example.telegramapi.entities.telegram.UserSession;
+import com.example.telegramapi.entities.user.UserSettings;
 import com.example.telegramapi.enums.States;
 import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;

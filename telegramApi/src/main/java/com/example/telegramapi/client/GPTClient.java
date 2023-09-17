@@ -1,9 +1,6 @@
 package com.example.telegramapi.client;
 
-import com.example.telegramapi.entities.TranslatedListModel;
-import feign.Param;
-import feign.RequestLine;
-import jakarta.websocket.server.PathParam;
+import com.example.telegramapi.entities.tests_data.TranslatedListModel;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 

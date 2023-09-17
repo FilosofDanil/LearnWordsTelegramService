@@ -79,9 +79,7 @@ public class ObtainTextServiceBean implements ObtainTextService {
     private String cleanText(String text) {
         Pattern pattern = Pattern.compile("\"([^\"]*)\"");
         Matcher matcher = pattern.matcher(text);
-        if (matcher.find()) {
-            return matcher.group(1);
-        }
+        if (matcher.find()) return matcher.group(1);
         return "";
     }
 }

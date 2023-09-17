@@ -15,9 +15,7 @@ public class PreparingTestThread extends Thread {
     @Override
     public void run() {
         synchronized (this){
-            while (!testService.getById(testId).getTestReady()){
-                Thread.sleep(1000);
-            }
+            while (!testService.getById(testId).getTestReady()) Thread.sleep(1000);
             notify();
         }
     }

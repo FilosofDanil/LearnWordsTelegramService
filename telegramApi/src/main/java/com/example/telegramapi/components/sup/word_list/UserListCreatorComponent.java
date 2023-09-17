@@ -1,8 +1,8 @@
 package com.example.telegramapi.components.sup.word_list;
 
-import com.example.telegramapi.entities.TranslatedListModel;
-import com.example.telegramapi.entities.UserSession;
-import com.example.telegramapi.entities.UserWordList;
+import com.example.telegramapi.entities.tests_data.TranslatedListModel;
+import com.example.telegramapi.entities.telegram.UserSession;
+import com.example.telegramapi.entities.tests_data.UserWordList;
 import com.example.telegramapi.services.GPTInterogativeService;
 import com.example.telegramapi.services.MongoDBService;
 import lombok.RequiredArgsConstructor;

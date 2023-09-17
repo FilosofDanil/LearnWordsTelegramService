@@ -1,4 +1,4 @@
-package com.example.telegramapi.entities;
+package com.example.telegramapi.entities.telegram;
 
 import lombok.Builder;
 import lombok.Data;

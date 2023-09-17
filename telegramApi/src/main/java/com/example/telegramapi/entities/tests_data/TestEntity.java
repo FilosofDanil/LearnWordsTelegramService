@@ -1,4 +1,4 @@
-package com.example.telegramapi.entities;
+package com.example.telegramapi.entities.tests_data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
@@ -6,7 +6,6 @@ import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @Builder

@@ -1,6 +1,10 @@
 package com.example.telegramapi.services.impl;
 
-import com.example.telegramapi.entities.*;
+import com.example.telegramapi.entities.telegram.UserRequest;
+import com.example.telegramapi.entities.telegram.UserSession;
+import com.example.telegramapi.entities.user.User;
+import com.example.telegramapi.entities.user.UserData;
+import com.example.telegramapi.entities.user.UserSettings;
 import com.example.telegramapi.services.SessionService;
 import com.example.telegramapi.services.SettingsService;
 import com.example.telegramapi.services.UserService;
@@ -45,12 +49,9 @@ public class SessionServiceBean implements SessionService {
                     .userSettings(settingsService.getSettingsByUsername(username))
                     .build();
         }
-        if (userData.getUser() == null) {
-            createUser(userData, username, firstName, request);
-        }
-        if (userData.getUserSettings() == null) {
-            createSettings(userData, username);
-        }
+        if (userData.getUser() == null) createUser(userData, username, firstName, request);
+
+        if (userData.getUserSettings() == null) createSettings(userData, username);
         session.setUserData(userData);
         return session;
     }

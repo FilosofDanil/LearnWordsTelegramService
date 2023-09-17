@@ -1,7 +1,11 @@
 package com.example.telegramapi.threads;
 
 import com.example.telegramapi.components.sup.test.FormTestComponent;
-import com.example.telegramapi.entities.*;
+import com.example.telegramapi.entities.telegram.UserSession;
+import com.example.telegramapi.entities.tests_data.Test;
+import com.example.telegramapi.entities.tests_data.TestEntity;
+import com.example.telegramapi.entities.tests_data.UserWordList;
+import com.example.telegramapi.entities.user.User;
 import com.example.telegramapi.services.MongoDBService;
 import com.example.telegramapi.services.SessionService;
 import com.example.telegramapi.services.TestService;

@@ -2,7 +2,11 @@ package com.example.telegramapi.components.impl.texts.test;
 
 import com.example.telegramapi.components.TextHandler;
 import com.example.telegramapi.components.sup.test.QuizGenerateComponent;
-import com.example.telegramapi.entities.*;
+import com.example.telegramapi.entities.telegram.UserRequest;
+import com.example.telegramapi.entities.telegram.UserSession;
+import com.example.telegramapi.entities.tests_data.Test;
+import com.example.telegramapi.entities.tests_data.TestEntity;
+import com.example.telegramapi.entities.user.UserData;
 import com.example.telegramapi.enums.States;
 import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;
@@ -33,27 +37,22 @@ public class QuizTextHandler implements TextHandler {
         TestEntity test = session.getUserData().getCurrentTest();
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         String message = request.getUpdate().getMessage().getText();
-        if(session.getUserData().getLettersList() == null){
+        if (session.getUserData().getLettersList() == null) {
             message = "Got it!";
             saveLettersList(session, generateLetterList(test.getTests().get(session.getUserData().getCurrentTask()).getCorrectAnswers().get(0)));
-            telegramService.sendMessage(request.getChatId(), "Fine lets start our test!");
+            telegramService.sendMessage(request.getChatId(), "Fine, lets start our test!");
         } else if (message.length() > 1) {
             telegramService.sendMessage(request.getChatId(), "Try one more!");
             return;
         }
         Character answer = getAnswer(message);
         List<Character> lettersList = session.getUserData().getLettersList();
-        if (session.getUserData().getReplacedMap() == null) {
-            saveMapInUserData(session, quizGenerateComponent.generateQuiz(lettersList));
-        }
+        if (session.getUserData().getReplacedMap() == null) saveMapInUserData(session, quizGenerateComponent.generateQuiz(lettersList));
         Map<Character, List<Integer>> replacedMap = session.getUserData().getReplacedMap();
         if (!replacedMap.isEmpty() && session.getUserData().getQuizAttempts() > 0) {
             String response = guess(answer, lettersList, replacedMap);
-            if (message.equals("Got it!")){
-                response = "Just type the letters below";
-            }else if (response.equals("Incorrect")) {
-                attempt(session);
-            }
+            if (message.equals("Got it!")) response = "Just type the letters below";
+            else if (response.equals("Incorrect")) attempt(session);
             sessionService.saveSession(request.getChatId(), session);
             telegramService.sendMessage(request.getChatId(), lettersToString(lettersList) + response);
         }
@@ -89,9 +88,7 @@ public class QuizTextHandler implements TextHandler {
 
     private List<Character> generateLetterList(String message) {
         List<Character> lowercaseLetters = new ArrayList<>();
-        for (char c : message.toCharArray()) {
-            lowercaseLetters.add(Character.toLowerCase(c));
-        }
+        for (char c : message.toCharArray()) lowercaseLetters.add(Character.toLowerCase(c));
         return lowercaseLetters;
     }
 

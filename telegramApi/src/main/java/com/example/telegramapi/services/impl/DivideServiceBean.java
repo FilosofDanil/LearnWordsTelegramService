@@ -18,10 +18,7 @@ public class DivideServiceBean implements DivideService {
         List<String> words = new ArrayList<>();
         String cleanedInput = message.replaceAll("[.,;]", " ");
         String[] wordArray = cleanedInput.split("\\s+");
-        for (String word : wordArray) {
-            words.add(word.trim());
-        }
-
+        for (String word : wordArray) words.add(word.trim());
         return words;
     }
 }

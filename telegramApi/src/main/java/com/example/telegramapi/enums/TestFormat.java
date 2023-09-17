@@ -1,8 +1,8 @@
 package com.example.telegramapi.enums;
 
 public enum TestFormat {
-    SIMPLE_TEXT_FORMAT,
-    QUIZ_FORMAT,
+    BACK_DEFINITION_FORMAT,
     PICK_FROM_LIST_FORMAT,
-    BACK_DEFINITION_FORMAT
+    QUIZ_FORMAT,
+    SIMPLE_TEXT_FORMAT
 }

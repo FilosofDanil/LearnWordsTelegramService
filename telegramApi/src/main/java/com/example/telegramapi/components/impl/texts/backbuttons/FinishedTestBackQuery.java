@@ -2,7 +2,7 @@ package com.example.telegramapi.components.impl.texts.backbuttons;
 
 import com.example.telegramapi.components.TextHandler;
 import com.example.telegramapi.components.sup.tab.MenuComponent;
-import com.example.telegramapi.entities.UserRequest;
+import com.example.telegramapi.entities.telegram.UserRequest;
 import com.example.telegramapi.enums.States;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

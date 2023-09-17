@@ -1,10 +1,10 @@
 package com.example.telegramapi.components.impl.queries;
 
 import com.example.telegramapi.components.QueryHandler;
-import com.example.telegramapi.entities.TestEntity;
-import com.example.telegramapi.entities.UserRequest;
-import com.example.telegramapi.entities.UserSession;
-import com.example.telegramapi.entities.UserWordList;
+import com.example.telegramapi.entities.tests_data.TestEntity;
+import com.example.telegramapi.entities.telegram.UserRequest;
+import com.example.telegramapi.entities.telegram.UserSession;
+import com.example.telegramapi.entities.tests_data.UserWordList;
 import com.example.telegramapi.enums.States;
 import com.example.telegramapi.services.MongoDBService;
 import com.example.telegramapi.services.ObtainTextService;
@@ -45,12 +45,8 @@ public class AssignmentsQuery implements QueryHandler {
             if (first.getTestDate().before(new Date())) {
                 telegramService.sendMessage(request.getChatId(), obtainTextService.read("assignments", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
                 sendAssignments(tests, request);
-            } else {
-                telegramService.sendMessage(request.getChatId(), obtainTextService.read("emptyAssignments", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
-            }
-        } else {
-            telegramService.sendMessage(request.getChatId(), obtainTextService.read("emptyAssignments", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
-        }
+            } else telegramService.sendMessage(request.getChatId(), obtainTextService.read("emptyAssignments", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
+        } else telegramService.sendMessage(request.getChatId(), obtainTextService.read("emptyAssignments", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
     }
 
     private void sendAssignments(List<TestEntity> tests, UserRequest request) {
@@ -58,18 +54,10 @@ public class AssignmentsQuery implements QueryHandler {
         filteredList.forEach(testEntity -> {
             String backMessage = "Test#" + testEntity.getId() + "\n";
             UserWordList wordList = mongoDBService.getById(testEntity.getListId());
-            if (wordList.getLangFrom().equals("en")) {
-                backMessage += "\uD83C\uDDEC\uD83C\uDDE7";
-            }
-            if (wordList.getLangFrom().equals("de")) {
-                backMessage += "\uD83C\uDDE9\uD83C\uDDEA ";
-            }
-            if (wordList.getLangFrom().equals("es")) {
-                backMessage += "\uD83C\uDDEA\uD83C\uDDF8 ";
-            }
-            if (wordList.getLangFrom().equals("fr")) {
-                backMessage += "\uD83C\uDDEB\uD83C\uDDF7 ";
-            }
+            if (wordList.getLangFrom().equals("en")) backMessage += "\uD83C\uDDEC\uD83C\uDDE7";
+            else if (wordList.getLangFrom().equals("de")) backMessage += "\uD83C\uDDE9\uD83C\uDDEA ";
+            else if (wordList.getLangFrom().equals("es")) backMessage += "\uD83C\uDDEA\uD83C\uDDF8 ";
+            else if (wordList.getLangFrom().equals("fr")) backMessage += "\uD83C\uDDEB\uD83C\uDDF7 ";
             backMessage += testEntity.getTests().size() + " words \n";
             backMessage += "Deadline date: " + testEntity.getTestDate();
             telegramService.sendMessage(request.getChatId(), backMessage, InlineKeyboardHelper.buildInlineKeyboard(List.of("\uD83D\uDE80 Launch"), false));
@@ -84,11 +72,8 @@ public class AssignmentsQuery implements QueryHandler {
 
     @Override
     public String getCallbackQuery(String lang) {
-        if (lang.equals("en")) {
-            return "🎓 My Assignments";
-        } else {
-            return "🎓 Мої завдання";
-        }
+        if (lang.equals("en")) return "🎓 My Assignments";
+        else return "🎓 Мої завдання";
     }
 
     @Override

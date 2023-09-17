@@ -2,7 +2,7 @@ package com.example.telegramapi.dispatcher.impl;
 
 import com.example.telegramapi.components.RequestHandler;
 import com.example.telegramapi.dispatcher.Dispatcher;
-import com.example.telegramapi.entities.UserRequest;
+import com.example.telegramapi.entities.telegram.UserRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;

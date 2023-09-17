@@ -1,8 +1,8 @@
 package com.example.telegramapi.controllers;
 
 import com.example.telegramapi.dispatcher.Dispatcher;
-import com.example.telegramapi.entities.UserRequest;
-import com.example.telegramapi.entities.UserSession;
+import com.example.telegramapi.entities.telegram.UserRequest;
+import com.example.telegramapi.entities.telegram.UserSession;
 import com.example.telegramapi.services.SessionService;
 import com.example.telegramapi.configs.BotConfig;
 import lombok.RequiredArgsConstructor;

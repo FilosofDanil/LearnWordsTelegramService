@@ -1,7 +1,7 @@
 package com.example.telegramapi.client;
 
-import com.example.telegramapi.entities.TestEntity;
-import com.example.telegramapi.entities.UserWordList;
+import com.example.telegramapi.entities.tests_data.TestEntity;
+import com.example.telegramapi.entities.tests_data.UserWordList;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 

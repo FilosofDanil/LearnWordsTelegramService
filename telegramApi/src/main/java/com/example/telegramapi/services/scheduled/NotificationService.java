@@ -1,8 +1,8 @@
 package com.example.telegramapi.services.scheduled;
 
-import com.example.telegramapi.entities.TestEntity;
-import com.example.telegramapi.entities.User;
-import com.example.telegramapi.entities.UserSession;
+import com.example.telegramapi.entities.tests_data.TestEntity;
+import com.example.telegramapi.entities.user.User;
+import com.example.telegramapi.entities.telegram.UserSession;
 import com.example.telegramapi.enums.States;
 import com.example.telegramapi.services.*;
 import com.example.telegramapi.services.bot.TelegramBotService;

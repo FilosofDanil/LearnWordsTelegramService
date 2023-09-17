@@ -1,6 +1,6 @@
 package com.example.telegramapi.services;
 
-import com.example.telegramapi.entities.User;
+import com.example.telegramapi.entities.user.User;
 
 import java.util.List;
 

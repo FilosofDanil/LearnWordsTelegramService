@@ -1,6 +1,6 @@
 package com.example.telegramapi.services;
 
-import com.example.telegramapi.entities.UserWordList;
+import com.example.telegramapi.entities.tests_data.UserWordList;
 
 import java.util.List;
 

@@ -1,6 +1,5 @@
-package com.example.telegramapi.entities;
+package com.example.telegramapi.entities.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;

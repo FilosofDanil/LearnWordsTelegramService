@@ -2,7 +2,11 @@ package com.example.telegramapi.components.sup.test;
 
 import com.example.telegramapi.components.sup.intermidiate_operations.PreparingTestComponent;
 import com.example.telegramapi.components.sup.tab.TestTabComponent;
-import com.example.telegramapi.entities.*;
+import com.example.telegramapi.entities.telegram.UserRequest;
+import com.example.telegramapi.entities.telegram.UserSession;
+import com.example.telegramapi.entities.tests_data.Test;
+import com.example.telegramapi.entities.tests_data.TestEntity;
+import com.example.telegramapi.entities.user.UserData;
 import com.example.telegramapi.enums.States;
 import com.example.telegramapi.enums.TestFormat;
 import com.example.telegramapi.services.SessionService;

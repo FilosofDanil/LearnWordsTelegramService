@@ -1,5 +1,6 @@
-package com.example.telegramapi.entities;
+package com.example.telegramapi.entities.user;
 
+import com.example.telegramapi.entities.tests_data.TestEntity;
 import lombok.Builder;
 import lombok.Data;
 

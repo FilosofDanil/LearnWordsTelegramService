@@ -1,10 +1,9 @@
 package com.example.telegramapi.components.sup.word_list;
 
-import com.example.telegramapi.components.sup.word_list.UserListCreatorComponent;
-import com.example.telegramapi.entities.TranslatedListModel;
-import com.example.telegramapi.entities.UserData;
-import com.example.telegramapi.entities.UserRequest;
-import com.example.telegramapi.entities.UserSession;
+import com.example.telegramapi.entities.tests_data.TranslatedListModel;
+import com.example.telegramapi.entities.user.UserData;
+import com.example.telegramapi.entities.telegram.UserRequest;
+import com.example.telegramapi.entities.telegram.UserSession;
 import com.example.telegramapi.enums.States;
 import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;

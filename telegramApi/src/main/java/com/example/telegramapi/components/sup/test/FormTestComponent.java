@@ -1,9 +1,9 @@
 package com.example.telegramapi.components.sup.test;
 
 import com.example.telegramapi.components.sup.data.LanguageComponent;
-import com.example.telegramapi.entities.Test;
-import com.example.telegramapi.entities.TestEntity;
-import com.example.telegramapi.entities.UserWordList;
+import com.example.telegramapi.entities.tests_data.Test;
+import com.example.telegramapi.entities.tests_data.TestEntity;
+import com.example.telegramapi.entities.tests_data.UserWordList;
 import com.example.telegramapi.enums.TestFormat;
 import com.example.telegramapi.services.GPTInterogativeService;
 import com.example.telegramapi.services.ObtainTextService;

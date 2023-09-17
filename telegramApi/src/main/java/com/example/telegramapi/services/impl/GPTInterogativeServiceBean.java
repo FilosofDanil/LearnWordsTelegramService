@@ -1,7 +1,7 @@
 package com.example.telegramapi.services.impl;
 
 import com.example.telegramapi.client.GPTClient;
-import com.example.telegramapi.entities.TranslatedListModel;
+import com.example.telegramapi.entities.tests_data.TranslatedListModel;
 import com.example.telegramapi.services.GPTInterogativeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,28 +36,18 @@ public class GPTInterogativeServiceBean implements GPTInterogativeService {
     }
 
     private String defineLangFrom(String langFrom) {
-        if (langFrom.equals("en")) {
-            langFrom = "English";
-        } else if (langFrom.equals("de")) {
-            langFrom = "German";
-        } else if (langFrom.equals("es")) {
-            langFrom = "Spanish";
-        } else if (langFrom.equals("fr")) {
-            langFrom = "French";
-        }
+        if (langFrom.equals("en")) langFrom = "English";
+        else if (langFrom.equals("de")) langFrom = "German";
+        else if (langFrom.equals("es")) langFrom = "Spanish";
+        else if (langFrom.equals("fr")) langFrom = "French";
         return langFrom;
     }
 
     private String defineLangTo(String langTo) {
-        if (langTo.equals("en")) {
-            langTo = "English";
-        } else if (langTo.equals("uk")) {
-            langTo = "Ukrainian";
-        } else if (langTo.equals("ru")) {
-            langTo = "Russian";
-        } else if (langTo.equals("de")) {
-            langTo = "German";
-        }
+        if (langTo.equals("en")) langTo = "English";
+        else if (langTo.equals("uk")) langTo = "Ukrainian";
+        else if (langTo.equals("ru")) langTo = "Russian";
+        else if (langTo.equals("de")) langTo = "German";
         return langTo;
     }
 }
