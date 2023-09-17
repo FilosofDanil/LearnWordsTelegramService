@@ -15,7 +15,7 @@ public class TranslationServiceBean implements MongoDBService {
 
     @Override
     public List<UserWordList> getAll() {
-        return null;
+        return client.getAllTranslations();
     }
 
     @Override
@@ -34,12 +34,12 @@ public class TranslationServiceBean implements MongoDBService {
     }
 
     @Override
-    public void delete(Long id) {
-
+    public void delete(String id) {
+        client.deleteWordList(id);
     }
 
     @Override
-    public void update(String userID, UserWordList wordList) {
-
+    public void update(String id, UserWordList wordList) {
+        client.updateWordList(id, wordList);
     }
 }

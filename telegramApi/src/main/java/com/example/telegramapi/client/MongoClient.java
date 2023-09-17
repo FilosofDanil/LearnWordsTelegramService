@@ -11,8 +11,18 @@ import java.util.List;
 public interface MongoClient {
     @GetMapping("/translations/user/{userId}")
     List<UserWordList> getAllByUserId(@PathVariable("userId") Long userId);
+
     @GetMapping("/translations/{id}")
     UserWordList getWordListById(@PathVariable("id") String id);
+
+    @GetMapping("/translations")
+    List<UserWordList> getAllTranslations();
+
+    @DeleteMapping("/translations/{id}")
+    UserWordList deleteWordList(@PathVariable("id") String id);
+
+    @PutMapping("/translations/{id}")
+    TestEntity updateWordList(@PathVariable("id") String id, @RequestBody UserWordList wordList);
 
     @GetMapping("/tests/user/{userId}")
     List<TestEntity> getAllTestsByUserId(@PathVariable("userId") Long userId);

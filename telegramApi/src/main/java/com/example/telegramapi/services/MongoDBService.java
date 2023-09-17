@@ -13,7 +13,7 @@ public interface MongoDBService {
 
     UserWordList create( UserWordList wordList);
 
-    void delete(Long id);
+    void delete(String id);
 
     void update(String userID, UserWordList wordList);
 }
