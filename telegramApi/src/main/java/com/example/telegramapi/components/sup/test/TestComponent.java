@@ -37,17 +37,11 @@ public class TestComponent {
         UserSession session = sessionService.getSession(request.getChatId());
         List<TestEntity> tests = testService.getAllByUserId(session.getUserData().getUser().getId());
         if (!tests.isEmpty()) {
-            TestEntity first = getTest(session);
-            if(first == null) {
-                first = getFirst(tests);
-            }
-            if (!first.getTestDate().before(new Date())) {
-                first = getFirst(tests);
-            }
-            if (first.getTestDate().before(new Date())) {
-                if (!first.getTestReady()) {
+            TestEntity nearestTest = getTest(session, tests);
+            if (nearestTest.getTestDate().before(new Date())) {
+                if (!nearestTest.getTestReady()) {
                     preparingTestComponent.prepareTest(request);
-                    PreparingTestThread testThread = new PreparingTestThread(first.getId(), testService);
+                    PreparingTestThread testThread = new PreparingTestThread(nearestTest.getId(), testService);
                     synchronized (testThread) {
                         try {
                             testThread.wait();
@@ -55,49 +49,42 @@ public class TestComponent {
                             e.printStackTrace();
                         }
                     }
-                    first = testService.getById(first.getId());
+                    nearestTest = testService.getById(nearestTest.getId());
                 }
-                startTest(session, first);
+                startTest(session, nearestTest);
                 sessionService.saveSession(request.getChatId(), session);
                 telegramService.sendMessage(request.getChatId(), formTaskString(session));
-            } else {
-                testTabComponent.handleTestRequest(request);
-            }
-        } else {
-            testTabComponent.handleTestRequest(request);
-        }
+            } else testTabComponent.handleTestRequest(request);
+        } else testTabComponent.handleTestRequest(request);
         sessionService.saveSession(request.getChatId(), session);
-
     }
 
-    private void startTest(UserSession session, TestEntity first) {
+    private void startTest(UserSession session, TestEntity nearestTest) {
         UserData userData = session.getUserData();
-        userData.setCurrentTest(first);
+        userData.setCurrentTest(nearestTest);
         userData.setCurrentTask(0);
         session.setUserData(userData);
-        if (first.getTests().get(0).getTestFormat().equals(TestFormat.QUIZ_FORMAT)) {
-            session.setState(States.QUIZ);
-            return;
-        }
-        session.setState(States.TEST_STARTED);
+        if (nearestTest.getTests().get(0).getTestFormat().equals(TestFormat.QUIZ_FORMAT)) session.setState(States.QUIZ);
+        else session.setState(States.TEST_STARTED);
     }
 
     private String formTaskString(UserSession session) {
-        Test firstTask = session.getUserData().getCurrentTest().getTests().get(0);
+        Test nearestTestTask = session.getUserData().getCurrentTest().getTests().get(0);
         String responseMessage = "Test Started! \n " + "Task#0 \n";
-        return responseMessage + firstTask.getResponseMessage();
+        return responseMessage + nearestTestTask.getResponseMessage();
     }
 
-    private TestEntity getFirst(List<TestEntity> tests) {
-        tests.sort(new TestEntitiesDateComparator());
-        return tests.get(0);
-    }
-
-    private TestEntity getTest(UserSession session) {
-        if(session.getUserData().getPreviousMessage()==null){
-            return null;
-        } else{
-            return testService.getByWordListId(session.getUserData().getPreviousMessage());
+    private TestEntity getTest(UserSession session, List<TestEntity> tests) {
+        if (session.getUserData().getPreviousMessage() == null) {
+            tests.sort(new TestEntitiesDateComparator());
+            return tests.get(0);
+        } else {
+            TestEntity nearestTest = testService.getByWordListId(session.getUserData().getPreviousMessage());
+            if (nearestTest.getTestDate().before(new Date())) {
+                tests.sort(new TestEntitiesDateComparator());
+                return tests.get(0);
+            }
+            return nearestTest;
         }
     }
 }

@@ -28,9 +28,9 @@ public class FormTestComponent {
         List<Test> rawTest = entity.getTests();
         rawTest.forEach(row -> {
             String correct = row.getCorrectAnswers().get(0);
-            if (row.getTestFormat().equals(TestFormat.SIMPLE_TEXT_FORMAT)) {
+            if (row.getTestFormat().equals(TestFormat.SIMPLE_TEXT_FORMAT))
                 row.setResponseMessage(obtainTextService.read("testText_200", lang) + ":\n" + translatedMap.get(correct));
-            } else if (row.getTestFormat().equals(TestFormat.PICK_FROM_LIST_FORMAT)) {
+            else if (row.getTestFormat().equals(TestFormat.PICK_FROM_LIST_FORMAT)) {
                 row.setResponseMessage(obtainTextService.read("testText_201", lang) + ":\n" + translatedMap.get(correct));
                 String language = languageComponent.getLang(model.getLangFrom());
                 row.setResponseKeyboard(gptService.getTests(correct, language));
@@ -42,12 +42,9 @@ public class FormTestComponent {
             } else if (row.getTestFormat().equals(TestFormat.QUIZ_FORMAT)) {
                 row.setResponseMessage(obtainTextService.read("testText_203", lang) + ":\n");
                 row.setResponseKeyboard(List.of(obtainTextService.read("gotIt", lang)));
-            } else if (row.getTestFormat().equals(TestFormat.BACK_DEFINITION_FORMAT)) {
+            } else if (row.getTestFormat().equals(TestFormat.BACK_DEFINITION_FORMAT))
                 row.setResponseMessage(obtainTextService.read("testText_202", lang) + ":\n" + definitionMap.get(correct));
-            } else {
-                row.setResponseMessage("skip");
-            }
-
+            else row.setResponseMessage("skip");
         });
         return rawTest;
     }

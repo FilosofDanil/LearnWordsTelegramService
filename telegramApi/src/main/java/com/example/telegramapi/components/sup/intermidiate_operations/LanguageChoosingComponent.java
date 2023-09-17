@@ -19,15 +19,11 @@ public class LanguageChoosingComponent {
         UserSession session = sessionService.getSession(request.getChatId());
         String message = request.getUpdate().getMessage().getText();
         String inputString;
-        if (message.equals("\uD83C\uDDEC\uD83C\uDDE7 English")) {
-            inputString = "English";
-        } else if (message.equals("\uD83C\uDDE9\uD83C\uDDEA Deutsch")) {
-            inputString = "German";
-        } else if (message.equals("\uD83C\uDDEB\uD83C\uDDF7 Français")) {
-            inputString = "French";
-        } else if (message.equals("\uD83C\uDDEB\uD83C\uDDF7 Español")) {
-            inputString = "Spanish";
-        } else {
+        if (message.equals("\uD83C\uDDEC\uD83C\uDDE7 English")) inputString = "English";
+        else if (message.equals("\uD83C\uDDE9\uD83C\uDDEA Deutsch")) inputString = "German";
+        else if (message.equals("\uD83C\uDDEB\uD83C\uDDF7 Français")) inputString = "French";
+        else if (message.equals("\uD83C\uDDEB\uD83C\uDDF7 Español")) inputString = "Spanish";
+        else {
             telegramService.sendMessage(request.getChatId(),
                     "Try one more.");
             return null;

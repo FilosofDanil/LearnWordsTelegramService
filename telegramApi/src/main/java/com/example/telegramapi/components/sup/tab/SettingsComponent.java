@@ -23,18 +23,15 @@ public class SettingsComponent {
 
     private final ObtainTextService obtainTextService;
 
-    public void handleSettingRequest(UserRequest request){
+    public void handleSettingRequest(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
         session.setState(States.SETTINGS);
         sessionService.saveSession(request.getChatId(), session);
         UserSettings settings = session.getUserData().getUserSettings();
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         List<String> replyList = new ArrayList<>(List.of(obtainTextService.read("Rep000", lang), obtainTextService.read("Rep001", lang)));
-        if(settings.getNotifications()){
-            replyList.add(obtainTextService.read("Rep002", lang));
-        }else{
-            replyList.add(obtainTextService.read("Rep005", lang));
-        }
+        if (settings.getNotifications()) replyList.add(obtainTextService.read("Rep002", lang));
+        else replyList.add(obtainTextService.read("Rep005", lang));
         replyList.add(obtainTextService.read("Rep003", lang));
         telegramService.sendMessage(request.getChatId(),
                 obtainTextService.read("Settings", lang), ReplyKeyboardHelper.buildMainMenu(replyList));

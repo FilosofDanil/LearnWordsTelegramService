@@ -21,9 +21,7 @@ public class QuizGenerateComponent {
 
             if (!replacedMap.containsKey(lettersList.get(randomPosition))) {
                 Character letter = lettersList.get(randomPosition);
-                if (letter.equals('_')) {
-                    continue;
-                }
+                if (letter.equals('_')) continue;
                 List<Integer> indexes = new ArrayList<>();
                 lettersList.forEach(letters -> {
                     if (letters.equals(letter)) {
