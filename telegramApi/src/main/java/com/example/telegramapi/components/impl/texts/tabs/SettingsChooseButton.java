@@ -75,8 +75,6 @@ public class SettingsChooseButton implements TextHandler {
             else definedNative = " ще не визначена";
         } else if (definedNative.equals("uk")) definedNative = "Українська";
         else if (definedNative.equals("ru")) definedNative = "Русский";
-        else if (definedNative.equals("en")) definedNative = "English";
-        else if (definedNative.equals("de")) definedNative = "Deutsch";
 
         telegramService.sendMessage(request.getChatId(), obtainTextService.read("choseNative", lang) + definedNative, ReplyKeyboardHelper.buildMainMenu(replyList));
     }

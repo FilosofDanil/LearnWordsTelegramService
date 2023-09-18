@@ -9,8 +9,11 @@ import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;
 import com.example.telegramapi.services.SettingsService;
 import com.example.telegramapi.services.bot.TelegramBotService;
+import com.example.telegramapi.utils.ReplyKeyboardHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -39,11 +42,12 @@ public class FirstLanguageChange implements TextHandler {
         }
         settingsService.update(settings.getId(), settings);
         session.getUserData().setUserSettings(settings);
-        session.setState(States.CONVERSATION_STARTED);
+        session.setState(States.FIRST_NATIVE_CHANGE);
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         sessionService.saveSession(request.getChatId(), session);
+        List<String> replyList = List.of("\uD83C\uDDFA\uD83C\uDDE6 Українська", "\uD83D\uDC37 Кацапська");
         telegramService.sendMessage(request.getChatId(),
-                obtainTextService.read("Start", lang));
+                obtainTextService.read("firstNative", lang), ReplyKeyboardHelper.buildMainMenu(replyList));
     }
 
     @Override
