@@ -25,7 +25,7 @@ public class LanguageChoosingComponent {
         else if (message.equals("\uD83C\uDDEB\uD83C\uDDF7 Español")) inputString = "Spanish";
         else {
             telegramService.sendMessage(request.getChatId(),
-                    "Try one more.");
+                    "Please pick language from the list!");
             return null;
         }
         UserData userdata = session.getUserData();

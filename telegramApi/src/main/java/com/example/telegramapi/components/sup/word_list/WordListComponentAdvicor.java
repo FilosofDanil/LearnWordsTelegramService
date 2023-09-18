@@ -30,8 +30,13 @@ public class WordListComponentAdvicor {
     public void createWordList(UserRequest request){
         UserSession session = sessionService.getSession(request.getChatId());
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
+        List<String> elements =divideServiceBean.divideRequestString(request.getUpdate().getMessage().getText());
+        if(elements.size() > 25 || elements.size() < 5){
+            telegramService.sendMessage(request.getChatId(), obtainTextService.read("notValidAmountWords", lang));
+            return;
+        }
         session.setState(States.PREPARES_LIST);
-        String message = listToString(divideServiceBean.divideRequestString(request.getUpdate().getMessage().getText()));
+        String message = listToString(elements);
         saveMessage(message, session);
         sessionService.saveSession(request.getChatId(), session);
         telegramService.sendMessage(request.getChatId(), obtainTextService.read("waitMoment", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("tryAgain", lang))));

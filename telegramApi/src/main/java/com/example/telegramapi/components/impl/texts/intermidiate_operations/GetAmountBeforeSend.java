@@ -32,12 +32,15 @@ public class GetAmountBeforeSend implements TextHandler {
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         try {
             Integer amount = Integer.parseInt(message);
+            if(amount > 25 || amount < 5){
+                telegramService.sendMessage(request.getChatId(), obtainTextService.read("notValidAmountWords", lang));
+                return;
+            }
             saveUserData(amount, session);
             session.setState(States.WAITING_FOR_LEVEL);
             sessionService.saveSession(request.getChatId(), session);
             telegramService.sendMessage(request.getChatId(), obtainTextService.read("randWaitLevel", lang), ReplyKeyboardHelper.buildMainMenu(replyList()));
         } catch (NumberFormatException e) {
-            e.printStackTrace();
             telegramService.sendMessage(request.getChatId(), obtainTextService.read("numEx", lang));
         }
     }

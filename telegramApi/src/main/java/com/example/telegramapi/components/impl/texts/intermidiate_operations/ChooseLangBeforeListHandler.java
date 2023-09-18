@@ -35,7 +35,6 @@ public class ChooseLangBeforeListHandler implements TextHandler {
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         sessionService.saveSession(request.getChatId(), session);
         telegramService.sendMessage(request.getChatId(), obtainTextService.read("waitList", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
-
     }
 
     @Override

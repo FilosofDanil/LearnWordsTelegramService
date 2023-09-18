@@ -38,7 +38,7 @@ public class ChooseNativeBeforeTextHandler implements TextHandler {
         else if (message.equals("\uD83D\uDC37 Кацапська")) settings.setNativeLang("ru");
         else {
             telegramService.sendMessage(request.getChatId(),
-                    "Try one more.");
+                    "Please choose it from the list!");
             return;
         }
         settingsService.update(settings.getId(), settings);
