@@ -48,6 +48,7 @@ public class GenerateTestThread extends Thread {
     }
 
     private void createTest(TestEntity first, String lang) {
+        testService.update(first, first.getId());
         List<Test> resultTests = testComponent.formTest(first, lang, mongoDBService.getById(first.getListId()));
         first.setTests(resultTests);
         first.setTestReady(true);

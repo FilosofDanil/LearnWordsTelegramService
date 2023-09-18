@@ -54,6 +54,8 @@ public class TestTextHandler implements TextHandler {
                 if (current.getTestFormat().equals(TestFormat.QUIZ_FORMAT)) {
                     session.setState(States.QUIZ);
                     sessionService.saveSession(request.getChatId(), session);
+                    telegramService.sendMessage(request.getChatId(), formTaskString(session), ReplyKeyboardHelper.buildMainMenu(List.of("Got it!")));
+                    return;
                 }
                 telegramService.sendMessage(request.getChatId(), formTaskString(session));
             } else {
@@ -72,6 +74,7 @@ public class TestTextHandler implements TextHandler {
 
     private void finishTest(TestEntity test, UserRequest request, UserSession session, String lang){
         test.setPassedTimes(test.getPassedTimes() + 1);
+        test.setTestReady(false);
         saveTest(session, test);
         session.setState(States.TEST_FINISHED);
         sessionService.saveSession(request.getChatId(), session);
