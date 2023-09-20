@@ -44,7 +44,7 @@ public class TestComponent {
                     PreparingTestThread testThread = new PreparingTestThread(nearestTest.getId(), testService);
                     synchronized (testThread) {
                         try {
-                            testThread.wait();
+                            testThread.wait(180000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

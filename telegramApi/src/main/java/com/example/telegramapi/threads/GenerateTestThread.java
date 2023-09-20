@@ -46,6 +46,7 @@ public class GenerateTestThread extends Thread {
                     String lang = session.getUserData().getUserSettings().getInterfaceLang();
                     createTest(first, lang);
                 }
+                notify();
             }
         }catch (FeignException ex){
             System.out.println("Connection lost!");
