@@ -22,12 +22,6 @@ public class UserListCreatorComponent {
         TranslatedListModel translatedListModel = gptInterogativeService.getTranslation(message, langFrom, langTo);
         if(translatedListModel.getTranslatedMap().isEmpty() || translatedListModel.getDefinitionMap().isEmpty()){
             throw new IllegalArgumentException();
-        } else if(translatedListModel.getTranslatedMap().containsValue("невідомо")
-                || translatedListModel.getTranslatedMap().containsValue("помилкове слово")
-                || translatedListModel.getTranslatedMap().containsValue("undefined")
-                || translatedListModel.getTranslatedMap().containsValue("неизвестно")
-                || translatedListModel.getTranslatedMap().containsValue("ошибочное слово")){
-            throw new IllegalArgumentException();
         }
         UserWordList wordList = UserWordList.builder()
                 .translations(translatedListModel.getTranslatedMap())
