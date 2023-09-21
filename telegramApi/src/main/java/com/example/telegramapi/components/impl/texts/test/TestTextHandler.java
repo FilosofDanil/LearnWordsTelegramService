@@ -43,7 +43,8 @@ public class TestTextHandler implements TextHandler {
                 checkPreviousTest(test, request.getUpdate().getMessage().getText(), session);
                 saveInUserData(test, session);
                 sessionService.saveSession(request.getChatId(), session);
-                if (test.getTests().get(curr).getCorrect()) telegramService.sendMessage(request.getChatId(), obtainTextService.read("correct", lang));
+                if (test.getTests().get(curr).getCorrect())
+                    telegramService.sendMessage(request.getChatId(), obtainTextService.read("correct", lang));
                 else telegramService.sendMessage(request.getChatId(), obtainTextService.read("incorrect", lang));
                 curr = nextTest(session);
                 Test current = session.getUserData().getCurrentTest().getTests().get(curr);
@@ -52,9 +53,7 @@ public class TestTextHandler implements TextHandler {
                     return;
                 }
                 if (current.getTestFormat().equals(TestFormat.QUIZ_FORMAT)) {
-                    session.setState(States.QUIZ);
-                    sessionService.saveSession(request.getChatId(), session);
-                    telegramService.sendMessage(request.getChatId(), formTaskString(session), ReplyKeyboardHelper.buildMainMenu(List.of("Got it!")));
+                    startQuiz(request, session);
                     return;
                 }
                 telegramService.sendMessage(request.getChatId(), formTaskString(session));
@@ -62,6 +61,13 @@ public class TestTextHandler implements TextHandler {
                 finishTest(test, request, session, lang);
             }
         }
+    }
+
+    private void startQuiz(UserRequest request, UserSession session) {
+        session.setState(States.QUIZ);
+        sessionService.saveSession(request.getChatId(), session);
+        telegramService.sendMessage(request.getChatId(), formTaskString(session), ReplyKeyboardHelper.buildMainMenu(List.of("Got it!")));
+
     }
 
     private int nextTest(UserSession session) {
@@ -72,7 +78,7 @@ public class TestTextHandler implements TextHandler {
         return taskNum;
     }
 
-    private void finishTest(TestEntity test, UserRequest request, UserSession session, String lang){
+    private void finishTest(TestEntity test, UserRequest request, UserSession session, String lang) {
         test.setPassedTimes(test.getPassedTimes() + 1);
         test.setTestReady(false);
         saveTest(session, test);

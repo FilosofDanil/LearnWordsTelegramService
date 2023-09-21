@@ -35,7 +35,6 @@ public class QuizTextHandler implements TextHandler {
     public void handle(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
         TestEntity test = session.getUserData().getCurrentTest();
-        String lang = session.getUserData().getUserSettings().getInterfaceLang();
         String message = request.getUpdate().getMessage().getText();
         if (session.getUserData().getLettersList() == null) {
             message = "Got it!";
@@ -47,13 +46,11 @@ public class QuizTextHandler implements TextHandler {
         }
         Character answer = getAnswer(message);
         List<Character> lettersList = session.getUserData().getLettersList();
-        try{
+        try {
             if (session.getUserData().getReplacedMap() == null) saveMapInUserData(session, quizGenerateComponent.generateQuiz(lettersList));
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
+            sendError(session, request);
             startTest(session, test);
-            sessionService.saveSession(request.getChatId(), session);
-            telegramService.sendMessage(request.getChatId(), "Failed to make a quiz");
-            telegramService.sendMessage(request.getChatId(), formTaskString(session));
             return;
         }
         Map<Character, List<Integer>> replacedMap = session.getUserData().getReplacedMap();
@@ -64,14 +61,25 @@ public class QuizTextHandler implements TextHandler {
             sessionService.saveSession(request.getChatId(), session);
             telegramService.sendMessage(request.getChatId(), lettersToString(lettersList) + response);
         }
-        if (replacedMap.isEmpty() || session.getUserData().getQuizAttempts() == 0) {
-            saveMapInUserData(session, null);
-            saveLettersList(session, null);
-            telegramService.sendMessage(request.getChatId(), obtainTextService.read("quizFinished", lang));
-            startTest(session, test);
-            sessionService.saveSession(request.getChatId(), session);
-            telegramService.sendMessage(request.getChatId(), formTaskString(session));
-        }
+        if (replacedMap.isEmpty()
+                || session.getUserData().getQuizAttempts() == 0) finish(session, request, test);
+    }
+
+    private void finish(UserSession session, UserRequest request, TestEntity test) {
+        String lang = session.getUserData().getUserSettings().getInterfaceLang();
+        saveMapInUserData(session, null);
+        saveLettersList(session, null);
+        telegramService.sendMessage(request.getChatId(), obtainTextService.read("quizFinished", lang));
+        startTest(session, test);
+        sessionService.saveSession(request.getChatId(), session);
+        telegramService.sendMessage(request.getChatId(), formTaskString(session));
+
+    }
+
+    private void sendError(UserSession session, UserRequest request){
+        sessionService.saveSession(request.getChatId(), session);
+        telegramService.sendMessage(request.getChatId(), "Failed to make a quiz");
+        telegramService.sendMessage(request.getChatId(), formTaskString(session));
     }
 
     private void startTest(UserSession session, TestEntity test) {
