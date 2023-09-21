@@ -28,10 +28,9 @@ public class Users {
     @NotNull
     private String username;
     @Column(name = "registration_date")
-    @NotBlank
     @PastOrPresent
     private Date registrationDate;
     @Column(name = "chat_id")
-    @NotBlank
+    @NotNull
     private Long chatId;
 }

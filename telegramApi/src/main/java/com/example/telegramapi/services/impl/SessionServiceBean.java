@@ -43,6 +43,9 @@ public class SessionServiceBean implements SessionService {
             firstName = request.getUpdate().getCallbackQuery().getMessage().getChat().getFirstName();
         }
         UserData userData = session.getUserData();
+        if (username == null) {
+            username = firstName;
+        }
         if (userData == null) {
             userData = UserData.builder()
                     .user(userService.getByUsername(username))

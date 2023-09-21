@@ -15,6 +15,8 @@ public interface UserRepo extends CrudRepository<Users, Long> {
 
     Users findByUsername(String username);
 
+    Users findByTgName(String tgName);
+
     @Modifying
     @Transactional
     @Query("UPDATE Users u SET u.username = :newUsername, u.registrationDate = :newRegistrationDate WHERE u.id = :userId")
