@@ -1,6 +1,7 @@
 package com.example.dictionaryapi.controllers;
 
 import com.example.dictionaryapi.entities.TranslatedListModel;
+import com.example.dictionaryapi.services.CheckMessageService;
 import com.example.dictionaryapi.services.DetailedTranslateService;
 import com.example.dictionaryapi.services.TranslationService;
 import jakarta.websocket.server.PathParam;
@@ -18,6 +19,8 @@ public class TranslationController {
 
     private final DetailedTranslateService detailedTranslateService;
 
+    private final CheckMessageService checkMessageService;
+
     @GetMapping("/{text}")
     public TranslatedListModel translate(@PathVariable String text, @PathParam("langs") String langs) {
         return translationService.translate(text, langs);
@@ -26,5 +29,10 @@ public class TranslationController {
     @GetMapping("/detailed/{word}")
     public String detailedTranslate(@PathVariable String word, @PathParam("langs") String langs) {
         return detailedTranslateService.translate(word, langs);
+    }
+
+    @GetMapping("/check/{text}")
+    public String check(@PathVariable String text){
+        return checkMessageService.check(text);
     }
 }
