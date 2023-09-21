@@ -29,12 +29,16 @@ public class ReturnListComponent {
     public void sendTest(UserRequest request) {
         UserSession session = sessionService.getSession(request.getChatId());
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
-        TranslatedListModel translatedListModel = creator.createUserSettings(session, session.getUserData().getPreviousMessage());
-        session.setState(States.RETURNED_USER_LIST);
-        updateData(session, translatedListModel);
-        sessionService.saveSession(request.getChatId(), session);
-        telegramService.sendMessage(request.getChatId(), obtainTextService.read("gotList", lang) + "\n" + translatedListModel.getMessage(), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
-        telegramService.sendMessage(request.getChatId(), obtainTextService.read("testReady", lang), InlineKeyboardHelper.buildInlineKeyboard(List.of(obtainTextService.read("launchQuery", lang)), false));
+        try {
+            TranslatedListModel translatedListModel = creator.createUserList(session, session.getUserData().getPreviousMessage());
+            session.setState(States.RETURNED_USER_LIST);
+            updateData(session, translatedListModel);
+            sessionService.saveSession(request.getChatId(), session);
+            telegramService.sendMessage(request.getChatId(), obtainTextService.read("gotList", lang) + "\n" + translatedListModel.getMessage(), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
+            telegramService.sendMessage(request.getChatId(), obtainTextService.read("testReady", lang), InlineKeyboardHelper.buildInlineKeyboard(List.of(obtainTextService.read("launchQuery", lang)), false));
+        } catch (IllegalArgumentException e) {
+            telegramService.sendMessage(request.getChatId(), obtainTextService.read("bad_list", lang));
+        }
     }
 
     private void updateData(UserSession session, TranslatedListModel listModel) {

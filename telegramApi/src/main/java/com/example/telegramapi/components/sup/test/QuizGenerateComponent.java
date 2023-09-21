@@ -9,16 +9,19 @@ import java.util.*;
 @RequiredArgsConstructor
 public class QuizGenerateComponent {
 
-    public Map<Character, List<Integer>> generateQuiz(List<Character> lettersList){
+    public Map<Character, List<Integer>> generateQuiz(List<Character> lettersList) throws IllegalArgumentException{
         Map<Character, List<Integer>> replacedMap = new HashMap<>();
-
+        Set<Character> characters = new HashSet<>(lettersList);
+        if(characters.size() <= 1) {
+            throw new IllegalArgumentException();
+        }
         // Randomly select positions to replace
         Random random = new Random();
         int numberOfPositionsToReplace = lettersList.size() / 2;
 
         while (numberOfPositionsToReplace > 0) {
             int randomPosition = random.nextInt(lettersList.size());
-
+            System.out.println("fewfwefwefew");
             if (!replacedMap.containsKey(lettersList.get(randomPosition))) {
                 Character letter = lettersList.get(randomPosition);
                 if (letter.equals('_')) continue;

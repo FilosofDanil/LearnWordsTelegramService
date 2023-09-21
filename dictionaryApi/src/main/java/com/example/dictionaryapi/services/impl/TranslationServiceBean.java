@@ -82,7 +82,9 @@ word2: definition
     private String generateMessage(String text, String from, String to) {
         String notation = "";
         if (!to.equals("English")) {
-            notation = "\nPlease pay attention, that given definitions not on on English, but on " + to + "please care about that, and give also translated definitions.\n";
+            notation = "\nPlease pay attention, that given definitions not on on English, but on " + to + "please care about that, and give also translated definitions.\n"
+                    +
+                    "\n  If there are present in the list: unreadable words or random letters or given word is on other language, return as response error message. Do not translate it then!!!";
         }
         return "Translate that word list from" + from + " to " +
                 to + ", and give the definitions (also on " + to + ", not on +" + from + ") for all the words, which present in the list:\n" +

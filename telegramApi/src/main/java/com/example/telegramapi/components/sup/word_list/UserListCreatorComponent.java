@@ -15,11 +15,20 @@ public class UserListCreatorComponent {
 
     private final GPTInterogativeService gptInterogativeService;
 
-    public TranslatedListModel createUserSettings(UserSession session, String message) {
+    public TranslatedListModel createUserList(UserSession session, String message) throws IllegalArgumentException {
         String langTo = session.getUserData().getUserSettings().getNativeLang();
         String langFrom = session.getUserData().getInputString();
         Long userId = session.getUserData().getUser().getId();
         TranslatedListModel translatedListModel = gptInterogativeService.getTranslation(message, langFrom, langTo);
+        if(translatedListModel.getTranslatedMap().isEmpty() || translatedListModel.getDefinitionMap().isEmpty()){
+            throw new IllegalArgumentException();
+        } else if(translatedListModel.getTranslatedMap().containsValue("невідомо")
+                || translatedListModel.getTranslatedMap().containsValue("помилкове слово")
+                || translatedListModel.getTranslatedMap().containsValue("undefined")
+                || translatedListModel.getTranslatedMap().containsValue("неизвестно")
+                || translatedListModel.getTranslatedMap().containsValue("ошибочное слово")){
+            throw new IllegalArgumentException();
+        }
         UserWordList wordList = UserWordList.builder()
                 .translations(translatedListModel.getTranslatedMap())
                 .definitions(translatedListModel.getDefinitionMap())

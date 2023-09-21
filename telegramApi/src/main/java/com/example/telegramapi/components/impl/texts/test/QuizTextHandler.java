@@ -47,7 +47,15 @@ public class QuizTextHandler implements TextHandler {
         }
         Character answer = getAnswer(message);
         List<Character> lettersList = session.getUserData().getLettersList();
-        if (session.getUserData().getReplacedMap() == null) saveMapInUserData(session, quizGenerateComponent.generateQuiz(lettersList));
+        try{
+            if (session.getUserData().getReplacedMap() == null) saveMapInUserData(session, quizGenerateComponent.generateQuiz(lettersList));
+        } catch (IllegalArgumentException e){
+            startTest(session, test);
+            sessionService.saveSession(request.getChatId(), session);
+            telegramService.sendMessage(request.getChatId(), "Failed to make a quiz");
+            telegramService.sendMessage(request.getChatId(), formTaskString(session));
+            return;
+        }
         Map<Character, List<Integer>> replacedMap = session.getUserData().getReplacedMap();
         if (!replacedMap.isEmpty() && session.getUserData().getQuizAttempts() > 0) {
             String response = guess(answer, lettersList, replacedMap);
