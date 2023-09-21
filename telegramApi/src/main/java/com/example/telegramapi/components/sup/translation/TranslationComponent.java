@@ -1,6 +1,5 @@
-package com.example.telegramapi.components.impl.queries;
+package com.example.telegramapi.components.sup.translation;
 
-import com.example.telegramapi.components.QueryHandler;
 import com.example.telegramapi.entities.telegram.UserRequest;
 import com.example.telegramapi.entities.telegram.UserSession;
 import com.example.telegramapi.enums.States;
@@ -15,33 +14,21 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class FurtherTestsQuery implements QueryHandler {
+public class TranslationComponent {
+
     private final SessionService sessionService;
 
     private final TelegramBotService telegramService;
 
     private final ObtainTextService obtainTextService;
 
-    @Override
-    public void handle(UserRequest request) {
+    public void handleTranslationRequest(UserRequest request){
         UserSession session = sessionService.getSession(request.getChatId());
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
-        session.setState(States.FURTHER_QUERY);
+        session.setState(States.WAITING_FOR_LANG_BEFORE_WORD);
+        List<String> replyList = List.of("\uD83C\uDDEC\uD83C\uDDE7 English", "\uD83C\uDDE9\uD83C\uDDEA Deutsch", "\uD83C\uDDEB\uD83C\uDDF7 Français", "\uD83C\uDDEA\uD83C\uDDF8 Español");
         sessionService.saveSession(request.getChatId(), session);
-        telegramService.sendMessage(request.getChatId(), "Not yet!", ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
-    }
-
-    @Override
-    public String getCallbackQuery(String lang) {
-        if (lang.equals("en")) {
-            return "👨🏻‍💻 Follow-Up-Tests";
-        } else {
-            return "👨🏻‍💻 Подальші тести";
-        }
-    }
-
-    @Override
-    public boolean isInteger() {
-        return false;
+        telegramService.sendMessage(request.getChatId(), obtainTextService.read(
+                "chooseLangList", lang), ReplyKeyboardHelper.buildMainMenu(replyList));
     }
 }

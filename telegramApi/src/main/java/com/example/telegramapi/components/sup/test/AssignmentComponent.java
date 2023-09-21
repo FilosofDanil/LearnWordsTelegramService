@@ -52,10 +52,10 @@ public class AssignmentComponent {
         filteredList.forEach(testEntity -> {
             String backMessage = "Test#" + testEntity.getId() + "\n";
             UserWordList wordList = mongoDBService.getById(testEntity.getListId());
-            if (wordList.getLangFrom().equals("en")) backMessage += "\uD83C\uDDEC\uD83C\uDDE7";
-            else if (wordList.getLangFrom().equals("de")) backMessage += "\uD83C\uDDE9\uD83C\uDDEA ";
-            else if (wordList.getLangFrom().equals("es")) backMessage += "\uD83C\uDDEA\uD83C\uDDF8 ";
-            else if (wordList.getLangFrom().equals("fr")) backMessage += "\uD83C\uDDEB\uD83C\uDDF7 ";
+            if (wordList.getLangFrom().equals("English")) backMessage += "\uD83C\uDDEC\uD83C\uDDE7";
+            else if (wordList.getLangFrom().equals("German")) backMessage += "\uD83C\uDDE9\uD83C\uDDEA ";
+            else if (wordList.getLangFrom().equals("Spanish")) backMessage += "\uD83C\uDDEA\uD83C\uDDF8 ";
+            else if (wordList.getLangFrom().equals("French")) backMessage += "\uD83C\uDDEB\uD83C\uDDF7 ";
             backMessage += testEntity.getTests().size() + " words \n";
             backMessage += "Deadline date: " + testEntity.getTestDate();
             telegramService.sendMessage(request.getChatId(), backMessage, InlineKeyboardHelper.buildInlineKeyboard(List.of("\uD83D\uDE80 Launch"), false));

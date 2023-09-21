@@ -18,11 +18,8 @@ public class SettingsQueryHandler implements QueryHandler {
 
     @Override
     public String getCallbackQuery(String lang) {
-        if (lang.equals("uk")) {
-            return "⚙️ Налаштування";
-        } else {
-            return "⚙️ Settings";
-        }
+        if (lang.equals("uk")) return "⚙️ Налаштування";
+        else return "⚙️ Settings";
     }
 
     @Override

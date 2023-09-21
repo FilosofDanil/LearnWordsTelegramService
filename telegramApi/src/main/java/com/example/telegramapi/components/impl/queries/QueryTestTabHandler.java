@@ -18,11 +18,9 @@ public class QueryTestTabHandler implements QueryHandler {
 
     @Override
     public String getCallbackQuery(String lang) {
-        if (lang.equals("en")) {
-            return "✍🏻 Start Learning";
-        } else {
-            return "✍🏻 Почати навчання";
-        }
+        if (lang.equals("en")) return "✍🏻 Start Learning";
+        else return "✍🏻 Почати навчання";
+
     }
 
     @Override

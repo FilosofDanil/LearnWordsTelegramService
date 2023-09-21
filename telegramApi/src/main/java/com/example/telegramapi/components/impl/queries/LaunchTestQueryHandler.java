@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class TestLaunchQueryHandler implements QueryHandler {
+public class LaunchTestQueryHandler implements QueryHandler {
     private final TestComponent testComponent;
 
     @Override
@@ -18,8 +18,9 @@ public class TestLaunchQueryHandler implements QueryHandler {
 
     @Override
     public String getCallbackQuery(String lang) {
-        if (lang.equals("en")) return "🚀 Launch the test.";
-        else return "🚀 Запустити цей тест.";
+        if (lang.equals("en")) return "🚀 Launch Test";
+        else return "🚀 Запустити Тест";
+
     }
 
     @Override
