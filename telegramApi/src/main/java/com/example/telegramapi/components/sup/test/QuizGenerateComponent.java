@@ -21,7 +21,6 @@ public class QuizGenerateComponent {
 
         while (numberOfPositionsToReplace > 0) {
             int randomPosition = random.nextInt(lettersList.size());
-            System.out.println("fewfwefwefew");
             if (!replacedMap.containsKey(lettersList.get(randomPosition))) {
                 Character letter = lettersList.get(randomPosition);
                 if (letter.equals('_')) continue;
