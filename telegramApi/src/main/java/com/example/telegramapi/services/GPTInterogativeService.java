@@ -12,4 +12,6 @@ public interface GPTInterogativeService {
     List<String> getTests(String word, String lang);
 
     String getRandomWordList(Integer amount, String lang, String level);
+
+    String check(String text);
 }

@@ -8,6 +8,8 @@ import com.example.telegramapi.services.MongoDBService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class UserListCreatorComponent {
@@ -19,10 +21,10 @@ public class UserListCreatorComponent {
         String langTo = session.getUserData().getUserSettings().getNativeLang();
         String langFrom = session.getUserData().getInputString();
         Long userId = session.getUserData().getUser().getId();
-        TranslatedListModel translatedListModel = gptInterogativeService.getTranslation(message, langFrom, langTo);
-        if(translatedListModel.getTranslatedMap().isEmpty() || translatedListModel.getDefinitionMap().isEmpty()){
+        if (!check(message)) {
             throw new IllegalArgumentException();
         }
+        TranslatedListModel translatedListModel = gptInterogativeService.getTranslation(message, langFrom, langTo);
         UserWordList wordList = UserWordList.builder()
                 .translations(translatedListModel.getTranslatedMap())
                 .definitions(translatedListModel.getDefinitionMap())
@@ -33,5 +35,11 @@ public class UserListCreatorComponent {
         UserWordList createdList = mongoDBService.create(wordList);
         translatedListModel.setId(createdList.getId());
         return translatedListModel;
+    }
+
+    private boolean check(String text) {
+        String response = gptInterogativeService.check(text);
+        List<String> gptResponse = List.of(response.split(" "));
+        return gptResponse.contains("correct");
     }
 }
