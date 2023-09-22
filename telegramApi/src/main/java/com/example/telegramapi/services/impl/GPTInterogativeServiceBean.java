@@ -14,7 +14,7 @@ public class GPTInterogativeServiceBean implements GPTInterogativeService {
     private final GPTClient gptClient;
 
     @Override
-    public TranslatedListModel getTranslation(String message, String langFrom, String langTo) {
+    public String getTranslation(String message, String langFrom, String langTo) {
         String lang = defineLangFrom(langFrom) + "/" + defineLangTo(langTo);
         return gptClient.getMessage(message, lang);
     }
@@ -26,7 +26,7 @@ public class GPTInterogativeServiceBean implements GPTInterogativeService {
     }
 
     @Override
-    public List<String> getTests(String word, String lang) {
+    public String getTests(String word, String lang) {
         return gptClient.getTests(word, lang);
     }
 

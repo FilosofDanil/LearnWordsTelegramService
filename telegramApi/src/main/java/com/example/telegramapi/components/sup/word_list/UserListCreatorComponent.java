@@ -8,7 +8,9 @@ import com.example.telegramapi.services.MongoDBService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -24,7 +26,7 @@ public class UserListCreatorComponent {
         if (!check(message)) {
             throw new IllegalArgumentException();
         }
-        TranslatedListModel translatedListModel = gptInterogativeService.getTranslation(message, langFrom, langTo);
+        TranslatedListModel translatedListModel = getTranslatedListModel(message, langFrom, langTo);
         UserWordList wordList = UserWordList.builder()
                 .translations(translatedListModel.getTranslatedMap())
                 .definitions(translatedListModel.getDefinitionMap())
@@ -41,5 +43,46 @@ public class UserListCreatorComponent {
         String response = gptInterogativeService.check(text);
         List<String> gptResponse = List.of(response.split(" "));
         return gptResponse.contains("correct");
+    }
+
+    private TranslatedListModel getTranslatedListModel(String message, String langFrom, String langTo) {
+        String response = gptInterogativeService.getTranslation(message, langFrom, langTo);
+        Map<String, String> translatedMap = getTranslationMap(response);
+        Map<String, String> definitionMap = getDefinitionMap(response);
+        return TranslatedListModel.builder()
+                .message(response)
+                .translatedMap(translatedMap)
+                .definitionMap(definitionMap)
+                .build();
+    }
+
+    private Map<String, String> getDefinitionMap(String message) {
+        Map<String, String> definitionMap = new HashMap<>();
+        String[] sections = message.split("\n\n");
+
+        // Parse the Definition list
+        String[] definitionLines = sections[1].split("\n");
+        putInElementsInTheMap(definitionLines, definitionMap);
+        return definitionMap;
+    }
+
+    private Map<String, String> getTranslationMap(String message) {
+        Map<String, String> translationMap = new HashMap<>();
+        String[] sections = message.split("\n\n");
+
+        // Parse the Translation list
+        String[] translationLines = sections[0].split("\n");
+        putInElementsInTheMap(translationLines, translationMap);
+        return translationMap;
+    }
+
+    private void putInElementsInTheMap(String[] lines, Map<String, String> map) {
+        for (int i = 1; i < lines.length; i++) {
+            String[] parts = lines[i].split(": ");
+            String germanWord = parts[0];
+            String ukrainianTranslation = parts[1].trim().replaceAll(",+$", "");
+            map.put(germanWord, ukrainianTranslation);
+        }
+
     }
 }

@@ -10,8 +10,8 @@ import com.example.telegramapi.services.ObtainTextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -33,7 +33,7 @@ public class FormTestComponent {
             else if (row.getTestFormat().equals(TestFormat.PICK_FROM_LIST_FORMAT)) {
                 row.setResponseMessage(obtainTextService.read("testText_201", lang) + ":\n" + translatedMap.get(correct));
                 String language = languageComponent.getLang(model.getLangFrom());
-                row.setResponseKeyboard(gptService.getTests(correct, language));
+                row.setResponseKeyboard(getTests(correct, language));
                 try {
                     Thread.sleep(15000);
                 } catch (InterruptedException e) {
@@ -47,5 +47,22 @@ public class FormTestComponent {
             else row.setResponseMessage("skip");
         });
         return rawTest;
+    }
+
+    private List<String> getTests(String correct, String language) {
+        String response = gptService.getTests(correct, language);
+        List<String> wordList = Arrays.stream(response.split("[,\\s]+"))
+                .collect(Collectors.toList());
+        if (!wordList.contains(correct) || !wordList.contains(correct.toLowerCase(Locale.ROOT))) {
+            wordList.add(correct);
+        }
+        modifyList(wordList);
+        return wordList;
+    }
+
+    private void modifyList(List<String> wordList) {
+        Collections.shuffle(wordList);
+        wordList.forEach(String::toLowerCase);
+//        return wordList.stream().filter(word -> word != null && !word.equals("null") && !word.contains(".")).toList();
     }
 }

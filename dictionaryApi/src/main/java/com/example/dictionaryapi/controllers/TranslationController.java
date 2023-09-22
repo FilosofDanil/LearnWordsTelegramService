@@ -1,6 +1,5 @@
 package com.example.dictionaryapi.controllers;
 
-import com.example.dictionaryapi.entities.TranslatedListModel;
 import com.example.dictionaryapi.services.CheckMessageService;
 import com.example.dictionaryapi.services.DetailedTranslateService;
 import com.example.dictionaryapi.services.TranslationService;
@@ -22,7 +21,7 @@ public class TranslationController {
     private final CheckMessageService checkMessageService;
 
     @GetMapping("/{text}")
-    public TranslatedListModel translate(@PathVariable String text, @PathParam("langs") String langs) {
+    public String translate(@PathVariable String text, @PathParam("langs") String langs) {
         return translationService.translate(text, langs);
     }
 

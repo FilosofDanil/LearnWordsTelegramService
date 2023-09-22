@@ -20,7 +20,7 @@ public class TestController {
     private final RandomTestServiceGenerator randomGenerator;
 
     @GetMapping("/{answer}")
-    public List<String> formTest(@PathVariable String answer, @PathParam("lang") String lang) {
+    public String formTest(@PathVariable String answer, @PathParam("lang") String lang) {
         return testService.createTest(answer, lang);
     }
 

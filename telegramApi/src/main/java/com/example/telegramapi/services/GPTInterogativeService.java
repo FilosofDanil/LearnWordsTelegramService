@@ -5,11 +5,11 @@ import com.example.telegramapi.entities.tests_data.TranslatedListModel;
 import java.util.List;
 
 public interface GPTInterogativeService {
-    TranslatedListModel getTranslation(String message, String langFrom, String langTo);
+    String getTranslation(String message, String langFrom, String langTo);
 
     String getDetailedTranslate(String word, String langFrom, String langTo);
 
-    List<String> getTests(String word, String lang);
+    String getTests(String word, String lang);
 
     String getRandomWordList(Integer amount, String lang, String level);
 
