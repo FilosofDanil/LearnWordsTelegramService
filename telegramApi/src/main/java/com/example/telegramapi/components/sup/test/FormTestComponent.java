@@ -52,10 +52,13 @@ public class FormTestComponent {
     }
 
     private List<String> getTests(String correct, String language) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("word", correct);
+        map.put("lang", language);
         GPTRequest request = GPTRequest.builder()
                 .ready(false)
                 .method("tests")
-                .params(Map.of("word", correct, "lang", language))
+                .params(map)
                 .build();
         resolver.putInQueue(request);
         PreparingRequestHandler preparingRequestThread = new PreparingRequestHandler(request);

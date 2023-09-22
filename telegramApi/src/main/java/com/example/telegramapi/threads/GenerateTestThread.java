@@ -33,7 +33,7 @@ public class GenerateTestThread extends Thread {
     @SneakyThrows
     @Override
     public void run() {
-        try{
+        try {
             List<TestEntity> tests = testService.getAll().stream().filter(testEntity -> !testEntity.getTestReady()).toList();
             ArrayDeque<TestEntity> testQueue = new ArrayDeque<>(tests);
             synchronized (this) {
@@ -43,12 +43,15 @@ public class GenerateTestThread extends Thread {
                     UserWordList wordList = mongoDBService.getById(wordListId);
                     User user = userService.getById(wordList.getUserId());
                     UserSession session = sessionService.getSession(user.getChatId());
-                    String lang = session.getUserData().getUserSettings().getInterfaceLang();
-                    createTest(first, lang);
+                    try {
+                        String lang = session.getUserData().getUserSettings().getInterfaceLang();
+                        createTest(first, lang);
+                    } catch (NullPointerException e) {
+                    }
                 }
                 notify();
             }
-        }catch (FeignException ex){
+        } catch (FeignException ex) {
             System.out.println("Connection lost!");
         }
 
