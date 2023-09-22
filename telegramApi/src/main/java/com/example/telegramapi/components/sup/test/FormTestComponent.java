@@ -1,12 +1,14 @@
 package com.example.telegramapi.components.sup.test;
 
 import com.example.telegramapi.components.sup.data.LanguageComponent;
+import com.example.telegramapi.components.sup.data.QueueResolver;
+import com.example.telegramapi.entities.gpt.GPTRequest;
 import com.example.telegramapi.entities.tests_data.Test;
 import com.example.telegramapi.entities.tests_data.TestEntity;
 import com.example.telegramapi.entities.tests_data.UserWordList;
 import com.example.telegramapi.enums.TestFormat;
-import com.example.telegramapi.services.GPTInterogativeService;
 import com.example.telegramapi.services.ObtainTextService;
+import com.example.telegramapi.threads.PreparingRequestHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +20,7 @@ import java.util.stream.Collectors;
 public class FormTestComponent {
     private final ObtainTextService obtainTextService;
 
-    private final GPTInterogativeService gptService;
+    private final QueueResolver resolver;
 
     private final LanguageComponent languageComponent;
 
@@ -50,7 +52,23 @@ public class FormTestComponent {
     }
 
     private List<String> getTests(String correct, String language) {
-        String response = gptService.getTests(correct, language);
+        GPTRequest request = GPTRequest.builder()
+                .ready(false)
+                .method("tests")
+                .params(Map.of("word", correct, "lang", language))
+                .build();
+        resolver.putInQueue(request);
+        PreparingRequestHandler preparingRequestThread = new PreparingRequestHandler(request);
+        preparingRequestThread.start();
+        synchronized (preparingRequestThread) {
+            try {
+                preparingRequestThread.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        preparingRequestThread.stop();
+        String response = resolver.getResponse(request);
         List<String> wordList = Arrays.stream(response.split("[,\\s]+"))
                 .collect(Collectors.toList());
         if (!wordList.contains(correct) || !wordList.contains(correct.toLowerCase(Locale.ROOT))) {

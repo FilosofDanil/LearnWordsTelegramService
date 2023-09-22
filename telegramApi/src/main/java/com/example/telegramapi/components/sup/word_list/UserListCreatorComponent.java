@@ -1,10 +1,12 @@
 package com.example.telegramapi.components.sup.word_list;
 
-import com.example.telegramapi.entities.tests_data.TranslatedListModel;
+import com.example.telegramapi.components.sup.data.QueueResolver;
+import com.example.telegramapi.entities.gpt.GPTRequest;
 import com.example.telegramapi.entities.telegram.UserSession;
+import com.example.telegramapi.entities.tests_data.TranslatedListModel;
 import com.example.telegramapi.entities.tests_data.UserWordList;
-import com.example.telegramapi.services.GPTInterogativeService;
 import com.example.telegramapi.services.MongoDBService;
+import com.example.telegramapi.threads.PreparingRequestHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +19,7 @@ import java.util.Map;
 public class UserListCreatorComponent {
     private final MongoDBService mongoDBService;
 
-    private final GPTInterogativeService gptInterogativeService;
+    private final QueueResolver resolver;
 
     public TranslatedListModel createUserList(UserSession session, String message) throws IllegalArgumentException {
         String langTo = session.getUserData().getUserSettings().getNativeLang();
@@ -40,13 +42,45 @@ public class UserListCreatorComponent {
     }
 
     private boolean check(String text) {
-        String response = gptInterogativeService.check(text);
+        GPTRequest request = GPTRequest.builder()
+                .ready(false)
+                .method("check")
+                .params(Map.of("message", text))
+                .build();
+        resolver.putInQueue(request);
+        PreparingRequestHandler preparingRequestThread = new PreparingRequestHandler(request);
+        preparingRequestThread.start();
+        synchronized (preparingRequestThread) {
+            try {
+                preparingRequestThread.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        preparingRequestThread.stop();
+        String response = resolver.getResponse(request);
         List<String> gptResponse = List.of(response.split(" "));
         return gptResponse.contains("correct");
     }
 
     private TranslatedListModel getTranslatedListModel(String message, String langFrom, String langTo) {
-        String response = gptInterogativeService.getTranslation(message, langFrom, langTo);
+        GPTRequest request = GPTRequest.builder()
+                .ready(false)
+                .method("wordList")
+                .params(Map.of("message", message, "langFrom", langFrom, "langTo", langTo))
+                .build();
+        resolver.putInQueue(request);
+        PreparingRequestHandler preparingRequestThread = new PreparingRequestHandler(request);
+        preparingRequestThread.start();
+        synchronized (preparingRequestThread) {
+            try {
+                preparingRequestThread.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        preparingRequestThread.stop();
+        String response = resolver.getResponse(request);
         Map<String, String> translatedMap = getTranslationMap(response);
         Map<String, String> definitionMap = getDefinitionMap(response);
         return TranslatedListModel.builder()

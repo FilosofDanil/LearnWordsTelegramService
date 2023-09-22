@@ -1,15 +1,17 @@
 package com.example.telegramapi.components.impl.texts.intermidiate_operations;
 
 import com.example.telegramapi.components.TextHandler;
+import com.example.telegramapi.components.sup.data.QueueResolver;
 import com.example.telegramapi.components.sup.word_list.RandomMessageSender;
-import com.example.telegramapi.entities.user.UserData;
+import com.example.telegramapi.entities.gpt.GPTRequest;
 import com.example.telegramapi.entities.telegram.UserRequest;
 import com.example.telegramapi.entities.telegram.UserSession;
+import com.example.telegramapi.entities.user.UserData;
 import com.example.telegramapi.enums.States;
-import com.example.telegramapi.services.GPTInterogativeService;
 import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;
 import com.example.telegramapi.services.bot.TelegramBotService;
+import com.example.telegramapi.threads.PreparingRequestHandler;
 import com.example.telegramapi.utils.ReplyKeyboardHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -34,7 +36,7 @@ public class GetLevelBeforeSend implements TextHandler {
 
     private final TelegramBotService telegramService;
 
-    private final GPTInterogativeService gptService;
+    private final QueueResolver resolver;
 
     private final RandomMessageSender randomMessageSender;
 
@@ -70,7 +72,23 @@ public class GetLevelBeforeSend implements TextHandler {
     private String getRandomList(UserSession session, String level) {
         Integer amount = session.getUserData().getInputInt();
         String lang = session.getUserData().getInputString();
-        return gptService.getRandomWordList(amount, lang, level);
+        GPTRequest request = GPTRequest.builder()
+                .ready(false)
+                .method("random")
+                .params(Map.of("amount", amount, "lang", lang, "level", level))
+                .build();
+        resolver.putInQueue(request);
+        PreparingRequestHandler preparingRequestThread = new PreparingRequestHandler(request);
+        preparingRequestThread.start();
+        synchronized (preparingRequestThread) {
+            try {
+                preparingRequestThread.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        preparingRequestThread.stop();
+        return resolver.getResponse(request);
     }
 
     @Override
