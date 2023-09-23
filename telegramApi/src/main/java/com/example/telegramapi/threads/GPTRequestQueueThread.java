@@ -25,9 +25,7 @@ public class GPTRequestQueueThread extends Thread {
     public void run() {
         while (true) {
             long startTime = System.currentTimeMillis();
-            System.out.println(queue);
             GPTRequest request = queue.take();
-            System.out.println(queue);
             String response = operate(request.getParams(), request.getMethod());
             request.setReady(true);
             responseMap.put(request, response);
