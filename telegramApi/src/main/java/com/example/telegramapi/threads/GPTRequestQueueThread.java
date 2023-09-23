@@ -24,10 +24,18 @@ public class GPTRequestQueueThread extends Thread {
     @Override
     public void run() {
         while (true) {
+            long startTime = System.currentTimeMillis();
+            System.out.println(queue);
             GPTRequest request = queue.take();
+            System.out.println(queue);
             String response = operate(request.getParams(), request.getMethod());
             request.setReady(true);
             responseMap.put(request, response);
+            long endTime = System.currentTimeMillis();
+            long timeElapsed = endTime - startTime;
+            if (timeElapsed <= 20001) {
+                Thread.sleep(20001 - timeElapsed);
+            }
         }
     }
 

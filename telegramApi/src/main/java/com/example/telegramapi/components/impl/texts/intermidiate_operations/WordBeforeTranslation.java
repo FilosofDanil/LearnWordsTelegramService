@@ -11,6 +11,7 @@ import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;
 import com.example.telegramapi.services.bot.TelegramBotService;
 import com.example.telegramapi.threads.PreparingRequestHandler;
+import com.example.telegramapi.threads.TranslationWaitThread;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -33,37 +34,8 @@ public class WordBeforeTranslation implements TextHandler {
 
     @Override
     public void handle(UserRequest request) {
-        String message = request.getUpdate().getMessage().getText();
-        if (message.equals("🔙 Back") || request.getUpdate().getMessage().getText().equals("🔙 Назад")) {
-            menuComponent.handleMenuRequest(request);
-            return;
-        }
-        UserSession session = sessionService.getSession(request.getChatId());
-        String langFrom = session.getUserData().getInputString();
-        String langTo = session.getUserData().getUserSettings().getNativeLang();
-        String lang = session.getUserData().getUserSettings().getInterfaceLang();
-        telegramService.sendMessage(request.getChatId(), obtainTextService.read("waitMoment", lang));
-
-        GPTRequest gptRequest = GPTRequest.builder()
-                .ready(false)
-                .method("translate")
-                .params(Map.of("message", message, "langFrom", langFrom, "langTo", langTo))
-                .build();
-        resolver.putInQueue(gptRequest);
-        PreparingRequestHandler preparingRequestThread = new PreparingRequestHandler(gptRequest);
-        preparingRequestThread.start();
-        synchronized (preparingRequestThread) {
-            try {
-                preparingRequestThread.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        preparingRequestThread.stop();
-        String response = resolver.getResponse(gptRequest);
-        session.setState(States.SUCCESSFULLY_TRANSLATED);
-        sessionService.saveSession(request.getChatId(), session);
-        telegramService.sendMessage(request.getChatId(), response);
+        TranslationWaitThread translationWaitThread = new TranslationWaitThread(sessionService, obtainTextService, telegramService, menuComponent, resolver, request);
+        translationWaitThread.start();
     }
 
     @Override
