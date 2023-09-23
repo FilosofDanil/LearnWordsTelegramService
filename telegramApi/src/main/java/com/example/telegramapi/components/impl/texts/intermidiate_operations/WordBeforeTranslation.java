@@ -34,6 +34,11 @@ public class WordBeforeTranslation implements TextHandler {
 
     @Override
     public void handle(UserRequest request) {
+        UserSession session = sessionService.getSession(request.getChatId());
+        String lang = session.getUserData().getUserSettings().getInterfaceLang();
+        if(resolver.usersInQueue() > 0){
+            telegramService.sendMessage(request.getChatId(), obtainTextService.read("queueShcedule", lang) + resolver.usersInQueue().toString());
+        }
         TranslationWaitThread translationWaitThread = new TranslationWaitThread(sessionService, obtainTextService, telegramService, menuComponent, resolver, request);
         translationWaitThread.start();
     }

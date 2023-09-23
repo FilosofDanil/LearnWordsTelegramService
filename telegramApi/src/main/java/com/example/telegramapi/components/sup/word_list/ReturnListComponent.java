@@ -24,6 +24,11 @@ public class ReturnListComponent {
     private final QueueResolver resolver;
 
     public void sendTest(UserRequest request) {
+        UserSession session = sessionService.getSession(request.getChatId());
+        String lang = session.getUserData().getUserSettings().getInterfaceLang();
+        if(resolver.usersInQueue() > 0){
+            telegramService.sendMessage(request.getChatId(), obtainTextService.read("queueShcedule", lang) + resolver.usersInQueue().toString());
+        }
         WordListWaitThread wordListWaitThread = new WordListWaitThread(sessionService, telegramService, obtainTextService, creator, request);
         wordListWaitThread.start();
     }

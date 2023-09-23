@@ -44,6 +44,9 @@ public class RandomGenerateWaitThread extends Thread{
         if (langMap.containsKey(message)) {
             String definedLang = langMap.get(message);
             session.setState(States.GENERATED_RANDOM_LIST);
+            if(resolver.usersInQueue() > 0){
+                telegramService.sendMessage(request.getChatId(), obtainTextService.read("queueShcedule", lang) + resolver.usersInQueue().toString());
+            }
             String randomList = getRandomList(session, definedLang);
             updateData(session, randomList);
             sessionService.saveSession(request.getChatId(), session);

@@ -2,6 +2,7 @@ package com.example.telegramapi.threads;
 
 import com.example.telegramapi.entities.gpt.GPTRequest;
 import com.example.telegramapi.services.GPTInterogativeService;
+import feign.FeignException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -26,14 +27,19 @@ public class GPTRequestQueueThread extends Thread {
         while (true) {
             long startTime = System.currentTimeMillis();
             GPTRequest request = queue.take();
-            String response = operate(request.getParams(), request.getMethod());
-            request.setReady(true);
-            responseMap.put(request, response);
-            long endTime = System.currentTimeMillis();
-            long timeElapsed = endTime - startTime;
-            if (timeElapsed <= 20001) {
-                Thread.sleep(20001 - timeElapsed);
+            try{
+                String response = operate(request.getParams(), request.getMethod());
+                request.setReady(true);
+                responseMap.put(request, response);
+                long endTime = System.currentTimeMillis();
+                long timeElapsed = endTime - startTime;
+                if (timeElapsed <= 21001) {
+                    Thread.sleep(21001 - timeElapsed);
+                }
+            } catch (FeignException e){
             }
+
+
         }
     }
 

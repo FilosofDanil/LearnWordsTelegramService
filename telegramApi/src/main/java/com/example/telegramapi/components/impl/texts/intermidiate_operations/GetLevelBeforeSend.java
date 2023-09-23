@@ -38,11 +38,11 @@ public class GetLevelBeforeSend implements TextHandler {
 
     @Override
     public void handle(UserRequest request) {
-//        UserSession session = sessionService.getSession(request.getChatId());
-//        String lang = session.getUserData().getUserSettings().getInterfaceLang();
-//        if(resolver.usersInQueue() > 0){
-//            telegramService.sendMessage(request.getChatId(), obtainTextService.read("queue", lang) + resolver.usersInQueue().toString());
-//        }
+        UserSession session = sessionService.getSession(request.getChatId());
+        String lang = session.getUserData().getUserSettings().getInterfaceLang();
+        if(resolver.usersInQueue() > 0){
+            telegramService.sendMessage(request.getChatId(), obtainTextService.read("queueShcedule", lang) + resolver.usersInQueue().toString());
+        }
         RandomGenerateWaitThread randomGenerateWaitThread = new RandomGenerateWaitThread(sessionService, obtainTextService, telegramService, resolver, randomMessageSender, request);
         randomGenerateWaitThread.start();
     }
