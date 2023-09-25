@@ -1,6 +1,6 @@
 package com.example.telegramapi.services;
 
-import com.example.telegramapi.entities.TestEntity;
+import com.example.telegramapi.entities.tests_data.TestEntity;
 
 import java.util.List;
 

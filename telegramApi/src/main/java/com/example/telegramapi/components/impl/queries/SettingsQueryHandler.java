@@ -1,8 +1,8 @@
 package com.example.telegramapi.components.impl.queries;
 
 import com.example.telegramapi.components.QueryHandler;
-import com.example.telegramapi.components.additions.SettingsComponent;
-import com.example.telegramapi.entities.UserRequest;
+import com.example.telegramapi.components.sup.tab.SettingsComponent;
+import com.example.telegramapi.entities.telegram.UserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,11 +18,8 @@ public class SettingsQueryHandler implements QueryHandler {
 
     @Override
     public String getCallbackQuery(String lang) {
-        if (lang.equals("uk")) {
-            return "⚙️ Налаштування";
-        } else {
-            return "⚙️ Settings";
-        }
+        if (lang.equals("uk")) return "⚙️ Налаштування";
+        else return "⚙️ Settings";
     }
 
     @Override

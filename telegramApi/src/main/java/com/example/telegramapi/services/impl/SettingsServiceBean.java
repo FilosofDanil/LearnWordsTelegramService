@@ -1,7 +1,7 @@
 package com.example.telegramapi.services.impl;
 
 import com.example.telegramapi.client.DataClient;
-import com.example.telegramapi.entities.UserSettings;
+import com.example.telegramapi.entities.user.UserSettings;
 import com.example.telegramapi.services.SettingsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

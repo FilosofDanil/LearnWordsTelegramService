@@ -1,8 +1,8 @@
 package com.example.telegramapi.components.impl.queries;
 
 import com.example.telegramapi.components.QueryHandler;
-import com.example.telegramapi.components.additions.TestTabComponent;
-import com.example.telegramapi.entities.UserRequest;
+import com.example.telegramapi.components.sup.tab.TestTabComponent;
+import com.example.telegramapi.entities.telegram.UserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,11 +18,9 @@ public class QueryTestTabHandler implements QueryHandler {
 
     @Override
     public String getCallbackQuery(String lang) {
-        if (lang.equals("en")) {
-            return "✍🏻 Start Learning";
-        } else {
-            return "✍🏻 Почати навчання";
-        }
+        if (lang.equals("en")) return "✍🏻 Start Learning";
+        else return "✍🏻 Почати навчання";
+
     }
 
     @Override

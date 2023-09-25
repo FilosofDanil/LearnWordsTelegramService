@@ -5,6 +5,7 @@ import com.example.databaseapi.restcontrollers.IRestController;
 import com.example.databaseapi.services.DBAService;
 import com.example.databaseapi.services.SettingsService;
 import com.example.databaseapi.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +38,7 @@ public class SettingsRestController implements IRestController<Settings> {
 
     @Override
     @PostMapping("")
-    public Settings create(@RequestBody Settings settings) {
+    public Settings create(@RequestBody @Valid Settings settings) {
         return settingsService.create(settings);
     }
 
@@ -49,7 +50,7 @@ public class SettingsRestController implements IRestController<Settings> {
 
     @Override
     @PutMapping("/{id}")
-    public void update(@RequestBody Settings settings, @PathVariable("id") Long id) {
+    public void update(@RequestBody @Valid Settings settings, @PathVariable("id") Long id) {
         settingsService.update(settings, id);
     }
 }

@@ -2,8 +2,8 @@ package com.example.telegramapi.components.globalhandlers;
 
 import com.example.telegramapi.components.QueryHandler;
 import com.example.telegramapi.components.RequestHandler;
-import com.example.telegramapi.entities.UserRequest;
-import com.example.telegramapi.entities.UserSession;
+import com.example.telegramapi.entities.telegram.UserRequest;
+import com.example.telegramapi.entities.telegram.UserSession;
 import com.example.telegramapi.services.SessionService;
 import feign.FeignException;
 import org.springframework.stereotype.Component;

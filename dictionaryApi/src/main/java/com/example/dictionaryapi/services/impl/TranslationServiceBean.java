@@ -1,7 +1,6 @@
 package com.example.dictionaryapi.services.impl;
 
 import com.example.dictionaryapi.components.BotComponent;
-import com.example.dictionaryapi.entities.TranslatedListModel;
 import com.example.dictionaryapi.services.TranslationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,48 +16,11 @@ public class TranslationServiceBean implements TranslationService {
     private final BotComponent botComponent;
 
     @Override
-    public TranslatedListModel translate(String text, String langs) {
+    public String translate(String text, String langs) {
         List<String> languages = Arrays.stream(detectLanguages(langs)).toList();
         String from = languages.get(0);
         String to = languages.get(1);
-        String message = botComponent.getResponseMessage(generateMessage(text, from, to));
-        Map<String, String> translatedMap = getTranslationMap(message);
-        Map<String, String> definitionMap = getDefinitionMap(message);
-        return TranslatedListModel.builder()
-                .message(message)
-                .translatedMap(translatedMap)
-                .definitionMap(definitionMap)
-                .build();
-    }
-
-    private Map<String, String> getDefinitionMap(String message) {
-        Map<String, String> definitionMap = new HashMap<>();
-        String[] sections = message.split("\n\n");
-
-        // Parse the Definition list
-        String[] definitionLines = sections[1].split("\n");
-        for (int i = 1; i < definitionLines.length; i++) {
-            String[] parts = definitionLines[i].split(": ");
-            String germanWord = parts[0];
-            String ukrainianDefinition = parts[1].trim().replaceAll(",+$", "");
-            definitionMap.put(germanWord, ukrainianDefinition);
-        }
-        return definitionMap;
-    }
-
-    private Map<String, String> getTranslationMap(String message) {
-        Map<String, String> translationMap = new HashMap<>();
-        String[] sections = message.split("\n\n");
-
-        // Parse the Translation list
-        String[] translationLines = sections[0].split("\n");
-        for (int i = 1; i < translationLines.length; i++) {
-            String[] parts = translationLines[i].split(": ");
-            String germanWord = parts[0];
-            String ukrainianTranslation = parts[1].trim().replaceAll(",+$", "");
-            translationMap.put(germanWord, ukrainianTranslation);
-        }
-        return translationMap;
+        return botComponent.getResponseMessage(generateMessage(text, from, to));
     }
 
     private String[] detectLanguages(String langs) {
@@ -82,7 +44,9 @@ word2: definition
     private String generateMessage(String text, String from, String to) {
         String notation = "";
         if (!to.equals("English")) {
-            notation = "\nPlease pay attention, that given definitions not on on English, but on " + to + "please care about that, and give also translated definitions.\n";
+            notation = "\nPlease pay attention, that given definitions not on on English, but on " + to + "please care about that, and give also translated definitions.\n"
+                    +
+                    "\n  If there are present in the list: unreadable words or random letters or given word is on other language, return as response error message. Do not translate it then!!!";
         }
         return "Translate that word list from" + from + " to " +
                 to + ", and give the definitions (also on " + to + ", not on +" + from + ") for all the words, which present in the list:\n" +

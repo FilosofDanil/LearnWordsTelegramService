@@ -1,6 +1,6 @@
 package com.example.telegramapi.components;
 
-import com.example.telegramapi.entities.UserRequest;
+import com.example.telegramapi.entities.telegram.UserRequest;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public abstract class RequestHandler {

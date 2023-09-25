@@ -1,7 +1,7 @@
 package com.example.telegramapi.services;
 
-import com.example.telegramapi.entities.UserRequest;
-import com.example.telegramapi.entities.UserSession;
+import com.example.telegramapi.entities.telegram.UserRequest;
+import com.example.telegramapi.entities.telegram.UserSession;
 
 public interface SessionService {
     UserSession getSession(Long chatId);

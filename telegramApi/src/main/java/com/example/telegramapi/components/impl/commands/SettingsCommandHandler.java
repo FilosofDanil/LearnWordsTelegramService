@@ -1,8 +1,8 @@
 package com.example.telegramapi.components.impl.commands;
 
 import com.example.telegramapi.components.RequestHandler;
-import com.example.telegramapi.components.additions.SettingsComponent;
-import com.example.telegramapi.entities.UserRequest;
+import com.example.telegramapi.components.sup.tab.SettingsComponent;
+import com.example.telegramapi.entities.telegram.UserRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

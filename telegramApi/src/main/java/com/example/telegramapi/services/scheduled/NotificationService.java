@@ -1,11 +1,12 @@
 package com.example.telegramapi.services.scheduled;
 
-import com.example.telegramapi.entities.TestEntity;
-import com.example.telegramapi.entities.User;
-import com.example.telegramapi.entities.UserSession;
+import com.example.telegramapi.entities.tests_data.TestEntity;
+import com.example.telegramapi.entities.user.User;
+import com.example.telegramapi.entities.telegram.UserSession;
 import com.example.telegramapi.enums.States;
 import com.example.telegramapi.services.*;
 import com.example.telegramapi.services.bot.TelegramBotService;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -34,28 +35,32 @@ public class NotificationService {
 
     @Scheduled(cron = "0 * * ? * *")
     public void notifyAllUsers() {
-        List<User> userList = userService.getAll();
-        userList.forEach(user -> {
-            List<TestEntity> tests = testService.getAllByUserId(user.getId());
-            UserSession session = sessionService.getSession(user.getChatId());
-            LocalDateTime localDateTime = LocalDateTime.now().plus(Duration.of(1, ChronoUnit.DAYS));
-            LocalDateTime plusTime = LocalDateTime.now().plus(Duration.of(30, ChronoUnit.MINUTES));
-            if (settingsService.getSettingsByUsername(user.getUsername()).getNotifications()) {
-                tests.forEach(testEntity -> {
-                    if (!testEntity.getNotified()) {
-                        if (testEntity.getTestDate().after(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()))) {
-                            sendMessage(testEntity, user.getChatId(), session.getUserData().getUserSettings().getInterfaceLang());
+        try {
+            List<User> userList = userService.getAll();
+            userList.forEach(user -> {
+                List<TestEntity> tests = testService.getAllByUserId(user.getId());
+                UserSession session = sessionService.getSession(user.getChatId());
+                LocalDateTime localDateTime = LocalDateTime.now().plus(Duration.of(1, ChronoUnit.DAYS));
+                LocalDateTime plusTime = LocalDateTime.now().plus(Duration.of(30, ChronoUnit.MINUTES));
+                if (settingsService.getSettingsByUsername(user.getUsername()).getNotifications()) {
+                    tests.forEach(testEntity -> {
+                        if (!testEntity.getNotified()) {
+                            if (testEntity.getTestDate().after(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()))) {
+                                sendMessage(testEntity, user.getChatId(), session.getUserData().getUserSettings().getInterfaceLang());
+                            }
                         }
-                    }
-                    if (!testEntity.getFirstNotify() && !testEntity.getTestDate().before(new Date()) && !session.getState().equals(States.RETURNED_USER_LIST) && !session.getState().equals(States.TEST_STARTED)) {
-                        if (testEntity.getTestDate().before(Date.from(plusTime.atZone(ZoneId.systemDefault()).toInstant()))) {
-                            sendPreMessage(testEntity, user.getChatId(), session.getUserData().getUserSettings().getInterfaceLang());
+                        if (!testEntity.getFirstNotify() && !testEntity.getTestDate().before(new Date()) && !session.getState().equals(States.RETURNED_USER_LIST) && !session.getState().equals(States.TEST_STARTED)) {
+                            if (testEntity.getTestDate().before(Date.from(plusTime.atZone(ZoneId.systemDefault()).toInstant()))) {
+                                sendPreMessage(testEntity, user.getChatId(), session.getUserData().getUserSettings().getInterfaceLang());
+                            }
                         }
-                    }
 
-                });
-            }
-        });
+                    });
+                }
+            });
+        } catch (FeignException ex) {
+            System.out.println("Connection lost!");
+        }
     }
 
     private void sendMessage(TestEntity testEntity, Long chatId, String lang) {

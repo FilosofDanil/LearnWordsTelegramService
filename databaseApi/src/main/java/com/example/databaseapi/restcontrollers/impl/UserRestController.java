@@ -4,6 +4,7 @@ import com.example.databaseapi.entities.Users;
 import com.example.databaseapi.restcontrollers.IRestController;
 import com.example.databaseapi.services.DBAService;
 import com.example.databaseapi.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +36,7 @@ public class UserRestController implements IRestController<Users> {
 
     @Override
     @PostMapping("")
-    public Users create(@RequestBody Users users) {
+    public Users create(@RequestBody @Valid Users users) {
         return userDBAService.create(users);
     }
 
@@ -47,7 +48,7 @@ public class UserRestController implements IRestController<Users> {
 
     @Override
     @PutMapping("/{id}")
-    public void update(@RequestBody Users users, @PathVariable("id") Long id) {
+    public void update(@RequestBody @Valid Users users, @PathVariable("id") Long id) {
         userDBAService.update(users, id);
     }
 }

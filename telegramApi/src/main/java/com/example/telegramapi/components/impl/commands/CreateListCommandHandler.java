@@ -1,14 +1,10 @@
 package com.example.telegramapi.components.impl.commands;
 
 import com.example.telegramapi.components.RequestHandler;
-import com.example.telegramapi.components.additions.LangBeforeListComponent;
-import com.example.telegramapi.entities.UserRequest;
-import com.example.telegramapi.enums.States;
-import com.example.telegramapi.utils.ReplyKeyboardHelper;
+import com.example.telegramapi.components.sup.intermidiate_operations.LangBeforeListComponent;
+import com.example.telegramapi.entities.telegram.UserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor

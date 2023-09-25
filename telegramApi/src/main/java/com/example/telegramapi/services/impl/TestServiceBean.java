@@ -1,7 +1,7 @@
 package com.example.telegramapi.services.impl;
 
 import com.example.telegramapi.client.MongoClient;
-import com.example.telegramapi.entities.TestEntity;
+import com.example.telegramapi.entities.tests_data.TestEntity;
 import com.example.telegramapi.services.TestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

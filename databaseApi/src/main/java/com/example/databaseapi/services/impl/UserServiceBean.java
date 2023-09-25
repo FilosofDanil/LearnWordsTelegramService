@@ -41,6 +41,9 @@ public class UserServiceBean implements DBAService<Users>, com.example.databasea
 
     @Override
     public Users getByUsername(String username) {
+        if (userRepo.findByUsername(username) == null) {
+            return userRepo.findByTgName(username);
+        }
         return userRepo.findByUsername(username);
     }
 }

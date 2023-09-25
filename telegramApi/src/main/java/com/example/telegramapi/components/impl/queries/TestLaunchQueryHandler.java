@@ -1,8 +1,8 @@
 package com.example.telegramapi.components.impl.queries;
 
 import com.example.telegramapi.components.QueryHandler;
-import com.example.telegramapi.components.additions.TestComponent;
-import com.example.telegramapi.entities.UserRequest;
+import com.example.telegramapi.components.sup.test.TestComponent;
+import com.example.telegramapi.entities.telegram.UserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,11 +18,8 @@ public class TestLaunchQueryHandler implements QueryHandler {
 
     @Override
     public String getCallbackQuery(String lang) {
-        if (lang.equals("en")) {
-            return "🚀 Launch the test.";
-        } else {
-            return "🚀 Запустити цей тест.";
-        }
+        if (lang.equals("en")) return "🚀 Launch the test.";
+        else return "🚀 Запустити цей тест.";
     }
 
     @Override

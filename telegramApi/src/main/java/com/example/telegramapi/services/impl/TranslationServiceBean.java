@@ -1,12 +1,11 @@
 package com.example.telegramapi.services.impl;
 
 import com.example.telegramapi.client.MongoClient;
-import com.example.telegramapi.entities.UserWordList;
+import com.example.telegramapi.entities.tests_data.UserWordList;
 import com.example.telegramapi.services.MongoDBService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -16,7 +15,7 @@ public class TranslationServiceBean implements MongoDBService {
 
     @Override
     public List<UserWordList> getAll() {
-        return null;
+        return client.getAllTranslations();
     }
 
     @Override
@@ -35,12 +34,12 @@ public class TranslationServiceBean implements MongoDBService {
     }
 
     @Override
-    public void delete(Long id) {
-
+    public void delete(String id) {
+        client.deleteWordList(id);
     }
 
     @Override
-    public void update(String userID, UserWordList wordList) {
-
+    public void update(String id, UserWordList wordList) {
+        client.updateWordList(id, wordList);
     }
 }

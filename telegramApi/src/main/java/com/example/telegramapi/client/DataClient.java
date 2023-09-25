@@ -1,7 +1,7 @@
 package com.example.telegramapi.client;
 
-import com.example.telegramapi.entities.User;
-import com.example.telegramapi.entities.UserSettings;
+import com.example.telegramapi.entities.user.User;
+import com.example.telegramapi.entities.user.UserSettings;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
