@@ -7,6 +7,9 @@ import com.example.databaseapi.services.SettingsService;
 import com.example.databaseapi.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,36 +24,46 @@ public class SettingsRestController implements IRestController<Settings> {
 
     @Override
     @GetMapping("")
-    public List<Settings> getAll() {
-        return settingsService.getAll();
+    public ResponseEntity<List<Settings>> getAll() {
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(settingsService.getAll());
     }
 
     @Override
     @GetMapping("/{id}")
-    public Settings getById(@PathVariable("id") Long id) {
-        return settingsService.getById(id);
+    public ResponseEntity<Settings> getById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(settingsService.getById(id));
     }
 
     @GetMapping("/username/{username}")
-    public Settings getByUsername(@PathVariable("username") String username) {
-        return userSettingsService.getSettingsByUser(userService.getByUsername(username));
+    public ResponseEntity<Settings> getByUsername(@PathVariable("username") String username) {
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(userSettingsService.getSettingsByUser(userService.getByUsername(username)));
     }
 
     @Override
     @PostMapping("")
-    public Settings create(@RequestBody @Valid Settings settings) {
-        return settingsService.create(settings);
+    public ResponseEntity<Settings> create(@RequestBody @Valid Settings settings) {
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(settingsService.create(settings));
     }
 
     @Override
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id) {
+    public ResponseEntity delete(@PathVariable("id") Long id) {
         settingsService.delete(id);
+        return ResponseEntity.ok().body(HttpStatus.OK);
     }
 
     @Override
     @PutMapping("/{id}")
-    public void update(@RequestBody @Valid Settings settings, @PathVariable("id") Long id) {
+    public ResponseEntity update(@RequestBody @Valid Settings settings, @PathVariable("id") Long id) {
         settingsService.update(settings, id);
+        return ResponseEntity.ok().body(HttpStatus.OK);
     }
 }
