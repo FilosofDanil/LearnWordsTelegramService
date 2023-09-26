@@ -26,7 +26,10 @@ public class SettingsServiceBean implements DBAService<Settings>, SettingsServic
     }
 
     @Override
-    public Settings create(Settings settings) {
+    public Settings create(Settings settings) throws IllegalArgumentException{
+        if (settingsRepo.findByUser(settings.getUser()) != null) {
+            throw new IllegalArgumentException("Trying to create already existing settings!");
+        }
         settingsRepo.save(settings);
         return settings;
     }
