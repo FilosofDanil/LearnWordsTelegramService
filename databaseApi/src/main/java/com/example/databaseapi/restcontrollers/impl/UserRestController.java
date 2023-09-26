@@ -46,9 +46,14 @@ public class UserRestController implements IRestController<Users> {
     @Override
     @PostMapping("")
     public ResponseEntity<Users> create(@RequestBody @Valid Users users) {
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(userDBAService.create(users));
+        try {
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(userDBAService.create(users));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @Override

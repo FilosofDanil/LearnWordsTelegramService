@@ -48,9 +48,14 @@ public class SettingsRestController implements IRestController<Settings> {
     @Override
     @PostMapping("")
     public ResponseEntity<Settings> create(@RequestBody @Valid Settings settings) {
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(settingsService.create(settings));
+        try {
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(settingsService.create(settings));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @Override
