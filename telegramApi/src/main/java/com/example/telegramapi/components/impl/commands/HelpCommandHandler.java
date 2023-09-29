@@ -38,7 +38,8 @@ public class HelpCommandHandler extends RequestHandler {
         List<String> responseQueries = List.of(obtainTextService.read("help1", lang),
                 obtainTextService.read("help2", lang),
                 obtainTextService.read("help3", lang),
-                obtainTextService.read("help4", lang));
+                obtainTextService.read("help4", lang),
+                obtainTextService.read("backAfterHelp", lang));
         telegramService.sendMessage(request.getChatId(), obtainTextService.read("helpText", lang), InlineKeyboardHelper.buildInlineKeyboard(responseQueries, false));
     }
 
