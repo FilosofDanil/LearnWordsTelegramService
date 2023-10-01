@@ -39,7 +39,8 @@ public class WordListWaitThread extends Thread {
             telegramService.sendMessage(request.getChatId(), obtainTextService.read("gotList", lang) + "\n" + translatedListModel.getMessage(), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("Rep004", lang))));
             telegramService.sendMessage(request.getChatId(), obtainTextService.read("testReady", lang), InlineKeyboardHelper.buildInlineKeyboard(List.of(obtainTextService.read("launchQuery", lang)), false));
         } catch (IllegalArgumentException e) {
-            telegramService.sendMessage(request.getChatId(), obtainTextService.read("bad_list", lang));
+            telegramService.sendMessage(request.getChatId(), obtainTextService.read("bad_list", lang), ReplyKeyboardHelper.buildMainMenu(List.of(obtainTextService.read("listFail1", lang),
+                    obtainTextService.read("listFail2", lang))));
         }
 
     }
