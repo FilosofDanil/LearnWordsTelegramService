@@ -7,8 +7,11 @@ import com.example.telegramapi.enums.States;
 import com.example.telegramapi.services.ObtainTextService;
 import com.example.telegramapi.services.SessionService;
 import com.example.telegramapi.services.bot.TelegramBotService;
+import com.example.telegramapi.utils.InlineKeyboardHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -32,7 +35,12 @@ public class HelpCommandHandler extends RequestHandler {
         String lang = session.getUserData().getUserSettings().getInterfaceLang();
         session.setState(States.HELP);
         sessionService.saveSession(request.getChatId(), session);
-        telegramService.sendMessage(request.getChatId(), obtainTextService.read("helpText", lang));
+        List<String> responseQueries = List.of(obtainTextService.read("help1", lang),
+                obtainTextService.read("help2", lang),
+                obtainTextService.read("help3", lang),
+                obtainTextService.read("help4", lang),
+                obtainTextService.read("backAfterHelp", lang));
+        telegramService.sendMessage(request.getChatId(), obtainTextService.read("helpText", lang), InlineKeyboardHelper.buildInlineKeyboard(responseQueries, false));
     }
 
     @Override
