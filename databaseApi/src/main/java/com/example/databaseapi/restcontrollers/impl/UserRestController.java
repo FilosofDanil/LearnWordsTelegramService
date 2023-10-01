@@ -6,6 +6,9 @@ import com.example.databaseapi.services.DBAService;
 import com.example.databaseapi.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,36 +22,51 @@ public class UserRestController implements IRestController<Users> {
 
     @Override
     @GetMapping("")
-    public List<Users> getAll() {
-        return userDBAService.getAll();
+    public ResponseEntity<List<Users>> getAll() {
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(userDBAService.getAll());
     }
 
     @Override
     @GetMapping("/{id}")
-    public Users getById(@PathVariable("id") Long id) {
-        return userDBAService.getById(id);
+    public ResponseEntity<Users> getById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(userDBAService.getById(id));
     }
 
     @GetMapping("/username/{username}")
-    public Users getByUsername(@PathVariable("username") String username) {
-        return userService.getByUsername(username);
+    public ResponseEntity<Users> getByUsername(@PathVariable("username") String username) {
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(userService.getByUsername(username));
     }
 
     @Override
     @PostMapping("")
-    public Users create(@RequestBody @Valid Users users) {
-        return userDBAService.create(users);
+    public ResponseEntity<Users> create(@RequestBody @Valid Users users) {
+        try {
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(userDBAService.create(users));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @Override
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id) {
+    public ResponseEntity delete(@PathVariable("id") Long id) {
         userDBAService.delete(id);
+        return ResponseEntity.ok().body(HttpStatus.OK);
     }
 
     @Override
     @PutMapping("/{id}")
-    public void update(@RequestBody @Valid Users users, @PathVariable("id") Long id) {
+    public ResponseEntity update(@RequestBody @Valid Users users, @PathVariable("id") Long id) {
         userDBAService.update(users, id);
+        return ResponseEntity.ok().body(HttpStatus.OK);
     }
 }

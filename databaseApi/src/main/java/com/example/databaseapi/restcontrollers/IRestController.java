@@ -1,15 +1,18 @@
 package com.example.databaseapi.restcontrollers;
 
+import com.example.databaseapi.entities.Users;
+import org.springframework.http.ResponseEntity;
+
 import java.util.List;
 
 public interface IRestController<T> {
-    List<T> getAll();
+    ResponseEntity<List<T>> getAll();
 
-    T getById(Long id);
+    ResponseEntity<T> getById(Long id);
 
-    T create(T t);
+    ResponseEntity<T> create(T t);
 
-    void delete(Long id);
+    ResponseEntity delete(Long id);
 
-    void update(T t, Long id);
+    ResponseEntity update(T t, Long id);
 }

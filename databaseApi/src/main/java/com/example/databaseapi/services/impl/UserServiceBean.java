@@ -24,7 +24,10 @@ public class UserServiceBean implements DBAService<Users>, com.example.databasea
     }
 
     @Override
-    public Users create(Users users) {
+    public Users create(Users users) throws IllegalArgumentException{
+        if (userRepo.findByUsername(users.getUsername()) != null) {
+            throw new IllegalArgumentException("Trying to create already existing settings!");
+        }
         userRepo.save(users);
         return users;
     }
